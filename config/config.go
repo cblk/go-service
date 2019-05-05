@@ -23,6 +23,7 @@ func InitConfig(configPath string) error {
 			v.AddConfigPath(configPath)
 		} else {
 			v.AddConfigPath("/config")
+			v.AddConfigPath("config")
 		}
 
 		utils.PanicWrap(v.ReadInConfig(), "error on parsing configuration file")
