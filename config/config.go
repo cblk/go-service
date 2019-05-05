@@ -1,10 +1,11 @@
 package config
 
 import (
+	"go-service/utils"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
-	"go-service/utils"
 )
 
 var config *viper.Viper
@@ -21,7 +22,7 @@ func InitConfig(configPath *string) error {
 		if configPath != nil {
 			v.AddConfigPath(*configPath)
 		} else {
-			v.AddConfigPath("config")
+			v.AddConfigPath("/config")
 		}
 
 		utils.PanicWrap(v.ReadInConfig(), "error on parsing configuration file")
