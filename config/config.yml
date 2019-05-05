@@ -1,0 +1,10 @@
+sport: "8080"
+debug: "true"
+db:
+  driver: "mysql"
+  connection: "root:mypass@(192.168.1.100:30036)/turing"
+log:
+  level: 5
+  url: ""
+http:
+  port: 80

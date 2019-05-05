@@ -1,0 +1,51 @@
+package tests
+
+import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"portal/forms"
+	"portal/internal/app"
+	"portal/utils"
+	"strings"
+)
+
+type M map[string]interface{}
+
+func (t M) String() string {
+	_dt, _ := json.Marshal(t)
+	return string(_dt)
+}
+
+func TestIndex() error {
+	return utils.Try(func() {
+		router := app.RunApp()
+		w := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", "/", nil)
+		utils.PanicErr(err)
+		router.ServeHTTP(w, req)
+
+		utils.PanicBool(w.Code != http.StatusOK, "test code")
+		utils.P(w.Body.String())
+	})
+}
+
+func TestSendTask() error {
+	return utils.Try(func() {
+		router := app.RunApp()
+		w := httptest.NewRecorder()
+
+		task := forms.Task{
+			Type:  "article",
+			Url:   "https://github.com/gin-gonic/gin",
+			AppId: "123456789",
+		}
+
+		req, err := http.NewRequest("POST", "/api/tasks", strings.NewReader(task.String()))
+		utils.PanicErr(err)
+		router.ServeHTTP(w, req)
+
+		utils.P(w.Body.String())
+		utils.PanicBool(w.Code != http.StatusOK, "test code")
+	})
+}
