@@ -3,7 +3,6 @@ package main
 import (
 	"go-service/cmds"
 	"go-service/utils"
-	"os"
 )
 
 func main() {
@@ -17,7 +16,6 @@ func main() {
 	)
 
 	utils.P(utils.Try(func() {
-		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "",
-			os.ExpandEnv("$PWD/config")).Execute())
+		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd).Execute())
 	}))
 }

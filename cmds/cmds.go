@@ -15,10 +15,10 @@ const (
 	LogFlag   = "log_level"
 )
 
-func PrepareBaseCmd(cmd *cobra.Command, envPrefix, defaultHome string) Executor {
-	cobra.OnInitialize(func() { initEnv(envPrefix) })
+func PrepareBaseCmd(cmd *cobra.Command) Executor {
+	cobra.OnInitialize()
 
-	cmd.PersistentFlags().StringP(HomeFlag, "", defaultHome, "directory for config and data")
+	cmd.PersistentFlags().StringP(HomeFlag, "", os.ExpandEnv("$PWD/config"), "directory for config and data")
 	cmd.PersistentFlags().Bool(TraceFlag, false, "print out full stack trace on errors.toml")
 	cmd.PersistentFlags().StringP(LogFlag, "l", "debug", "log level")
 	cmd.PersistentPreRunE = concatCobraCmdFuncs(bindFlagsLoadViper, cmd.PersistentPreRunE)
