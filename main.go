@@ -13,7 +13,6 @@ func main() {
 	rootCmd.AddCommand(
 		cmds.ServerCmd,
 		cmds.MigrateCmd,
-		cmds.TestCmd,
 	)
 
 	if err := cmds.PrepareBaseCmd(rootCmd).Execute(); err != nil {
