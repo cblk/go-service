@@ -1,25 +1,26 @@
 package tests
 
 import (
-	"fmt"
+	"go-service/service"
 	"go-service/utils"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
-func TestTask(t *testing.T) {
-	t.Log("test")
-}
+func TestIndex(t *testing.T) {
+	if err := utils.Try(func() {
+		router := service.GetHttpApplication()
+		w := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", "/", nil)
+		utils.PanicErr(err)
 
-func TestTry(t *testing.T) {
-	fmt.Println(utils.Try(func() {
-		utils.PanicWrap(utils.Try(func() {
-			utils.PanicWrap(utils.Try(func() {
-				utils.PanicWrap(utils.Error("test error"), "sss%s", "ddd")
-				utils.PanicBool(true, "sss%s", "ddd")
-			}), "test error try")
-		}), "test 12345")
-	}))
-}
+		router.ServeHTTP(w, req)
 
-func TestSendTask(t *testing.T) {
+		utils.P(w.Body.String())
+
+		utils.PanicBool(w.Code != http.StatusOK, "test code")
+	}); err != nil {
+		t.Fatal(err.Error())
+	}
 }
