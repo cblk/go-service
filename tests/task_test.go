@@ -2,7 +2,7 @@ package tests
 
 import (
 	"fmt"
-	"portal/utils"
+	"go-service/utils"
 	"testing"
 )
 

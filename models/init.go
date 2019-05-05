@@ -2,7 +2,7 @@ package models
 
 import (
 	"encoding/json"
-	"portal/utils"
+	"go-service/utils"
 )
 
 type M map[string]interface{}

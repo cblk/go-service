@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
 	"go-service/cmds"
 	"go-service/utils"
+	"os"
 )
 
 func main() {
@@ -11,7 +11,6 @@ func main() {
 
 	rootCmd := cmds.RootCmd
 	rootCmd.AddCommand(
-		cmds.VersionCmd,
 		cmds.ServerCmd,
 		cmds.MigrateCmd,
 		cmds.TestCmd,

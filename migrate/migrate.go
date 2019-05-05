@@ -1,8 +1,8 @@
 package migrate
 
 import (
+	"go-service/utils"
 	"gopkg.in/gormigrate.v1"
-	"portal/utils"
 )
 
 var migrations []*gormigrate.Gormigrate

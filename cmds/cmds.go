@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"portal/internal/cnst"
-	"portal/utils"
+	"go-service/utils"
 	"strings"
 
 	"github.com/spf13/cobra"
