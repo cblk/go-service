@@ -22,13 +22,13 @@ func NewTask() *Task {
 
 	return &Task{
 		CreatedAt: uint(time.Now().Unix()),
-		Status:    cnst.Status.Pending,
-		Type:      cnst.TaskType.Article,
+		Status:    "pending",
+		Type:      "article",
 		AppId:     "123456789",
 		TaskID:    strings.ReplaceAll(_uuid, "-", ""),
 		Priority:  5,
 		RetryNum:  5,
-		Version:   cnst.Version[len(cnst.Version)-1].Db,
+		Version:   "v1.0",
 	}
 }
 
@@ -51,7 +51,7 @@ type Task struct {
 func (t *Task) Save(db *gorm.DB) error {
 	return utils.Try(func() {
 		t.CreatedAt = uint(time.Now().Unix())
-		t.Version = cnst.Version[len(cnst.Version)-1].Db
+		t.Version = "v1.0"
 		utils.PanicErr(db.Create(t).Error)
 	})
 }

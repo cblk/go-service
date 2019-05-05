@@ -17,5 +17,5 @@ func main() {
 	)
 
 	utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "portal",
-		os.ExpandEnv("$PWD/kdata")).Execute())
+		os.ExpandEnv("$PWD")).Execute())
 }
