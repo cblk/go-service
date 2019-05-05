@@ -3,7 +3,7 @@ package tests
 import (
 	"encoding/json"
 	"go-service/forms"
-	"go-service/http/api"
+	"go-service/service"
 	"go-service/utils"
 	"net/http"
 	"net/http/httptest"
@@ -19,7 +19,7 @@ func (t M) String() string {
 
 func TestIndex() error {
 	return utils.Try(func() {
-		router := api.GetHttpApplication()
+		router := service.GetHttpApplication()
 		w := httptest.NewRecorder()
 		req, err := http.NewRequest("GET", "/", nil)
 		utils.PanicErr(err)
@@ -32,7 +32,7 @@ func TestIndex() error {
 
 func TestSendTask() error {
 	return utils.Try(func() {
-		router := api.GetHttpApplication()
+		router := service.GetHttpApplication()
 		w := httptest.NewRecorder()
 
 		task := forms.Task{
