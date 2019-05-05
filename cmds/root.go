@@ -18,7 +18,7 @@ var RootCmd = &cobra.Command{
 			// Initialization
 
 			// Initialize config
-			utils.PanicErr(config.InitConfig(nil))
+			utils.PanicErr(config.InitConfig(""))
 
 			// Initialize DB
 			utils.PanicErr(config.InitDB())
