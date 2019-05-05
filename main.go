@@ -16,8 +16,8 @@ func main() {
 		cmds.TestCmd,
 	)
 
-	utils.P(utils.Try(func() {
-		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "",
-			os.ExpandEnv("$PWD")).Execute())
-	}))
+	if err := cmds.PrepareBaseCmd(rootCmd).Execute(); err != nil {
+		utils.P(err)
+		os.Exit(-1)
+	}
 }
