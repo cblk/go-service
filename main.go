@@ -18,6 +18,6 @@ func main() {
 
 	utils.P(utils.Try(func() {
 		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "",
-			os.ExpandEnv("$PWD")).Execute())
+			os.ExpandEnv("$PWD/config")).Execute())
 	}))
 }

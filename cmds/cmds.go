@@ -3,7 +3,6 @@ package cmds
 import (
 	"go-service/utils"
 	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -89,23 +88,25 @@ func concatCobraCmdFuncs(fs ...cobraCmdFunc) cobraCmdFunc {
 
 // Bind all flags and read the config into viper
 func bindFlagsLoadViper(cmd *cobra.Command, args []string) error {
-	return utils.Try(func() {
-		// cmd.Flags() includes flags from this command and all persistent flags from the parent
-		utils.PanicErr(viper.BindPFlags(cmd.Flags()))
+	return nil
 
-		homeDir := viper.GetString(HomeFlag)
-
-		viper.SetConfigType("yml")
-		viper.Set(HomeFlag, homeDir)
-		viper.SetConfigName("config")
-
-		viper.AddConfigPath("/etc/config")
-		viper.AddConfigPath("$HOME/.config")
-		viper.AddConfigPath(".")
-		viper.AddConfigPath(homeDir)                          // search root directory
-		viper.AddConfigPath(filepath.Join(homeDir, "config")) // search root directory /config
-
-		// load config
-		utils.PanicErr(viper.ReadInConfig())
-	})
+	//return utils.Try(func() {
+	//	// cmd.Flags() includes flags from this command and all persistent flags from the parent
+	//	utils.PanicErr(viper.BindPFlags(cmd.Flags()))
+	//
+	//	homeDir := viper.GetString(HomeFlag)
+	//
+	//	viper.SetConfigType("yml")
+	//	viper.Set(HomeFlag, homeDir)
+	//	viper.SetConfigName("config")
+	//
+	//	viper.AddConfigPath("/etc/config")
+	//	viper.AddConfigPath("$HOME/.config")
+	//	viper.AddConfigPath(".")
+	//	viper.AddConfigPath(homeDir)                          // search root directory
+	//	viper.AddConfigPath(filepath.Join(homeDir, "config")) // search root directory /config
+	//
+	//	// load config
+	//	utils.PanicErr(viper.ReadInConfig())
+	//})
 }
