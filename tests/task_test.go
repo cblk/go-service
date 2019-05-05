@@ -18,7 +18,6 @@ func TestIndex(t *testing.T) {
 		router.ServeHTTP(w, req)
 
 		utils.P(w.Body.String())
-
 		utils.PanicBool(w.Code != http.StatusOK, "test code")
 	}); err != nil {
 		t.Fatal(err.Error())
