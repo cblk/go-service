@@ -77,6 +77,7 @@ func PanicBool(b bool, msg string, args ...interface{}) {
 	panic(&M{
 		FuncCaller: funcCaller(),
 		Msg:        fmt.Sprintf(msg, args...),
+		Sub:        Error(msg, args...),
 	})
 }
 

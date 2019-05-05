@@ -3,6 +3,7 @@ package main
 import (
 	"go-service/cmds"
 	"go-service/utils"
+	"os"
 )
 
 func main() {
@@ -15,7 +16,8 @@ func main() {
 		cmds.TestCmd,
 	)
 
-	utils.P(utils.Try(func() {
-		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd).Execute())
-	}))
+	if err := cmds.PrepareBaseCmd(rootCmd).Execute(); err != nil {
+		utils.P(err)
+		os.Exit(-1)
+	}
 }
