@@ -2,8 +2,8 @@ package cmds
 
 import (
 	"github.com/spf13/cobra"
-	"portal/tests"
-	"portal/utils"
+	"go-service/tests"
+	"go-service/utils"
 )
 
 // TestCmd ...

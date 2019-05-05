@@ -2,10 +2,11 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"go-service/config"
 	"go-service/forms"
 	"go-service/models"
 	"go-service/utils"
+	"net/http"
 )
 
 func Post_task(ctx *gin.Context) {
@@ -20,7 +21,7 @@ func Post_task(ctx *gin.Context) {
 			"data": task.Url,
 		}.String()
 
-		utils.PanicWrap(t.Save(cfg.GetDb()), "任务数据保存失败")
+		utils.PanicWrap(t.Save(config.GetDB()), "任务数据保存失败")
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"code": 0,
@@ -40,10 +41,8 @@ func Get_task(ctx *gin.Context) {
 		_id := ctx.Param("id")
 		utils.PanicBool(_id == "", "please input id")
 
-		cfg := config.DefaultConfig()
-
 		t := models.NewTask()
-		utils.PanicWrap(t.GetTaskStatus(cfg.GetDb(), _id), "获取任务失败")
+		utils.PanicWrap(t.GetTaskStatus(config.GetDB(), _id), "获取任务失败")
 
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":   0,

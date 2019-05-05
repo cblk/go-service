@@ -7,4 +7,5 @@ log:
   level: 5
   url: ""
 http:
+  host: 0.0.0.0
   port: 80

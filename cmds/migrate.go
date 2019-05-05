@@ -4,11 +4,11 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/cobra"
+	"go-service/config"
+	"go-service/migrate"
+	"go-service/migrate/migrations"
+	"go-service/utils"
 	"log"
-	"portal/internal/config"
-	"portal/migrate"
-	"portal/migrate/migrations"
-	"portal/utils"
 )
 
 var migrationInitialized bool
@@ -56,8 +56,7 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	Short:   "migrate",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		log.Println("migrate")
-		cfg := config.DefaultConfig()
-		InitMigration(cfg.GetDb())
+		InitMigration(config.GetDB())
 
 		switch _action {
 		case "migrate":

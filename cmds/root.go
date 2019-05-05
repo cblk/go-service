@@ -2,10 +2,9 @@ package cmds
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"log"
 	"go-service/config"
 	"go-service/utils"
+	"log"
 )
 
 var RootCmd = &cobra.Command{

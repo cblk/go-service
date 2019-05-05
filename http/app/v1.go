@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"go-service/http/app/v1"
 	"net/http"
 )
 
@@ -15,8 +16,4 @@ func InitRouterV1(r *gin.RouterGroup) {
 
 	// 得到任务
 	r.GET("/tasks/:id", v1.Get_task)
-
-	// 更新任务状态
-	r.PUT("/tasks/:id/status", v1.Put_task_status)
-
 }
