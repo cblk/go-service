@@ -3,9 +3,6 @@ name: default
 steps:
 - name: build
   image: damianoneill/golang-alpine-builder
-  volumes:
-  - name: go
-    path: /go
   commands:
   - export GOPROXY=https://goproxy.io
   - export GO111MODULE=on
@@ -214,10 +211,6 @@ steps:
       - refs/tags/*.dev
     status: [ failure ]
 
-volumes:
-- name: go
-  host:
-    path: /go
 ---
 kind: secret
 name: username
@@ -284,4 +277,3 @@ name: staging_corp_secret
 get:
   path: staging-drone-secret
   name: corp_secret
-  
