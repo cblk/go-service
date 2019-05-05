@@ -16,6 +16,8 @@ func main() {
 		cmds.TestCmd,
 	)
 
-	utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "portal",
-		os.ExpandEnv("$PWD")).Execute())
+	utils.P(utils.Try(func() {
+		utils.PanicErr(cmds.PrepareBaseCmd(rootCmd, "",
+			os.ExpandEnv("$PWD")).Execute())
+	}))
 }
