@@ -1,8 +1,7 @@
 FROM registry.cn-shanghai.aliyuncs.com/ybase/alpine:latest
 
 RUN rm -rf /app
-COPY main /app/portal
-COPY kdata /kdata
+COPY main /app/go-service
 WORKDIR /app
 
-ENTRYPOINT ["./portal","server"]
+ENTRYPOINT ["./go-service","server"]

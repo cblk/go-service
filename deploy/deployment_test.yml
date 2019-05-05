@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: portal
-          image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:{{build.tag}}
+          image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:latest
           env:
             - name: env
               value: "dev"

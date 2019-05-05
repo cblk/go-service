@@ -9,7 +9,7 @@ steps:
   - go version
   - go env
   - echo "拉取依赖, ok"
-  - go build -ldflags "-w -s" -o proxy_pool main.go
+  - go build -ldflags "-w -s" main.go
   - echo "项目编译, ok"
 
   when:
