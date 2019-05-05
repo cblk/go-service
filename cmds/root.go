@@ -18,19 +18,10 @@ var RootCmd = &cobra.Command{
 			// Initialization
 
 			// Initialize config
-			configPath := "../config"
-			err := config.InitConfig(&configPath)
-
-			if err != nil {
-				panic(err)
-			}
+			utils.PanicErr(config.InitConfig(nil))
 
 			// Initialize DB
-			err = config.InitDB()
-
-			if err != nil {
-				panic(err)
-			}
+			utils.PanicErr(config.InitDB())
 		})
 	},
 }

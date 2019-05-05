@@ -1,10 +1,9 @@
 package cmds
 
 import (
-	"fmt"
+	"go-service/utils"
 	"os"
 	"path/filepath"
-	"go-service/utils"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -81,7 +80,7 @@ func concatCobraCmdFuncs(fs ...cobraCmdFunc) cobraCmdFunc {
 	return func(cmd *cobra.Command, args []string) error {
 		for _, f := range fs {
 			if f != nil {
-				utils.PanicErr(f(cmd, args))
+				f(cmd, args)
 			}
 		}
 		return nil
@@ -96,28 +95,29 @@ func bindFlagsLoadViper(cmd *cobra.Command, args []string) error {
 
 		homeDir := viper.GetString(HomeFlag)
 
-		dl := strings.Split(os.Getenv("DRONE_TAG"), ".")
-		_env1 := ""
-		if len(dl) != 0 {
-			_env1 = dl[len(dl)-1]
-		}
+		//dl := strings.Split(os.Getenv("DRONE_TAG"), ".")
+		//_env1 := ""
+		//if len(dl) != 0 {
+		//	_env1 = dl[len(dl)-1]
+		//}
 
-		_env2 := os.Getenv("env")
-		utils.PanicBool(_env1 == "" && _env2 == "", "env(%s)(%s) is null", _env1, _env2)
+		//_env2 := os.Getenv("env")
+		//utils.PanicBool(_env1 == "" && _env2 == "", "env(%s)(%s) is null", _env1, _env2)
 
-		env := _env1
-		if env == "" {
-			env = _env2
-		}
+		//env := _env1
+		//if env == "" {
+		//	env = _env2
+		//}
 
-		utils.PanicBool(!(env != cnst.Env.Dev || env != cnst.Env.Stag || env != cnst.Env.Prod), "env error(%s)", env)
+		//utils.PanicBool(!(env != cnst.Env.Dev || env != cnst.Env.Stag || env != cnst.Env.Prod), "env error(%s)", env)
 
 		viper.SetConfigType("yml")
 		viper.Set(HomeFlag, homeDir)
-		viper.SetConfigName(fmt.Sprintf("config.%s", env))
+		//viper.SetConfigName(fmt.Sprintf("config.%s", env))
+		viper.SetConfigName("config")
 
-		viper.AddConfigPath("/etc/kdata")
-		viper.AddConfigPath("$HOME/.kdata")
+		viper.AddConfigPath("/etc/config")
+		viper.AddConfigPath("$HOME/.config")
 		viper.AddConfigPath(".")
 		viper.AddConfigPath(homeDir)                          // search root directory
 		viper.AddConfigPath(filepath.Join(homeDir, "config")) // search root directory /config

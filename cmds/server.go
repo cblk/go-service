@@ -1,9 +1,11 @@
 package cmds
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 	"go-service/config"
 	"go-service/http/app"
+	"go-service/utils"
 	"log"
 )
 
@@ -12,12 +14,15 @@ var ServerCmd = &cobra.Command{
 	Aliases: []string{"s"},
 	Short:   "node server",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("start http server")
+		return utils.Try(func() {
+			log.Println("start http server")
 
-		conf := config.GetConfig()
+			conf := config.GetConfig()
 
-		app := app.GetHttpApplication()
+			app := app.GetHttpApplication()
 
-		return app.Run(conf.GetString("http.host"), ":", conf.GetString("http.port"))
+			utils.PanicErr(app.Run(fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))))
+		})
+
 	},
 }
