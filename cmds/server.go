@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"go-service/config"
-	"go-service/http/app"
+	"go-service/http"
 	"go-service/utils"
 	"log"
 )
@@ -19,7 +19,7 @@ var ServerCmd = &cobra.Command{
 
 			conf := config.GetConfig()
 
-			app := app.GetHttpApplication()
+			app := http.GetHttpApplication()
 
 			utils.PanicErr(app.Run(fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))))
 		})

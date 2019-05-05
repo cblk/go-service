@@ -1,8 +1,9 @@
-package app
+package http
 
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"go-service/http/api"
 	"net/http"
 )
 
@@ -15,8 +16,8 @@ func GetHttpApplication() *gin.Engine {
 	})
 
 	// 服务端API
-	api := r.Group("/api")
-	InitRouterV1(api)
+	apiGroup := r.Group("/api")
+	api.InitRouterV1(apiGroup)
 
 	return r
 }
