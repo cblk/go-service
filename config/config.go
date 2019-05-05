@@ -1,9 +1,10 @@
 package config
 
 import (
-	"errors"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
+	"go-service/utils"
 )
 
 var config *viper.Viper
@@ -12,25 +13,21 @@ var db *gorm.DB
 // Init is an exported method that takes the environment starts the viper
 // (external lib) and returns the configuration struct.
 func InitConfig(configPath *string) error {
+	return utils.Try(func() {
+		v := viper.New()
+		v.SetConfigType("yml")
+		v.SetConfigName("config")
 
-	var err error
-	v := viper.New()
-	v.SetConfigType("yml")
-	v.SetConfigName("config")
+		if configPath != nil {
+			v.AddConfigPath(*configPath)
+		} else {
+			v.AddConfigPath("config")
+		}
 
-	if configPath != nil {
-		v.AddConfigPath(*configPath)
-	} else {
-		v.AddConfigPath("config/")
-	}
+		utils.PanicWrap(v.ReadInConfig(), "error on parsing configuration file")
 
-	err = v.ReadInConfig()
-	if err != nil {
-		return errors.New("error on parsing configuration file")
-	}
-	config = v
-
-	return nil
+		config = v
+	})
 }
 
 func GetConfig() *viper.Viper {
@@ -38,18 +35,14 @@ func GetConfig() *viper.Viper {
 }
 
 func InitDB() error {
+	return utils.Try(func() {
+		config := GetConfig()
 
-	var err error
+		var err error
+		db, err = gorm.Open(config.GetString("db.driver"), config.GetString("db.connection"))
+		utils.PanicErr(err)
+	})
 
-	config := GetConfig()
-
-	db, err = gorm.Open(config.GetString("db.driver"), config.GetString("db.connection"))
-
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func GetDB() *gorm.DB {
