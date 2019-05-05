@@ -13,14 +13,14 @@ var db *gorm.DB
 
 // Init is an exported method that takes the environment starts the viper
 // (external lib) and returns the configuration struct.
-func InitConfig(configPath *string) error {
+func InitConfig(configPath string) error {
 	return utils.Try(func() {
 		v := viper.New()
 		v.SetConfigType("yml")
 		v.SetConfigName("config")
 
-		if configPath != nil {
-			v.AddConfigPath(*configPath)
+		if configPath != "" {
+			v.AddConfigPath(configPath)
 		} else {
 			v.AddConfigPath("/config")
 		}
