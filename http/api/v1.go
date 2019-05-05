@@ -1,8 +1,8 @@
-package app
+package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-service/http/app/v1"
+	"go-service/http/api/v1"
 	"net/http"
 )
 
@@ -12,8 +12,8 @@ func InitRouterV1(r *gin.RouterGroup) {
 	})
 
 	// 提交任务
-	r.POST("/tasks", v1.Post_task)
+	r.POST("/tasks", v1.PostTask)
 
 	// 得到任务
-	r.GET("/tasks/:id", v1.Get_task)
+	r.GET("/tasks/:id", v1.GetTask)
 }

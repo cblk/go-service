@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func Post_task(ctx *gin.Context) {
+func PostTask(ctx *gin.Context) {
 	if err := utils.Try(func() {
 		task := &forms.Task{}
 		utils.PanicWrap(ctx.ShouldBindJSON(task), "参数错误")
@@ -36,7 +36,7 @@ func Post_task(ctx *gin.Context) {
 
 }
 
-func Get_task(ctx *gin.Context) {
+func GetTask(ctx *gin.Context) {
 	if err := utils.Try(func() {
 		_id := ctx.Param("id")
 		utils.PanicBool(_id == "", "please input id")
