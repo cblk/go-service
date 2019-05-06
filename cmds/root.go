@@ -2,8 +2,8 @@ package cmds
 
 import (
 	"github.com/spf13/cobra"
-	"go-service/config"
-	"go-service/utils"
+	"go_service/config"
+	"go_service/utils"
 	"log"
 )
 

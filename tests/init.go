@@ -2,8 +2,8 @@ package tests
 
 import (
 	"encoding/json"
-	"go-service/config"
-	"go-service/utils"
+	"go_service/config"
+	"go_service/utils"
 	"log"
 )
 

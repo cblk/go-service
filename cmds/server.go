@@ -3,9 +3,10 @@ package cmds
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"go-service/config"
-	"go-service/service"
-	"go-service/utils"
+	"go_service/config"
+	"go_service/library/logy"
+	"go_service/service"
+	"go_service/utils"
 	"log"
 )
 
@@ -18,6 +19,9 @@ var ServerCmd = &cobra.Command{
 			log.Println("start service server")
 
 			conf := config.GetConfig()
+
+			logy.LoadLogConfig(conf)
+			logy.SetFormat("%L %e %D %T %a %f %S %M")
 
 			app := service.GetHttpApplication()
 

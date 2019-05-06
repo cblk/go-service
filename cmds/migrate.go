@@ -4,10 +4,10 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/cobra"
-	"go-service/config"
-	"go-service/migrate"
-	"go-service/migrate/migrations"
-	"go-service/utils"
+	"go_service/config"
+	"go_service/migrate"
+	"go_service/migrate/migrations"
+	"go_service/utils"
 	"log"
 )
 

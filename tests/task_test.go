@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"go-service/service"
-	"go-service/utils"
+	"go_service/service"
+	"go_service/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
