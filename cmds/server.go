@@ -21,9 +21,6 @@ var ServerCmd = &cobra.Command{
 
 			conf := config.GetConfig()
 
-			//logy.LoadLogConfig(conf)
-			//logy.SetFormat("%L %e %D %T %a %f %S %M")
-
 			app := service.GetHttpApplication()
 
 			utils.PanicErr(app.Run(fmt.Sprintf("%s:%s", conf.GetString("service.host"), conf.GetString("service.port"))))
