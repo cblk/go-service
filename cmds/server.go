@@ -2,12 +2,13 @@ package cmds
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
+	"log"
+
 	"go_service/config"
-	"go_service/library/logy"
 	"go_service/service"
 	"go_service/utils"
-	"log"
+
+	"github.com/spf13/cobra"
 )
 
 var ServerCmd = &cobra.Command{
@@ -20,8 +21,8 @@ var ServerCmd = &cobra.Command{
 
 			conf := config.GetConfig()
 
-			logy.LoadLogConfig(conf)
-			logy.SetFormat("%L %e %D %T %a %f %S %M")
+			//logy.LoadLogConfig(conf)
+			//logy.SetFormat("%L %e %D %T %a %f %S %M")
 
 			app := service.GetHttpApplication()
 
