@@ -1,9 +1,10 @@
 package main
 
 import (
-	"go-service/cmds"
-	"go-service/utils"
 	"os"
+
+	"go_service/cmds"
+	"go_service/utils"
 )
 
 func main() {

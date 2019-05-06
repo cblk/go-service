@@ -2,11 +2,13 @@ package cmds
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"go-service/config"
-	"go-service/service"
-	"go-service/utils"
 	"log"
+
+	"go_service/config"
+	"go_service/service"
+	"go_service/utils"
+
+	"github.com/spf13/cobra"
 )
 
 var ServerCmd = &cobra.Command{

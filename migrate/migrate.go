@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"go-service/utils"
+	"go_service/utils"
 	"gopkg.in/gormigrate.v1"
 )
 

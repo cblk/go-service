@@ -2,10 +2,10 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-service/config"
-	"go-service/forms"
-	"go-service/models"
-	"go-service/utils"
+	"go_service/config"
+	"go_service/forms"
+	"go_service/models"
+	"go_service/utils"
 	"net/http"
 )
 

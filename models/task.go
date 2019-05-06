@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
-	"go-service/utils"
+	"go_service/utils"
 	"strings"
 	"time"
 )

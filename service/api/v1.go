@@ -2,7 +2,7 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"go-service/service/api/v1"
+	"go_service/service/api/v1"
 	"net/http"
 )
 

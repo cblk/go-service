@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"go-service/service/api"
+	"go_service/service/api"
 	"net/http"
 )
 
