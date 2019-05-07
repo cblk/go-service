@@ -2,19 +2,27 @@ package tests
 
 import (
 	"encoding/json"
-	"go_service/config"
-	"go_service/utils"
 	"log"
+
+	"go_service/config"
 )
 
 func init() {
 	log.Println("Initialize config")
 
 	// Initialize config
-	utils.PanicErr(config.InitConfig("../config"))
+	err := config.InitConfig("../config")
+	if err != nil {
+		log.Println("init config error:",err.Error())
+		return
+	}
 
 	// Initialize DB
-	utils.PanicErr(config.InitDB())
+	err = config.InitDB()
+	if err != nil {
+		log.Println("init DB error:",err.Error())
+		return
+	}
 }
 
 type M map[string]interface{}

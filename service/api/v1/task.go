@@ -1,58 +1,78 @@
 package v1
 
 import (
+	"go_service/service"
+
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/errors"
+
 	"go_service/config"
 	"go_service/forms"
+	"go_service/library/logy"
 	"go_service/models"
-	"go_service/utils"
 	"net/http"
 )
 
 func PostTask(ctx *gin.Context) {
-	if err := utils.Try(func() {
-		task := &forms.Task{}
-		utils.PanicWrap(ctx.ShouldBindJSON(task), "参数错误")
 
-		t := models.NewTask()
-		t.AppId = task.AppId
-		t.Type = task.Type
-		t.Input = models.M{
-			"data": task.Url,
-		}.String()
+	task := &forms.Task{}
 
-		utils.PanicWrap(t.Save(config.GetDB()), "任务数据保存失败")
-
-		ctx.JSON(http.StatusOK, gin.H{
-			"code": 0,
-			"data": gin.H{
-				"task_id": t.TaskID,
-			},
-		})
-
-	}); err != nil {
-		ctx.String(http.StatusBadRequest, err.Error())
+	if err := ctx.ShouldBindJSON(task); err != nil {
+		logy.ErrorC(ctx, "PostTask", err).Error()
+		service.ErrorMsg(ctx, service.CONST_ResultCode_ParseJSON_Error)
+		return
 	}
 
+	t := models.NewTask()
+	if t == nil {
+		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
+		return
+	}
+	t.AppId = task.AppId
+	t.Type = task.Type
+	t.Input = models.M{
+		"data": task.Url,
+	}.String()
+
+	if err := t.Save(config.GetDB()); err != nil {
+		logy.ErrorC(ctx, "PostTask", err).Error()
+		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code": 0,
+		"data": gin.H{
+			"task_id": t.TaskID,
+		},
+	})
+
+	service.Success(ctx, http.StatusBadRequest, nil)
 }
 
 func GetTask(ctx *gin.Context) {
-	if err := utils.Try(func() {
-		_id := ctx.Param("id")
-		utils.PanicBool(_id == "", "please input id")
-
-		t := models.NewTask()
-		utils.PanicWrap(t.GetTaskStatus(config.GetDB(), _id), "获取任务失败")
-
-		ctx.JSON(http.StatusOK, gin.H{
-			"code":   0,
-			"status": t.Status,
-			"data": gin.H{
-				"url": t.Output,
-			},
-		})
-
-	}); err != nil {
-		ctx.String(http.StatusBadRequest, err.Error())
+	_id := ctx.Param("id")
+	if _id == "" {
+		logy.ErrorC(ctx, "GetTaskParam", errors.New("please input id")).Error()
+		service.ErrorMsg(ctx, service.CONST_ResultCode_InputParamter_Empty)
+		return
 	}
+
+	t := models.NewTask()
+	err := t.GetTaskStatus(config.GetDB(), _id)
+	if err != nil {
+		logy.ErrorC(ctx, "GetTaskStatus", err).Error()
+		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":   0,
+		"status": t.Status,
+		"data": gin.H{
+			"url": t.Output,
+		},
+	})
+
+	service.Success(ctx, http.StatusBadRequest, nil)
 }
