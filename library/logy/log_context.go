@@ -109,6 +109,11 @@ func (lw *logWithValue) Error() string {
 		}
 
 		lw = lw.Pre.(*logWithValue)
+
+	}
+
+	if len(locFields) == 0 {
+		return ""
 	}
 
 	return _logHandler.Log(lw.Context, lw.Level, locFields...)

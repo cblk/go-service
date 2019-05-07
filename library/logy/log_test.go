@@ -218,5 +218,4 @@ func TestLogStdoutByErrorC(t *testing.T) {
 	// nil test, import
 	testNilFunc().Error()
 	testNilFunc().ErrorW("A2", errors.New("B2")).Error()
-
 }
