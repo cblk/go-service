@@ -13,6 +13,12 @@ type IError interface {
 	FatalW(message string, err error) IError
 
 	Error() string
+
+	GetContent() context.Context
+	GetMessage() string
+	GetLevel() LogLevel
+	GetError() error
+	GetPre() IError
 }
 
 type logWithValue struct {
@@ -117,4 +123,44 @@ func (lw *logWithValue) Error() string {
 	}
 
 	return _logHandler.Log(lw.Context, lw.Level, locFields...)
+}
+
+func (lw *logWithValue) GetContent() context.Context {
+	if lw == nil {
+		return context.Background()
+	}
+
+	return lw.Context
+}
+
+func (lw *logWithValue) GetMessage() string {
+	if lw == nil {
+		return ""
+	}
+
+	return lw.Message
+}
+
+func (lw *logWithValue) GetLevel() LogLevel {
+	if lw == nil {
+		return LogLevelAll
+	}
+
+	return lw.Level
+}
+
+func (lw *logWithValue) GetError() error {
+	if lw == nil {
+		return nil
+	}
+
+	return lw.Err
+}
+
+func (lw *logWithValue) GetPre() IError {
+	if lw == nil {
+		return Nil()
+	}
+
+	return lw.Pre
 }
