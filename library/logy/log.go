@@ -2,7 +2,6 @@ package logy
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/spf13/viper"
 )
@@ -24,11 +23,11 @@ func LoadLogConfig(cnf *viper.Viper) {
 		lc.LogLevel = cnf.GetInt("log_level")
 		lc.LogFilter = cnf.GetStringSlice("log_filter")
 
-		lc.LogDir       = cnf.GetString("log_dir")
+		lc.LogDir = cnf.GetString("log_dir")
 		lc.LogMaxFileNum = cnf.GetInt("log_max_file_num")
 		lc.LogMaxFileSize = cnf.GetInt("log_max_file_size")
-		lc.LogSplit   = cnf.GetBool("log_split")
-		lc.LogSplitBy  = cnf.GetString("log_split_by")
+		lc.LogSplit = cnf.GetBool("log_split")
+		lc.LogSplitBy = cnf.GetString("log_split_by")
 	}
 
 	if lc.AppID != "" {
@@ -63,10 +62,10 @@ func LoadLogConfig(cnf *viper.Viper) {
 
 	SetLogFilter(lc.LogFilter)
 
-	var hds []iHandler
+	var hds []IHandler
 
 	if getLogConfig().LogStdout || getLogConfig().PublishEnv == "" || getLogConfig().PublishEnv == PublishEnvDev {
-		hds = append(hds, newStdout())
+		hds = append(hds, _defaultStdout)
 	}
 
 	if getLogConfig().LogDir != "" {
@@ -78,7 +77,7 @@ func LoadLogConfig(cnf *viper.Viper) {
 
 // nil Error
 func Nil() IError {
-	return logWrap(context.Background(), LogLevelAll, "", nil ,nil)
+	return logWrap(context.Background(), LogLevelAll, "", nil, nil)
 }
 
 func IsNil(val IError) bool {
@@ -96,129 +95,33 @@ func IsNil(val IError) bool {
 }
 
 // Debug
-func Debug(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelDebug, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func DebugF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelDebug, args...)
-}
-
-func DebugS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelDebug, logParams(args)...)
-}
-
-func DebugW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelDebug, message, err, nil)
-}
-
-func DebugC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelDebug, message, err, nil)
+func Debug(message string, err error) {
+	_= logWrap(context.Background(), LogLevelDebug, message, err, nil).Error()
 }
 
 // Info
-func Info(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelInfo, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func InfoF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelInfo, args...)
-}
-
-func InfoS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelInfo, logParams(args)...)
-}
-
-func InfoW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelInfo, message, err, nil)
-}
-
-func InfoC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelInfo, message, err, nil)
+func Info(message string, err error)  {
+	_= logWrap(context.Background(), LogLevelInfo, message, err, nil).Error()
 }
 
 // Notice
-func Notice(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelNotice, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func NoticeF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelNotice, args...)
-}
-
-func NoticeS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelNotice, logParams(args)...)
-}
-
-func NoticeW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelNotice, message, err, nil)
-}
-
-func NoticeC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelNotice, message, err, nil)
+func Notice(message string, err error)  {
+	_= logWrap(context.Background(), LogLevelNotice, message, err, nil).Error()
 }
 
 // Warn
-func Warn(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelWarning, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func WarnF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelWarning, args...)
-}
-
-func WarnS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelWarning, logParams(args)...)
-}
-
-func WarnW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelWarning, message, err, nil)
-}
-
-func WarnC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelWarning, message, err, nil)
+func Warn(message string, err error) {
+	_= logWrap(context.Background(), LogLevelWarning, message, err, nil).Error()
 }
 
 // Error
-func Error(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelError, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func ErrorF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelError, args...)
-}
-
-func ErrorS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelError, logParams(args)...)
-}
-
-func ErrorW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelError, message, err, nil)
-}
-
-func ErrorC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelError, message, err, nil)
+func Error(message string, err error) {
+	_= logWrap(context.Background(), LogLevelError, message, err, nil).Error()
 }
 
 // Fatal
-func Fatal(format string, args ...interface{}) {
-	_logHandler.Log(context.Background(), LogLevelFatal, newField(_key_log, fmt.Sprintf(format, args...)))
-}
-
-func FatalF(ctx context.Context, args ...Field) {
-	_logHandler.Log(ctx, LogLevelFatal, args...)
-}
-
-func FatalS(ctx context.Context, args ...string) {
-	_logHandler.Log(ctx, LogLevelFatal, logParams(args)...)
-}
-
-func FatalW(message string, err error) IError {
-	return logWrap(context.Background(), LogLevelFatal, message, err, nil)
-}
-
-func FatalC(ctx context.Context, message string, err error) IError {
-	return logWrap(ctx, LogLevelFatal, message, err, nil)
+func Fatal(message string, err error)  {
+	_= logWrap(context.Background(), LogLevelFatal, message, err, nil).Error()
 }
 
 /*
@@ -246,4 +149,8 @@ func Close() (err error) {
 
 	_logHandler = _defaultStdout
 	return
+}
+
+func GetLogStdoutInstance() IHandler {
+	return _logHandler
 }

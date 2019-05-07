@@ -15,7 +15,7 @@ func NewTask() *Task {
 	var _uuid string
 	for {
 		if _u, err := uuid.NewUUID(); err != nil {
-			logy.ErrorW("NewTask_NewUUID",err).Error()
+			logy.Error("NewTask_NewUUID",err)
 			return nil
 		} else {
 			_uuid = _u.String()
@@ -83,7 +83,7 @@ func (t *Task) GetTaskStatus(db *gorm.DB, taskId string) error {
 func (t *Task) Encode() []byte {
 	_dt, err := json.Marshal(t)
 	if err != nil {
-		logy.ErrorW("Encode", err).Error()
+		logy.Error("Encode", err)
 		return nil
 	}
 	return _dt

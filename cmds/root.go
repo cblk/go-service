@@ -24,7 +24,7 @@ var RootCmd = &cobra.Command{
 		logy.LoadLogConfig(config.GetConfig())
 		logy.SetFormat("%L %e %D %T %a %M")
 
-		logy.Info("Initialize config")
+		logy.Info("Initialize config", nil)
 
 		// Initialize DB
 		err = config.InitDB()

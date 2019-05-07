@@ -2,6 +2,7 @@ package logy
 
 import (
 	"context"
+	"io"
 	"runtime"
 	"strconv"
 	"sync"
@@ -24,20 +25,22 @@ func newField(key string, value interface{}) Field {
 	}
 }
 
-type iHandler interface {
+type IHandler interface {
 	SetFormat(string)
 
 	Log(context.Context, LogLevel, ...Field) string
 
 	Close() error
+
+	io.Writer
 }
 
 type handlers struct {
 	filters  map[string]struct{}
-	handlers []iHandler
+	handlers []IHandler
 }
 
-func newHandlers(filters []string, hds ...iHandler) *handlers {
+func newHandlers(filters []string, hds ...IHandler) *handlers {
 	locFilters := make(map[string]struct{})
 	for _, item := range filters {
 		locFilters[item] = struct{}{}
@@ -79,6 +82,10 @@ func (hs *handlers) Close() (err error) {
 		}
 	}
 	return
+}
+
+func (hs *handlers) Write(p []byte) (n int, err error) {
+	return hs.Write(p)
 }
 
 // SetFormat .

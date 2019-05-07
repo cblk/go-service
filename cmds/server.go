@@ -19,13 +19,15 @@ var ServerCmd = &cobra.Command{
 		conf := config.GetConfig()
 
 		logy.LoadLogConfig(conf)
-		logy.SetFormat("%L %e %D %T %a %M")
+		logy.SetFormat("%L %e %D %T %a %S %M")
 
-		logy.Info("start service server")
+		logy.Info("start service server", nil)
 
 		app := api.GetHttpApplication()
 
-		err := app.Run(fmt.Sprintf("%s:%s", conf.GetString("service.host"), conf.GetString("service.port")))
+		address := fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))
+		logy.Info("server url:"+address, nil)
+		err := app.Run(address)
 		if err != nil {
 			return err
 		}

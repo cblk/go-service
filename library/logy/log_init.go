@@ -44,7 +44,7 @@ var (
 	}
 
 	_logConfig  *logConfig
-	_logHandler iHandler
+	_logHandler IHandler
 )
 
 func init() {

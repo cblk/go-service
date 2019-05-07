@@ -7,12 +7,12 @@ import (
 )
 
 type iWriter interface {
-	Write(io.Writer, map[string]interface{}, bool) (string, error)
-	WriteString(map[string]interface{}) string
+	Write(io.Writer, LogLevel, map[string]interface{}, bool) (string, error)
+	WriteString(LogLevel, map[string]interface{}) string
 }
 
 type writer struct {
-	funcs   []func(map[string]interface{}) string
+	funcs []func(LogLevel, map[string]interface{}) string
 	bufPool sync.Pool
 }
 
@@ -36,19 +36,19 @@ func newWriter(format string) iWriter {
 			continue
 		}
 		if len(bs) != 0 {
-			wr.funcs = append(wr.funcs, textFormat(string(bs)))
+			wr.funcs = append(wr.funcs, textFormat(LogLevelAll, string(bs)))
 			bs = bs[:0]
 		}
 		wr.funcs = append(wr.funcs, f)
 		i++
 	}
 	if len(bs) != 0 {
-		wr.funcs = append(wr.funcs, textFormat(string(bs)))
+		wr.funcs = append(wr.funcs, textFormat(LogLevelAll, string(bs)))
 	}
 	return wr
 }
 
-func (wr *writer) Write(w io.Writer, params map[string]interface{}, realWrite bool) (string, error) {
+func (wr *writer) Write(w io.Writer, ll LogLevel, params map[string]interface{}, realWrite bool) (string, error) {
 	buf := wr.bufPool.Get().(*bytes.Buffer)
 	defer func() {
 		buf.Reset()
@@ -57,7 +57,7 @@ func (wr *writer) Write(w io.Writer, params map[string]interface{}, realWrite bo
 
 	val := ""
 	for _, fItem := range wr.funcs {
-		local := fItem(params)
+		local := fItem(ll, params)
 		val = val + local
 		buf.WriteString(local)
 	}
@@ -70,14 +70,14 @@ func (wr *writer) Write(w io.Writer, params map[string]interface{}, realWrite bo
 	return val, err
 }
 
-func (wr *writer) WriteString(params map[string]interface{}) string {
+func (wr *writer) WriteString(ll LogLevel, params map[string]interface{}) string {
 	buf := wr.bufPool.Get().(*bytes.Buffer)
 	defer func() {
 		buf.Reset()
 		wr.bufPool.Put(buf)
 	}()
 	for _, fItem := range wr.funcs {
-		buf.WriteString(fItem(params))
+		buf.WriteString(fItem(ll, params))
 	}
 
 	return buf.String()

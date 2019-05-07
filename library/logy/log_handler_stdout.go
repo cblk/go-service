@@ -12,7 +12,7 @@ const defaultPattern = "%L %e %D %T %a %f %s %M"
 
 var _defaultStdout = newStdout()
 
-// stdoutHandler stdout log iHandler
+// stdoutHandler stdout log IHandler
 type stdoutHandler struct {
 	out    io.Writer
 	writer iWriter
@@ -36,7 +36,7 @@ func (sh *stdoutHandler) Log(ctx context.Context, ll LogLevel, args ...Field) st
 
 	fs[_key_logTime] = time.Now().Format(_timeFormat)
 
-	val, _ := sh.writer.Write(sh.out, fs, int(ll) >= GetLogLevel())
+	val, _ := sh.writer.Write(sh.out, ll, fs, int(ll) >= GetLogLevel())
 	if int(ll) >= GetLogLevel() {
 		_, _ = sh.out.Write([]byte("\n"))
 	}
@@ -46,6 +46,10 @@ func (sh *stdoutHandler) Log(ctx context.Context, ll LogLevel, args ...Field) st
 
 func (sh *stdoutHandler) Close() error {
 	return nil
+}
+
+func (sh *stdoutHandler) Write(p []byte) (n int, err error) {
+	return sh.out.Write(p)
 }
 
 // SetFormat set stdout log output format

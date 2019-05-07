@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"go_service/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -10,7 +10,6 @@ import (
 	"go_service/forms"
 	"go_service/library/logy"
 	"go_service/models"
-	"net/http"
 )
 
 func PostTask(ctx *gin.Context) {
@@ -18,16 +17,12 @@ func PostTask(ctx *gin.Context) {
 	task := &forms.Task{}
 
 	if err := ctx.ShouldBindJSON(task); err != nil {
-		logy.ErrorC(ctx, "PostTask", err).Error()
-		service.ErrorMsg(ctx, service.CONST_ResultCode_ParseJSON_Error)
+		logy.Error("PostTask", err)
+		ctx.String(http.StatusBadRequest, "参数错误")
 		return
 	}
 
 	t := models.NewTask()
-	if t == nil {
-		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
-		return
-	}
 	t.AppId = task.AppId
 	t.Type = task.Type
 	t.Input = models.M{
@@ -35,8 +30,8 @@ func PostTask(ctx *gin.Context) {
 	}.String()
 
 	if err := t.Save(config.GetDB()); err != nil {
-		logy.ErrorC(ctx, "PostTask", err).Error()
-		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
+		logy.Error("PostTask", err)
+		ctx.String(http.StatusBadRequest, "任务数据保存失败")
 		return
 	}
 
@@ -46,23 +41,21 @@ func PostTask(ctx *gin.Context) {
 			"task_id": t.TaskID,
 		},
 	})
-
-	service.Success(ctx, http.StatusBadRequest, nil)
 }
 
 func GetTask(ctx *gin.Context) {
 	_id := ctx.Param("id")
 	if _id == "" {
-		logy.ErrorC(ctx, "GetTaskParam", errors.New("please input id")).Error()
-		service.ErrorMsg(ctx, service.CONST_ResultCode_InputParamter_Empty)
+		logy.Error("GetTaskParam", errors.New("please input id"))
+		ctx.String(http.StatusBadRequest, "please input id")
 		return
 	}
 
 	t := models.NewTask()
 	err := t.GetTaskStatus(config.GetDB(), _id)
 	if err != nil {
-		logy.ErrorC(ctx, "GetTaskStatus", err).Error()
-		service.ErrorMsg(ctx, service.CONST_ResultCode_Server_error)
+		logy.Error("GetTaskStatus", err)
+		ctx.String(http.StatusBadRequest, "获取任务失败")
 		return
 	}
 
@@ -73,6 +66,4 @@ func GetTask(ctx *gin.Context) {
 			"url": t.Output,
 		},
 	})
-
-	service.Success(ctx, http.StatusBadRequest, nil)
 }

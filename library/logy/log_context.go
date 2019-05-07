@@ -102,7 +102,7 @@ func (lw *logWithValue) Error() string {
 
 	locFields := make([]Field, 0)
 	for {
-		if lw.Err == nil {
+		if lw.Err == nil && lw.Message=="" {
 			if lw.Pre == nil {
 				break
 			}
@@ -110,7 +110,11 @@ func (lw *logWithValue) Error() string {
 			continue
 		}
 
-		locFields = append(locFields, newField(lw.Message, lw.Err))
+		if lw.Err != nil {
+			locFields = append(locFields, newField(lw.Message, lw.Err))
+		}else{
+			locFields = append(locFields, newField(lw.Message, ""))
+		}
 
 		if lw.Pre == nil {
 			break
