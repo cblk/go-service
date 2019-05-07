@@ -2,7 +2,6 @@ package logy
 
 import (
 	"context"
-	"io"
 	"runtime"
 	"strconv"
 	"sync"
@@ -32,7 +31,7 @@ type IHandler interface {
 
 	Close() error
 
-	io.Writer
+	Write(p []byte) (n int, err error)
 }
 
 type handlers struct {
@@ -85,7 +84,11 @@ func (hs *handlers) Close() (err error) {
 }
 
 func (hs *handlers) Write(p []byte) (n int, err error) {
-	return hs.Write(p)
+	for _, hItem := range hs.handlers {
+		n, err = hItem.Write(p)
+	}
+
+	return
 }
 
 // SetFormat .
