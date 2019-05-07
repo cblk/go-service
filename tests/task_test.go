@@ -1,16 +1,17 @@
 package tests
 
 import (
-	"go_service/service"
-	"go_service/utils"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"go_service/service/api"
+	"go_service/utils"
 )
 
 func TestIndex(t *testing.T) {
 	if err := utils.Try(func() {
-		router := service.GetHttpApplication()
+		router := api.GetHttpApplication()
 		w := httptest.NewRecorder()
 		req, err := http.NewRequest("GET", "/", nil)
 		utils.PanicErr(err)

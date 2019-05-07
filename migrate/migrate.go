@@ -1,25 +1,34 @@
 package migrate
 
 import (
-	"go_service/utils"
+	"go_service/library/logy"
+
 	"gopkg.in/gormigrate.v1"
 )
 
 var migrations []*gormigrate.Gormigrate
 
 func Migrate() error {
-	return utils.Try(func() {
-		for _, migration := range migrations {
-			utils.PanicErr(migration.Migrate())
+	for _, migration := range migrations {
+		err := migration.Migrate()
+		if err != nil {
+			logy.Error("Migrate", err)
+			return err
 		}
-	})
+	}
+
+	return nil
 }
 
 func Rollback() error {
-	return utils.Try(func() {
-		lastMigration := migrations[len(migrations)-1]
-		utils.PanicErr(lastMigration.RollbackLast())
-	})
+	lastMigration := migrations[len(migrations)-1]
+	err := lastMigration.RollbackLast()
+	if err != nil {
+		logy.Error("Migrate", err)
+		return err
+	}
+
+	return nil
 }
 
 func RegisterMigration(migration *gormigrate.Gormigrate) {

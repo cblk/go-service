@@ -2,13 +2,14 @@ package cmds
 
 import (
 	"errors"
-	"github.com/jinzhu/gorm"
-	"github.com/spf13/cobra"
+
 	"go_service/config"
+	"go_service/library/logy"
 	"go_service/migrate"
 	"go_service/migrate/migrations"
-	"go_service/utils"
-	"log"
+
+	"github.com/jinzhu/gorm"
+	"github.com/spf13/cobra"
 )
 
 var migrationInitialized bool
@@ -19,7 +20,7 @@ func InitMigration(dbi *gorm.DB) {
 		return
 	}
 
-	//migrate.RegisterMigration(migrations.M20190428(dbi))
+	// migrate.RegisterMigration(migrations.M20190428(dbi))
 	migrate.RegisterMigration(migrations.M2(dbi))
 
 	migrationInitialized = true
@@ -55,18 +56,38 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	Aliases: []string{"m"},
 	Short:   "migrate",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		log.Println("migrate")
+
+		logy.LoadLogConfig(config.GetConfig())
+		logy.SetFormat("%L %e %D %T %a %M")
+
+		logy.Info("migrate begin", nil)
+
 		InitMigration(config.GetDB())
 
 		switch _action {
 		case "migrate":
-			utils.PanicErr(Migrate())
-			log.Println("Migration succeed!")
+			err := Migrate()
+			if err != nil {
+				logy.Error("Migrate failed, error:%v", err)
+				return err
+			}
+
+			logy.Info("Migrate succeed!", nil)
+
+			return nil
 		case "rollback":
-			utils.PanicErr(Rollback())
-			log.Println("Rollback succeed!")
+			err := Rollback()
+			if err != nil {
+				logy.Error("Rollback failed, error:%v", err)
+				return err
+			}
+
+			logy.Info("Rollback succeed!", nil)
 		default:
-			return errors.New("error action")
+			err := errors.New("error action")
+			logy.Error("error action", err)
+
+			return err
 		}
 
 		return nil

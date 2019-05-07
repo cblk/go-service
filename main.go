@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"go_service/cmds"
-	"go_service/utils"
 )
 
 func main() {
@@ -17,7 +16,7 @@ func main() {
 	)
 
 	if err := cmds.PrepareBaseCmd(rootCmd).Execute(); err != nil {
-		utils.P(err)
+		panic(err)
 		os.Exit(-1)
 	}
 }

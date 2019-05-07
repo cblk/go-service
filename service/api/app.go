@@ -1,15 +1,21 @@
-package service
+package api
 
 import (
+	"net/http"
+
+	"go_service/library/logy"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"go_service/service/api"
-	"net/http"
 )
 
 func GetHttpApplication() *gin.Engine {
-	r := gin.Default()
+	r := gin.New()
 	r.Use(cors.Default())
+	gin.DefaultWriter = logy.GetLogStdoutInstance()
+	gin.DefaultErrorWriter = logy.GetLogStdoutInstance()
+	r.Use(gin.LoggerWithWriter(logy.GetLogStdoutInstance()))
+	r.Use(gin.RecoveryWithWriter(logy.GetLogStdoutInstance()))
 
 	r.GET("/", func(r *gin.Context) {
 		r.String(http.StatusOK, "ok")
@@ -21,7 +27,9 @@ func GetHttpApplication() *gin.Engine {
 
 	// 服务端API
 	apiGroup := r.Group("/api")
-	api.InitRouterV1(apiGroup)
+
+	// v1 api
+	InitRouterV1(apiGroup)
 
 	return r
 }

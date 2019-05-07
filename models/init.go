@@ -2,13 +2,18 @@ package models
 
 import (
 	"encoding/json"
-	"go_service/utils"
+
+	"go_service/library/logy"
 )
 
 type M map[string]interface{}
 
 func (t M) String() string {
 	_dt, err := json.Marshal(t)
-	utils.PanicErr(err)
+	if err != nil {
+		logy.Error("models String error", err)
+		return ""
+	}
+
 	return string(_dt)
 }

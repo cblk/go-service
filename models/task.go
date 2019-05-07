@@ -2,18 +2,21 @@ package models
 
 import (
 	"encoding/json"
-	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
-	"go_service/utils"
 	"strings"
 	"time"
+
+	"go_service/library/logy"
+
+	"github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 )
 
 func NewTask() *Task {
 	var _uuid string
 	for {
 		if _u, err := uuid.NewUUID(); err != nil {
-			utils.Log(err)
+			logy.Error("NewTask_NewUUID",err)
+			return nil
 		} else {
 			_uuid = _u.String()
 			break
@@ -49,41 +52,39 @@ type Task struct {
 }
 
 func (t *Task) Save(db *gorm.DB) error {
-	return utils.Try(func() {
-		t.CreatedAt = uint(time.Now().Unix())
-		t.Version = "v1.0"
-		utils.PanicErr(db.Create(t).Error)
-	})
+	t.CreatedAt = uint(time.Now().Unix())
+	t.Version = "v1.0"
+	err := db.Create(t).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (t *Task) UpdateStatus(db *gorm.DB, taskId, errType, url, status string) error {
-	return utils.Try(func() {
-		utils.PanicErr(db.Model(t).Where("task_id = ?", taskId).Updates(
-			M{"finished_at": time.Now().Unix(), "output": url, "status": status, "err_type": errType}).Error)
-	})
+	return db.Model(t).Where("task_id = ?", taskId).Updates(
+		M{"finished_at": time.Now().Unix(), "output": url, "status": status, "err_type": errType}).Error
 }
 
 func (t *Task) Page(db *gorm.DB, taskId, url, status string) error {
-	return utils.Try(func() {
-		utils.PanicErr(db.Model(t).Where("task_id = ?", taskId).Updates(
-			M{"finished_at": time.Now().Unix(), "output": url, "status": status}).Error)
-	})
+	return db.Model(t).Where("task_id = ?", taskId).Updates(
+		M{"finished_at": time.Now().Unix(), "output": url, "status": status}).Error
 }
 
 func (t *Task) GetTask(db *gorm.DB, taskId string) error {
-	return utils.Try(func() {
-		utils.PanicErr(db.Where("task_id = ?", taskId).Find(t).Error)
-	})
+	return db.Where("task_id = ?", taskId).Find(t).Error
 }
 
 func (t *Task) GetTaskStatus(db *gorm.DB, taskId string) error {
-	return utils.Try(func() {
-		utils.PanicErr(db.Where("task_id = ?", taskId).Select("status, output").Find(t).Error)
-	})
+	return db.Where("task_id = ?", taskId).Select("status, output").Find(t).Error
 }
 
 func (t *Task) Encode() []byte {
 	_dt, err := json.Marshal(t)
-	utils.PanicErr(err)
+	if err != nil {
+		logy.Error("Encode", err)
+		return nil
+	}
 	return _dt
 }

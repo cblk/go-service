@@ -1,10 +1,10 @@
 package cmds
 
 import (
-	"github.com/spf13/cobra"
 	"go_service/config"
-	"go_service/utils"
-	"log"
+	"go_service/library/logy"
+
+	"github.com/spf13/cobra"
 )
 
 var RootCmd = &cobra.Command{
@@ -12,16 +12,27 @@ var RootCmd = &cobra.Command{
 	Short:   "app server",
 	Version: "1.0",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		return utils.Try(func() {
-			log.Println("Initialize config")
 
-			// Initialization
+		// Initialization
 
-			// Initialize config
-			utils.PanicErr(config.InitConfig(""))
+		// Initialize config
+		err := config.InitConfig("")
+		if err != nil {
+			return err
+		}
 
-			// Initialize DB
-			utils.PanicErr(config.InitDB())
-		})
+		logy.LoadLogConfig(config.GetConfig())
+		logy.SetFormat("%L %e %D %T %a %M")
+
+		logy.Info("Initialize config", nil)
+
+		// Initialize DB
+		err = config.InitDB()
+		if err != nil {
+
+			return err
+		}
+
+		return nil
 	},
 }
