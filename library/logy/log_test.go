@@ -211,11 +211,56 @@ func TestLogStdoutByErrorC(t *testing.T) {
 	DebugC(context.Background(), "A1", errors.New("B1")).ErrorW("A2", errors.New("B2")).Error()
 
 	// import
-	if!IsNil(testNilFunc()) {
+	if !IsNil(testNilFunc()) {
 		t.Fatal("nil func return error")
 	}
 
 	// nil test, import
-	testNilFunc().Error()
-	testNilFunc().ErrorW("A2", errors.New("B2")).Error()
+	nilErr := testNilFunc()
+	if nilErr.GetContent() != context.Background() {
+		t.Fatal("nilErr GetContent error")
+	}
+	if nilErr.GetError() != nil {
+		t.Fatal("nilErr GetError error")
+	}
+	if nilErr.GetLevel() != LogLevelAll {
+		t.Fatal("nilErr GetLevel error")
+	}
+	if nilErr.GetMessage() != "" {
+		t.Fatal("nilErr GetMessage error")
+	}
+	if nilErr.GetPre() != nil {
+		t.Fatal("nilErr GetPre error")
+	}
+	nilErr.Error()
+
+
+	dErr := testNilFunc().ErrorW("D2", errors.New("D2"))
+	if dErr.GetContent() != context.Background() {
+		t.Fatal("dErr GetContent error")
+	}
+	if dErr.GetError() == nil {
+		t.Fatal("dErr GetError error")
+	}
+	if dErr.GetLevel() != LogLevelError {
+		t.Fatal("dErr GetLevel error")
+	}
+	if dErr.GetMessage() != "D2" {
+		t.Fatal("dErr GetMessage error")
+	}
+	if !IsNil(dErr.GetPre())   {
+		t.Fatal("dErr GetPre error")
+	}
+	if !dErr.GetPre().IsEqual(Nil())   {
+		t.Fatal("dErr GetPre error")
+	}
+	dErr.Error()
+
+	if dErr.IsEqual(nilErr) {
+		t.Fatal("IsEqual error")
+	}
+
+	if !dErr.IsEqual(dErr) {
+		t.Fatal("IsEqual error")
+	}
 }

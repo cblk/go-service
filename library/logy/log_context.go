@@ -14,6 +14,8 @@ type IError interface {
 
 	Error() string
 
+	IsEqual(val IError) bool
+
 	GetContent() context.Context
 	GetMessage() string
 	GetLevel() LogLevel
@@ -125,6 +127,28 @@ func (lw *logWithValue) Error() string {
 	return _logHandler.Log(lw.Context, lw.Level, locFields...)
 }
 
+func (lw *logWithValue) IsEqual(val IError) bool {
+	if lw == nil && val == nil {
+		return true
+	}
+
+	if lw == val {
+		return true
+	}
+
+	if lw != nil && val != nil {
+		if lw.Context == val.GetContent() &&
+			lw.Message == val.GetMessage() &&
+			lw.Level == val.GetLevel() &&
+			lw.Err == val.GetError() &&
+			lw.Pre == val.GetPre() {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (lw *logWithValue) GetContent() context.Context {
 	if lw == nil {
 		return context.Background()
@@ -159,7 +183,7 @@ func (lw *logWithValue) GetError() error {
 
 func (lw *logWithValue) GetPre() IError {
 	if lw == nil {
-		return Nil()
+		return nil
 	}
 
 	return lw.Pre
