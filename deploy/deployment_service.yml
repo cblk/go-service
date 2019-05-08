@@ -15,6 +15,7 @@ spec:
       containers:
         - name: {{repo.name}}
           image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:{{build.tag}}
+          args: ["server"]
           resources:
             requests:
               memory: "300Mi"
