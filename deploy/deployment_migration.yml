@@ -1,12 +1,12 @@
-apiVersion: extensions/v1beta1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: {{repo.name}}
 spec:
   selector:
     matchLabels:
       app: {{repo.name}}
-  replicas: 1
+  replicas: 0
   template:
     metadata:
       labels:
