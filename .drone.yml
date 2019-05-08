@@ -11,11 +11,6 @@ steps:
   - echo "拉取依赖, ok"
   - go build -ldflags "-w -s" -o main main.go
   - echo "项目编译, ok"
-
-  when:
-    event:
-    - push
-
 - name: publish
   image: plugins/docker
   restore: true
@@ -27,13 +22,7 @@ steps:
       from_secret: username
     password:
       from_secret: password
-  when:
-    status:
-    - success
-    event:
-    - push
-
-- name: deploy_test
+- name: deployment_test
   image: pterosaurs/drone-kube
   settings:
     template: ./deploy/deployment_test.yml
@@ -41,135 +30,11 @@ steps:
     token:
       from_secret: token_beta
   when:
-    ref:
-      include:
-      - refs/tags/*.dev
     status:
     - success
-    event:
-    - push
-
-- name: deploy_stag
-  image: pterosaurs/drone-kube
-  settings:
-    template: ./deploy/deployment_stag.yml
-    server: https://47.102.143.100:5443
-    token:
-      from_secret: token_beta
-  when:
     ref:
-      include:
-      - refs/tags/*.stag
-    status:
-    - success
-    event:
-    - tag
-
-- name: deploy_release
-  image: pterosaurs/drone-kube
-  settings:
-    template: ./deploy/deployment_prod.yml
-    server: https://192.168.1.66:6443
-    token:
-      from_secret: token_release
-  when:
-    ref:
-      exclude:
-      - refs/tags/*.dev
-      - refs/tags/*.stag
-      include:
-      - refs/tags/*.prod
-    status:
-    - success
-    event:
-    - tag
-
-- name: wechat_success_prod
-  image: clem109/drone-wechat
-  settings:
-    corpid:
-      from_secret: corpid
-    corp_secret:
-      from_secret: corp_secret
-    agent_id:
-      from_secret: agent_id
-    title: ${DRONE_REPO_NAME}
-    description: "Build Tag: ${DRONE_TAG:latest} success. ${DRONE_COMMIT_AUTHOR}."
-    msg_url: ${DRONE_BUILD_LINK}
-    btn_txt: btn
-  when:
-    event:
-    - tag
-    ref:
-      include:
-      - refs/tags/*.prod
-    status: [ success ]
-
-- name: wechat_failed_prod
-  image: clem109/drone-wechat
-  settings:
-    corpid:
-      from_secret: corpid
-    corp_secret:
-      from_secret: corp_secret
-    agent_id:
-      from_secret: agent_id
-    title: ${DRONE_REPO_NAME}
-    description: "Build Tag: ${DRONE_TAG:latest} failed. ${DRONE_COMMIT_AUTHOR} please fix. Check the results here: ${DRONE_BUILD_LINK} "
-    msg_url: ${DRONE_BUILD_LINK}
-    btn_txt: btn
-  when:
-    event:
-    - tag
-    ref:
-      include:
-      - refs/tags/*.prod
-    status: [ failure ]
-
-- name: wechat_success_stag
-  image: clem109/drone-wechat
-  settings:
-    corpid:
-      from_secret: corpid
-    corp_secret:
-      from_secret: staging_corp_secret
-    agent_id:
-      from_secret: staging_agent_id
-    title: ${DRONE_REPO_NAME}
-    description: "Build Tag: ${DRONE_TAG:latest} success. ${DRONE_COMMIT_AUTHOR}."
-    msg_url: ${DRONE_BUILD_LINK}
-    btn_txt: btn
-  when:
-    event:
-    - tag
-    ref:
-      include:
-      - refs/tags/*.stag
-
-    status: [ success ]
-
-- name: wechat_failed_stag
-  image: clem109/drone-wechat
-  settings:
-    corpid:
-      from_secret: corpid
-    corp_secret:
-      from_secret: staging_corp_secret
-    agent_id:
-      from_secret: staging_agent_id
-    title: ${DRONE_REPO_NAME}
-    description: "Build Tag: ${DRONE_TAG:latest} failed. ${DRONE_COMMIT_AUTHOR} please fix. Check the results here: ${DRONE_BUILD_LINK} "
-    msg_url: ${DRONE_BUILD_LINK}
-    btn_txt: btn
-  when:
-    event:
-    - tag
-    ref:
-      include:
-      - refs/tags/*.stag
-    status: [ failure ]
-
-- name: wechat_success_test
+    - refs/tags/*.test
+- name: test_wechat_success
   image: clem109/drone-wechat
   settings:
     corpid:
@@ -182,15 +47,11 @@ steps:
     description: "Build Tag: ${DRONE_TAG:latest} success. ${DRONE_COMMIT_AUTHOR}."
     msg_url: ${DRONE_BUILD_LINK}
     btn_txt: btn
-    when:
-      event:
-      - push
-      ref:
-        include:
-        - refs/tags/*.dev
-      status: [ success ]
-
-- name: wechat_failed_test
+  when:
+    ref:
+    - refs/tags/*.test
+    status: [ success ]
+- name: test_wechat_failed
   image: clem109/drone-wechat
   settings:
     corpid:
@@ -204,13 +65,80 @@ steps:
     msg_url: ${DRONE_BUILD_LINK}
     btn_txt: btn
   when:
-    event:
-    - push
     ref:
-      include:
-      - refs/tags/*.dev
+    - refs/tags/*.test
     status: [ failure ]
-
+- name: staging_wechat_success
+  image: clem109/drone-wechat
+  settings:
+    corpid:
+      from_secret: corpid
+    corp_secret:
+      from_secret: staging_corp_secret
+    agent_id:
+      from_secret: staging_agent_id
+    title: ${DRONE_REPO_NAME}
+    description: "Build Tag: ${DRONE_TAG:latest} success. ${DRONE_COMMIT_AUTHOR}."
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: btn
+  when:
+    ref:
+    - refs/tags/*.staging
+    status: [ success ]
+- name: staging_wechat_failed
+  image: clem109/drone-wechat
+  settings:
+    corpid:
+      from_secret: corpid
+    corp_secret:
+      from_secret: staging_corp_secret
+    agent_id:
+      from_secret: staging_agent_id
+    title: ${DRONE_REPO_NAME}
+    description: "Build Tag: ${DRONE_TAG:latest} failed. ${DRONE_COMMIT_AUTHOR} please fix. Check the results here: ${DRONE_BUILD_LINK} "
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: btn
+  when:
+    ref:
+    - refs/tags/*.staging
+    status: [ failure ]
+- name: release_wechat_success
+  image: clem109/drone-wechat
+  settings:
+    corpid:
+      from_secret: corpid
+    corp_secret:
+      from_secret: corp_secret
+    agent_id:
+      from_secret: agent_id
+    title: ${DRONE_REPO_NAME}
+    description: "Build Tag: ${DRONE_TAG:latest} success. ${DRONE_COMMIT_AUTHOR}."
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: btn
+  when:
+    ref:
+    - refs/tags/*.release
+    status: [ success ]
+- name: release_wechat_failed
+  image: clem109/drone-wechat
+  settings:
+    corpid:
+      from_secret: corpid
+    corp_secret:
+      from_secret: corp_secret
+    agent_id:
+      from_secret: agent_id
+    title: ${DRONE_REPO_NAME}
+    description: "Build Tag: ${DRONE_TAG:latest} failed. ${DRONE_COMMIT_AUTHOR} please fix. Check the results here: ${DRONE_BUILD_LINK} "
+    msg_url: ${DRONE_BUILD_LINK}
+    btn_txt: btn
+  when:
+    ref:
+    - refs/tags/*.release
+    status: [ failure ]
+trigger:
+  event:
+  - tag
 ---
 kind: secret
 name: username
@@ -253,6 +181,10 @@ name: corpid
 get:
   path: drone-secret
   name: corpid
+
+
+
+
 ---
 kind: secret
 name: test_agent_id

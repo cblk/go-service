@@ -1,25 +1,22 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: portal
-  namespace: turing
+  name: {{repo.name}}
+  namespace: {{namespace}}
 spec:
   selector:
     matchLabels:
-      app:  portal
+      app:  {{repo.name}}
   replicas: 1
   template:
     metadata:
       labels:
-        app: portal
+        app: {{repo.name}}
         build: "{{build.number}}"
     spec:
       containers:
-        - name: portal
+        - name: {{repo.name}}
           image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:latest
-          env:
-            - name: env
-              value: "dev"
           resources:
             requests:
               memory: "300Mi"
