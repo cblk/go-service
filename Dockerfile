@@ -5,4 +5,4 @@ COPY main /app/main
 COPY config/config.yml /app/config/config.yml
 WORKDIR /app
 
-ENTRYPOINT ["./main","server"]
+ENTRYPOINT ["./main"]
