@@ -2,21 +2,20 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: {{repo.name}}
-  namespace: turing
 spec:
   selector:
     matchLabels:
-      app:  {{repo.name}}
+      app: {{repo.name}}
   replicas: 1
   template:
     metadata:
       labels:
         app: {{repo.name}}
-        build: "{{build.number}}"
     spec:
       containers:
       - name: {{repo.name}}
-        image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:latest
+        image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:{{build.tag}}
+        args: ["migrate"]
         resources:
           requests:
             memory: "300Mi"
@@ -24,15 +23,7 @@ spec:
           limits:
             memory: "1000Mi"
             cpu: 1000m
-        volumeMounts:
-          - name: config-volume
-            mountPath: /app/config
-
       imagePullPolicy: Always
       restartPolicy: Always
       imagePullSecrets:
-        - name: shanghai-aliyunsecret
-      volumes:
-        - name: config-volume
-          configMap:
-            name: {{repo.name}}-config
+      - name: shanghai-aliyunsecret
