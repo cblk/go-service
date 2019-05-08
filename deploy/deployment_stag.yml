@@ -1,21 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: portal
+  name: go-service
   namespace: turing
 spec:
   selector:
     matchLabels:
-      app:  portal
+      app:  go-service
   replicas: 1
   template:
     metadata:
       labels:
-        app: portal
+        app: go-service
         build: "{{build.number}}"
     spec:
       containers:
-      - name: portal
+      - name: go-service
         image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:latest
         env:
           - name: env
@@ -27,8 +27,15 @@ spec:
           limits:
             memory: "1000Mi"
             cpu: 1000m
+        volumeMounts:
+          - name: config-volume
+            mountPath: /app/config
 
       imagePullPolicy: Always
       restartPolicy: Always
       imagePullSecrets:
         - name: shanghai-aliyunsecret
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{repo.name}}-config
