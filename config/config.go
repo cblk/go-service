@@ -21,7 +21,7 @@ func InitConfig(configPath string) error {
 	if configPath != "" {
 		v.AddConfigPath(configPath)
 	} else {
-		v.AddConfigPath("/config")
+		v.AddConfigPath("/app/config")
 		v.AddConfigPath("config")
 	}
 
