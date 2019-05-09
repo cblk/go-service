@@ -46,9 +46,20 @@ func longStack(ll LogLevel, ds map[string]interface{}) string {
 	}
 
 	if _, file, lineNo, ok := runtime.Caller(6); ok {
-		return fmt.Sprintf("stack:%s:%d", file, lineNo)
+		val := fmt.Sprintf("fixed:%s:%d\n", file, lineNo)
+
+		val = val + "stack:\n"
+		buf := make([]byte, 4096)
+		n := runtime.Stack(buf, true)
+		if n < len(buf) {
+			val = val + string(buf[:n])
+		} else {
+			val = val + string(buf)
+		}
+
+		return "\n" + val
 	}
-	return "stack:0:0"
+	return "\n" + "stack:0:0"
 }
 
 func shortStack(ll LogLevel, ds map[string]interface{}) string {
@@ -57,9 +68,20 @@ func shortStack(ll LogLevel, ds map[string]interface{}) string {
 	}
 
 	if _, file, lineNo, ok := runtime.Caller(6); ok {
-		return fmt.Sprintf("stack:%s:%d", path.Base(file), lineNo)
+		val := fmt.Sprintf("fixed:%s:%d\n", path.Base(file), lineNo)
+
+		val = val + "stack:\n"
+		buf := make([]byte, 4096)
+		n := runtime.Stack(buf, true)
+		if n < len(buf) {
+			val = val + string(buf[:n])
+		} else {
+			val = val + string(buf)
+		}
+
+		return "\n" + val
 	}
-	return "stack:0:0"
+	return "\n" + "stack:0:0"
 }
 
 func isInternalKey(ll LogLevel, k string) bool {

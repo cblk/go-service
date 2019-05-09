@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-const defaultPattern = "%L %e %D %T %a %f %s %M"
+const defaultPattern = "%L %e %D %T %a %M %f %s"
 
 var _defaultStdout = newStdout()
 

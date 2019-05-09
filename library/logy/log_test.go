@@ -57,7 +57,7 @@ func TestLogStdout(t *testing.T) {
 	cnf := config.GetConfig()
 	LoadLogConfig(cnf)
 
-	SetFormat("%L %e %D-%T %a %f %S %M")
+	SetFormat("%L %e %D-%T %a %f %M %S")
 
 	Debug("A1", errors.New("a1"))
 	Info("A2", errors.New("a2"))
