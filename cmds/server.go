@@ -19,7 +19,7 @@ var ServerCmd = &cobra.Command{
 		conf := config.GetConfig()
 
 		logy.LoadLogConfig(conf)
-		logy.SetFormat("%L %e %D %T %a %S %M")
+		logy.SetFormat("%L %e %D %T %a %M %S")
 
 		logy.Info("start service server", nil)
 

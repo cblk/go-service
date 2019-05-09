@@ -34,13 +34,13 @@ var (
 	_logSplitBy  string
 
 	_logLevelNames = [...]string{
-		LogLevelAll:     "ALL",
-		LogLevelDebug:   "DEBUG",
-		LogLevelInfo:    "INFO",
-		LogLevelNotice:  "NOTICE",
-		LogLevelWarning: "WARN",
-		LogLevelError:   "ERROR",
-		LogLevelFatal:   "FATAL",
+		LogLevelAll:     "[ALL  ]",
+		LogLevelDebug:   "[DEBUG ]",
+		LogLevelInfo:    "[INFO  ]",
+		LogLevelNotice:  "[NOTICE]",
+		LogLevelWarning: "[WARN  ]",
+		LogLevelError:   "[ERROR ]",
+		LogLevelFatal:   "[FATAL ]",
 	}
 
 	_logConfig  *logConfig
