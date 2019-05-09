@@ -88,6 +88,9 @@ panic 可以在任何地方引发，但 recover 函数只有在 defer 函数中�
 ###### 协程层 必须接受和处理error，必须处理异常的恢复recover
 ###### 示例 event_9.go 
 
+##### 10、gin的HandlerFunc
+###### 示例 service/api/v1.go 
+
 #### 三、业务中异常处理规则
 ```text
 Golang引入两个内置函数panic和recover来触发和终止异常处理，同时引入关键字defer来延迟执行defer后面的函数。
