@@ -1,31 +1,39 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{repo.name}}
-  namespace: {{namespace}}
+  name: {app_name}-api
+  namespace: turing
 spec:
   selector:
     matchLabels:
-      app:  {{repo.name}}
+      app:  {app_name}-api
   replicas: 1
   template:
     metadata:
       labels:
-        app: {{repo.name}}
+        app: {app_name}-api
         build: "{{build.number}}"
     spec:
       containers:
-        - name: {{repo.name}}
-          image: registry.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:latest
-          resources:
-            requests:
-              memory: "300Mi"
-              cpu: 300m
-            limits:
-              memory: "1000Mi"
-              cpu: 1000m
+      - name: {app_name}-api
+        image: registry.cn-shanghai.aliyuncs.com/ybase/{app_name}:{build.tag}
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: 300m
+          limits:
+            memory: "1000Mi"
+            cpu: 1000m
+        volumeMounts:
+        - name: app-config
+          mountPath: /app/config
 
       imagePullPolicy: Always
       restartPolicy: Always
       imagePullSecrets:
-        - name: shanghai-aliyunsecret
+      - name: shanghai-aliyunsecret
+
+      volumes:
+      - name: app-config
+        persistentVolumeClaim:
+          claimName: {app_name}-config

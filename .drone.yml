@@ -181,10 +181,6 @@ name: corpid
 get:
   path: drone-secret
   name: corpid
-
-
-
-
 ---
 kind: secret
 name: test_agent_id
