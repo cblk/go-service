@@ -25,11 +25,11 @@ func InitRouterV1(r *gin.RouterGroup) {
 	// mock test
 	r.GET("mock", func(ctx *gin.Context) {
 		defer func() {
-			testTx := func(params ...interface{}) {
+			revertFunc := func(params ...interface{}) {
 				logy.Info("testTx", nil)
 			}
 
-			catch.Finally(recover(), testTx, "")
+			catch.Finally(recover(), revertFunc, "")
 			ctx.String(http.StatusInternalServerError, "panic tx")
 		}()
 
