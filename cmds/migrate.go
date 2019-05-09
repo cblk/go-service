@@ -20,6 +20,19 @@ func InitMigration(dbi *gorm.DB) {
 		return
 	}
 
+	// Migration table uses VARCHAR(255) field
+	// which cannot be indexed in MySQL before 5.7
+	// so we build the migration table using VARCHAR(150)
+	// here before the table initialization inside gorm-migrate
+
+	type Migration struct {
+		Id string `gorm:"type:varchar(150);primary_key"`
+	}
+
+	dbi.AutoMigrate(&Migration{})
+
+	// Register the actual migrations functions below
+
 	// migrate.RegisterMigration(migrations.M20190428(dbi))
 	migrate.RegisterMigration(migrations.M2(dbi))
 
