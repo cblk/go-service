@@ -1,29 +1,50 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{repo.name}}
+  name: {app_name}-api
 spec:
   selector:
     matchLabels:
-      app: {{repo.name}}
+      app: {app_name}-api
   replicas: 0
   template:
     metadata:
       labels:
-        app: {{repo.name}}
+        app: {app_name}-api
     spec:
       containers:
-        - name: {{repo.name}}
-          image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/{{repo.name}}:{{build.tag}}
-          args: ["server"]
-          resources:
-            requests:
-              memory: "300Mi"
-              cpu: 300m
-            limits:
-              memory: "1000Mi"
-              cpu: 1000m
+      - name: {app_name}-api
+        image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/portal:{{build.tag}}
+        args: ["server"]
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: 300m
+          limits:
+            memory: "1000Mi"
+            cpu: 1000m
+        volumeMounts:
+        - name: app-config
+          mountPath: /app/config
       imagePullPolicy: Always
       restartPolicy: Always
       imagePullSecrets:
-        - name: shanghai-aliyunsecret
+      - name: shanghai-aliyunsecret
+      volumes:
+      - name: app-config
+        configMap:
+          name: {app_name}-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  {app_name}-service
+spec:
+  type: NodePort
+  ports:
+  - name: web
+    port: 80
+    targetPort: 8080
+    nodePort: 32002
+  selector:
+    app: {app_name}-api

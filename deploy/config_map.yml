@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  config.yml: |-
+    db:
+      driver: "mysql"
+      connection: "root:mypass@(192.168.1.100:30036)/turing"
+    log:
+      level: 5
+      url: ""
+    http:
+      host: "0.0.0.0"
+      port: "8081"
+
+    app_id: test.env.config.0111
+    log_stdout: true
+    log_level: 0
+    log_filter:
+      - A1
+      - A2
+    log_dir: "/var/logs/"
+    log_max_file_num: 100
+    log_max_file_size: 1000000000
+    log_split: true
+    log_split_by: week
+kind: ConfigMap
+metadata:
+  name: {app_name}-config
