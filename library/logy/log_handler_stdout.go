@@ -36,8 +36,8 @@ func (sh *stdoutHandler) Log(ctx context.Context, ll LogLevel, args ...Field) st
 
 	fs[_key_logTime] = time.Now().Format(_timeFormat)
 
-	val, _ := sh.writer.Write(sh.out, ll, fs, int(ll) >= GetLogLevel())
-	if int(ll) >= GetLogLevel() {
+	val, _ := sh.writer.Write(sh.out, ll, fs, ll >= GetLogLevelInternal())
+	if ll >= GetLogLevelInternal() {
 		_, _ = sh.out.Write([]byte("\n"))
 	}
 

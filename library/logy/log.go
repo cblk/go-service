@@ -14,20 +14,22 @@ func LoadLogConfig(cnf *viper.Viper) {
 	lc := &logConfig{}
 
 	if cnf != nil {
-		lc.AppID = cnf.GetString("app_id")
+		lc.AppID = cnf.GetString("log.app_id")
+		lc.LogFormat = cnf.GetString("log.format")
+		lc.LogStdout = cnf.GetBool("log.stdout")
+		lc.LogLevel = cnf.GetString("log.level")
+		lc.LogFilter = cnf.GetStringSlice("log.filter")
+
 		lc.HostName = cnf.GetString("host_name")
 		lc.Region = cnf.GetString("region")
 		lc.Identifier = cnf.GetString("identifier")
 		lc.PublishEnv = cnf.GetString("publish_env")
-		lc.LogStdout = cnf.GetBool("log_stdout")
-		lc.LogLevel = cnf.GetInt("log_level")
-		lc.LogFilter = cnf.GetStringSlice("log_filter")
 
-		lc.LogDir = cnf.GetString("log_dir")
-		lc.LogMaxFileNum = cnf.GetInt("log_max_file_num")
-		lc.LogMaxFileSize = cnf.GetInt("log_max_file_size")
-		lc.LogSplit = cnf.GetBool("log_split")
-		lc.LogSplitBy = cnf.GetString("log_split_by")
+		lc.LogDir = cnf.GetString("log.dir")
+		lc.LogMaxFileNum = cnf.GetInt("log.max_file_num")
+		lc.LogMaxFileSize = cnf.GetInt("log.max_file_size")
+		lc.LogSplit = cnf.GetBool("log.split")
+		lc.LogSplitBy = cnf.GetString("log.split_by")
 	}
 
 	if lc.AppID != "" {
@@ -36,7 +38,7 @@ func LoadLogConfig(cnf *viper.Viper) {
 
 	SetLogStdout(lc.LogStdout)
 
-	if lc.LogLevel > 0 {
+	if lc.LogLevel != "" {
 		SetLogLevel(lc.LogLevel)
 	}
 
@@ -73,6 +75,10 @@ func LoadLogConfig(cnf *viper.Viper) {
 	}
 
 	_logHandler = newHandlers(getLogConfig().LogFilter, hds...)
+
+	if lc.LogFormat != "" {
+		SetFormat(lc.LogFormat)
+	}
 }
 
 // nil Error
@@ -96,32 +102,32 @@ func IsNil(val IError) bool {
 
 // Debug
 func Debug(message string, err error) {
-	_= logWrap(context.Background(), LogLevelDebug, message, err, nil).Error()
+	_ = logWrap(context.Background(), LogLevelDebug, message, err, nil).Error()
 }
 
 // Info
-func Info(message string, err error)  {
-	_= logWrap(context.Background(), LogLevelInfo, message, err, nil).Error()
+func Info(message string, err error) {
+	_ = logWrap(context.Background(), LogLevelInfo, message, err, nil).Error()
 }
 
 // Notice
-func Notice(message string, err error)  {
-	_= logWrap(context.Background(), LogLevelNotice, message, err, nil).Error()
+func Notice(message string, err error) {
+	_ = logWrap(context.Background(), LogLevelNotice, message, err, nil).Error()
 }
 
 // Warn
 func Warn(message string, err error) {
-	_= logWrap(context.Background(), LogLevelWarning, message, err, nil).Error()
+	_ = logWrap(context.Background(), LogLevelWarning, message, err, nil).Error()
 }
 
 // Error
 func Error(message string, err error) {
-	_= logWrap(context.Background(), LogLevelError, message, err, nil).Error()
+	_ = logWrap(context.Background(), LogLevelError, message, err, nil).Error()
 }
 
 // Fatal
-func Fatal(message string, err error)  {
-	_= logWrap(context.Background(), LogLevelFatal, message, err, nil).Error()
+func Fatal(message string, err error) {
+	_ = logWrap(context.Background(), LogLevelFatal, message, err, nil).Error()
 }
 
 /*
