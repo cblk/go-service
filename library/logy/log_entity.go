@@ -6,8 +6,10 @@ type logConfig struct {
 	Region     string   `yaml:"region"`      // application Region, etc: sh
 	Identifier string   `yaml:"identifier"`  // application identifier etc: sh001
 	PublishEnv string   `yaml:"publish_env"` // publish environment
+	LogFormat  string   `yaml:"log_format"`  // log format show
 	LogStdout  bool     `yaml:"log_stdout"`  //
-	LogLevel   int      `yaml:"log_level"`   // 1=debug 2=info 3=notice 4=warning 5=error 6=critical
+	LogLevel   string   `yaml:"log_level"`   // debug info notice warning error critical
+	logLevelIn LogLevel `yaml:"-"`           // internal use
 	LogFilter  []string `yaml:"log_filter"`  // Filter tell log handler which Field are sensitive message, use * instead.
 
 	// The following CI environments are not required.
@@ -54,6 +56,14 @@ func SetPublishEnv(publishEnv string) {
 	getLogConfig().PublishEnv = publishEnv
 }
 
+func GetLogFormat() string {
+	return getLogConfig().LogFormat
+}
+
+func SetLogFormat(logFormat string) {
+	getLogConfig().LogFormat = logFormat
+}
+
 func GetLogStdout() bool {
 	return getLogConfig().LogStdout
 }
@@ -62,12 +72,36 @@ func SetLogStdout(logStdout bool) {
 	getLogConfig().LogStdout = logStdout
 }
 
-func GetLogLevel() int {
+func GetLogLevel() string {
 	return getLogConfig().LogLevel
 }
 
-func SetLogLevel(logLevel int) {
+func SetLogLevel(logLevel string) {
 	getLogConfig().LogLevel = logLevel
+
+	switch logLevel {
+	case "all":
+		getLogConfig().logLevelIn = LogLevelAll
+	case "debug":
+		getLogConfig().logLevelIn = LogLevelDebug
+	case "info":
+		getLogConfig().logLevelIn = LogLevelInfo
+	case "notice":
+		getLogConfig().logLevelIn = LogLevelNotice
+	case "warning":
+		getLogConfig().logLevelIn = LogLevelWarning
+	case "error":
+		getLogConfig().logLevelIn = LogLevelError
+	case "critical":
+		getLogConfig().logLevelIn = LogLevelFatal
+	default:
+		getLogConfig().logLevelIn = LogLevelAll
+		getLogConfig().LogLevel = "all"
+	}
+}
+
+func GetLogLevelInternal() LogLevel {
+	return getLogConfig().logLevelIn
 }
 
 func GetLogFilter() []string {

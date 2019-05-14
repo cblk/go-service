@@ -51,7 +51,8 @@ func init() {
 	_hostName, _ := os.Hostname()
 	_logConfig = &logConfig{
 		HostName:   _hostName,
-		LogLevel:   int(LogLevelAll),
+		LogLevel:   "all",
+		logLevelIn: LogLevelAll,
 		LogStdout:  true,
 		LogSplit:   false,
 		LogSplitBy: LogSplitByDay,

@@ -22,8 +22,8 @@ func TestLogConfig(t *testing.T) {
 		t.Fatal("LogStdout error")
 	}
 
-	if GetLogLevel() != int(LogLevelAll) {
-		t.Fatal("LogLevel error")
+	if GetLogLevel() != "all" {
+		t.Fatal("logLevelIn error")
 	}
 
 	if GetLogDir() != "" {
@@ -57,7 +57,8 @@ func TestLogStdout(t *testing.T) {
 	cnf := config.GetConfig()
 	LoadLogConfig(cnf)
 
-	SetFormat("%L %e %D-%T %a %f %M %S")
+	// can set from config file
+	// SetFormat("%L %e %D %T %a %f %M %S")
 
 	Debug("A1", errors.New("a1"))
 	Info("A2", errors.New("a2"))
@@ -72,6 +73,13 @@ func TestLogStdout(t *testing.T) {
 	Warn("B4", nil)
 	Error("B5", nil)
 	Fatal("B6", nil)
+
+	Debug("", errors.New("a1"))
+	Info("", errors.New("a2"))
+	Notice("", errors.New("a3"))
+	Warn("", errors.New("a4"))
+	Error("", errors.New("a5"))
+	Fatal("", errors.New("a6"))
 
 	_ = Close()
 }
