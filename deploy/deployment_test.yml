@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {app_name}-api
-        image: registry.cn-shanghai.aliyuncs.com/ybase/{app_name}:{build.tag}
+        image: registry.cn-shanghai.aliyuncs.com/ybase/{app_name}:{{build.tag}}
         resources:
           requests:
             memory: "300Mi"
