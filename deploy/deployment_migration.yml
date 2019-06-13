@@ -9,7 +9,7 @@ spec:
   replicas: 0
   containers:
   - name: {app_name}-migration
-    image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/{app_name}:{build.tag}
+    image: registry-vpc.cn-shanghai.aliyuncs.com/ybase/{app_name}:{{build.tag}}
     args: ["migrate"]
     resources:
       requests:
