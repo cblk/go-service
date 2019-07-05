@@ -17,6 +17,7 @@ spec:
       containers:
       - name: {app_name}-api
         image: registry.cn-shanghai.aliyuncs.com/ybase/{app_name}:{{build.tag}}
+        args: ["server"]
         resources:
           requests:
             memory: "300Mi"
@@ -35,5 +36,5 @@ spec:
 
       volumes:
       - name: app-config
-        persistentVolumeClaim:
-          claimName: {app_name}-config
+        configMap:
+          name: {app_name}-config
