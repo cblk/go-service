@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -27,7 +28,7 @@ func InitConfig(configPath string) error {
 
 	err := v.ReadInConfig()
 	if err != nil {
-		log.Println("InitConfig Failed:"+err.Error())
+		log.Println("InitConfig Failed:" + err.Error())
 		panic(err.Error())
 		return err
 	}
@@ -47,10 +48,13 @@ func InitDB() error {
 	var err error
 	db, err = gorm.Open(config.GetString("db.driver"), config.GetString("db.connection"))
 	if err != nil {
-		log.Println("InitDB Failed:"+err.Error())
-		panic(err)
+		log.Println("InitDB Failed:" + err.Error())
 		return err
 	}
+
+	db.DB().SetMaxIdleConns(20)
+	db.DB().SetMaxOpenConns(50)
+	db.DB().SetConnMaxLifetime(5 * time.Second)
 
 	return nil
 }
