@@ -20,7 +20,7 @@ func Error(ctx *gin.Context) {
 	validation := &FormError{}
 	validation.username = "user_not_exist"
 
-	response.Error(ctx, validation)
+	response.Error(ctx, "validation_error", validation)
 }
 
 func Exception(ctx *gin.Context) {
