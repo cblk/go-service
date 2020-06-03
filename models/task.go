@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"go_service/library/logy"
+	logy "github.com/sirupsen/logrus"
 
 	"github.com/google/uuid"
 	"github.com/jinzhu/gorm"
@@ -15,7 +15,7 @@ func NewTask() *Task {
 	var _uuid string
 	for {
 		if _u, err := uuid.NewUUID(); err != nil {
-			logy.Error("NewTask_NewUUID",err)
+			logy.Error("NewTask_NewUUID", err)
 			return nil
 		} else {
 			_uuid = _u.String()

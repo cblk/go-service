@@ -5,37 +5,38 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"errors"
+
+	"github.com/pkg/errors"
 )
 
-func ReadFileError(path string) ([]byte, error) {
+func ReadFileWrap(path string) ([]byte, error) {
 	if path == "" {
 		return nil, errors.New("param path error")
 	}
 
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "open failed")
 	}
 	defer f.Close()
 
 	buf, err := ioutil.ReadAll(f)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "read failed")
 	}
 
 	return buf, nil
 }
 
-func ReadConfigError() ([]byte, error) {
+func ReadConfigWrap() ([]byte, error) {
 	home := os.Getenv("HOME")
-	config, err := ReadFileError(filepath.Join(home, ".config.yml"))
+	config, err := ReadFileWrap(filepath.Join(home, ".config.xml"))
 
-	return config, err
+	return config, errors.Wrap(err, "could not read config")
 }
 
 func main() {
-	_, err := ReadConfigError()
+	_, err := ReadConfigWrap()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

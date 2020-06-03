@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 
+	logy "github.com/sirupsen/logrus"
 	"go_service/config"
 	"go_service/forms"
-	"go_service/library/logy"
 	"go_service/models"
 )
 

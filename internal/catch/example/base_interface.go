@@ -8,7 +8,7 @@ import (
 type CustomError struct {
 	FieldA string
 	FieldB string
-	Err   error
+	Err    error
 }
 
 func (ce CustomError) Error() string {
@@ -20,7 +20,7 @@ func main() {
 	err := &CustomError{
 		FieldA: "err info a",
 		FieldB: "err info b",
-		Err:   errors.New("test custom err"),
+		Err:    errors.New("test custom err"),
 	}
 
 	fmt.Println(err.Error())

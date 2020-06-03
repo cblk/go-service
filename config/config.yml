@@ -1,14 +1,11 @@
+env: "dev"
 db:
   driver: "mysql"
-  connection: "root:mypass@(192.168.1.100:30036)/turing"
+  connection: "root:267313@(127.0.0.1:3306)/signer?charset=utf8mb4&parseTime=True"
 log:
-  app_id: "test.env.config.0111"
-  format: "%L %e %D %T %a %f %S %M"
-  stdout: true
-  level: "debug" # debug info notice warning error critical
-  filter:
-    - "A1"
-    - "A2"
+  level: "debug"
 http:
   host: "0.0.0.0"
-  port: "8081"
+  port: "8080"
+gin:
+  mode: "debug"

@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"go_service/service/api"
+	"go_service/api"
 	"go_service/utils"
 )
 

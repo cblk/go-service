@@ -3,7 +3,7 @@ package catch
 import (
 	"fmt"
 
-	"go_service/library/logy"
+	logy "github.com/sirupsen/logrus"
 )
 
 type CatchFunc func(params ...interface{})

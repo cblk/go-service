@@ -1,41 +1,41 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"errors"
 )
 
-func ReadFileErrorf(path string) ([]byte, error) {
+func ReadFileError(path string) ([]byte, error) {
 	if path == "" {
 		return nil, errors.New("param path error")
 	}
 
 	f, err := os.Open(path)
 	if err != nil {
-		return nil, fmt.Errorf("open failed: %+v", err)
+		return nil, err
 	}
 	defer f.Close()
 
 	buf, err := ioutil.ReadAll(f)
 	if err != nil {
-		return nil, fmt.Errorf("read failed: %+v", err)
+		return nil, err
 	}
 
 	return buf, nil
 }
 
-func ReadConfigErrorf() ([]byte, error) {
+func ReadConfigError() ([]byte, error) {
 	home := os.Getenv("HOME")
-	config, err := ReadFileErrorf(filepath.Join(home, ".config.xml"))
+	config, err := ReadFileError(filepath.Join(home, ".config.yml"))
 
-	return config, fmt.Errorf("could not read config: %+v", err)
+	return config, err
 }
 
 func main() {
-	_, err := ReadConfigErrorf()
+	_, err := ReadConfigError()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
