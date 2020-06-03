@@ -49,4 +49,5 @@ func InitRouterV1(r *gin.RouterGroup) {
 	responseTestGroup.GET("/success", v1.Success)
 	responseTestGroup.GET("/error", v1.Error)
 	responseTestGroup.GET("/exception", v1.Exception)
+	responseTestGroup.POST("/auth", v1.Auth)
 }
