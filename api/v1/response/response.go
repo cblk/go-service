@@ -6,22 +6,22 @@ import (
 )
 
 type Response struct {
-	message string
-	data    interface{}
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 func Success(ctx *gin.Context, data interface{}) {
 	response := &Response{}
-	response.message = "success"
-	response.data = data
+	response.Message = "success"
+	response.Data = data
 
 	ctx.JSON(http.StatusOK, response)
 }
 
 func Error(ctx *gin.Context, message string, data interface{}) {
 	response := &Response{}
-	response.message = message
-	response.data = data
+	response.Message = message
+	response.Data = data
 
 	ctx.JSON(http.StatusOK, response)
 }
