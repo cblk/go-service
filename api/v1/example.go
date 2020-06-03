@@ -8,8 +8,8 @@ import (
 )
 
 type LoginForm struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Username string `form:"username" json:"username"`
+	Password string `form:"username" json:"password"`
 }
 
 type FormError struct {
@@ -32,7 +32,7 @@ func Error(ctx *gin.Context) {
 func Auth(ctx *gin.Context) {
 	login := &LoginForm{}
 
-	if err := ctx.ShouldBindJSON(login); err != nil {
+	if err := ctx.ShouldBind(login); err != nil {
 		logy.Info("pass params error", err)
 		response.Error(ctx, "validation_error", err)
 		return
