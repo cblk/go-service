@@ -2,7 +2,7 @@ package response
 
 import (
 	"github.com/gin-gonic/gin"
-	"os"
+	"net/http"
 )
 
 type Response struct {
@@ -11,13 +11,21 @@ type Response struct {
 }
 
 func Success(ctx *gin.Context, data interface{}) {
-	os.Exit(0)
+	response := &Response{}
+	response.message = "success"
+	response.data = data
+
+	ctx.JSON(http.StatusOK, response)
 }
 
-func Error(ctx *gin.Context, data interface{}) {
-	os.Exit(0)
+func Error(ctx *gin.Context, message string, data interface{}) {
+	response := &Response{}
+	response.message = message
+	response.data = data
+
+	ctx.JSON(http.StatusOK, response)
 }
 
 func Exception(ctx *gin.Context, message string) {
-	os.Exit(0)
+	ctx.JSON(http.StatusInternalServerError, message)
 }

@@ -17,7 +17,7 @@ func PostTask(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(task); err != nil {
 		logy.Error("PostTask", err)
-		response.Error(ctx, "invalid_params")
+		response.Error(ctx, "invalid_params", nil)
 	}
 
 	t := models.NewTask()
@@ -41,14 +41,14 @@ func GetTask(ctx *gin.Context) {
 	_id := ctx.Param("id")
 	if _id == "" {
 		logy.Error("GetTaskParam", errors.New("please input id"))
-		response.Error(ctx, "invalid_params")
+		response.Error(ctx, "invalid_params", nil)
 	}
 
 	t := models.NewTask()
 	err := t.GetTaskStatus(config.GetDB(), _id)
 	if err != nil {
 		logy.Error("GetTaskStatus", err)
-		response.Error(ctx, "get_task_failed")
+		response.Error(ctx, "get_task_failed", nil)
 	}
 
 	response.Success(ctx, gin.H{
