@@ -38,10 +38,8 @@ func createResource2() error {
 		return err
 	}
 
-
 	return nil
 }
-
 
 func createResource3() error {
 	// do something
@@ -61,7 +59,6 @@ func createResource3() error {
 
 	return nil
 }
-
 
 func createResource4() error {
 	// do something
@@ -86,8 +83,6 @@ func createResource4() error {
 
 	return nil
 }
-
-
 
 func demo() error {
 	err := createResource4()

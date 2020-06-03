@@ -1,12 +1,11 @@
 package api
 
 import (
+	logy "github.com/sirupsen/logrus"
+	"go_service/api/v1"
+	"go_service/internal/catch"
 	"net/http"
 	"strconv"
-
-	"go_service/library/catch"
-	"go_service/library/logy"
-	"go_service/service/api/v1"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +25,7 @@ func InitRouterV1(r *gin.RouterGroup) {
 	r.GET("mock", func(ctx *gin.Context) {
 		defer func() {
 			revertFunc := func(params ...interface{}) {
-				logy.Info("testTx", nil)
+				logy.Info("testTx")
 			}
 
 			catch.Finally(recover(), revertFunc, "")
@@ -38,7 +37,7 @@ func InitRouterV1(r *gin.RouterGroup) {
 		j = 10
 		w := j / i
 
-		logy.Info(strconv.Itoa(w), nil)
+		logy.Info(strconv.Itoa(w))
 
 		ctx.String(http.StatusOK, "ok")
 	})

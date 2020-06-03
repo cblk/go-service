@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"go_service/library/catch"
+	"go_service/internal/catch"
 	"go_service/library/logy"
 )
 

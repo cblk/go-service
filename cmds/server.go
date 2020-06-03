@@ -3,9 +3,9 @@ package cmds
 import (
 	"fmt"
 
+	logy "github.com/sirupsen/logrus"
+	"go_service/api"
 	"go_service/config"
-	"go_service/library/logy"
-	"go_service/service/api"
 
 	"github.com/spf13/cobra"
 )
@@ -17,16 +17,12 @@ var ServerCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 
 		conf := config.GetConfig()
-
-		logy.LoadLogConfig(conf)
-		logy.SetFormat("%L %e %D %T %a %M %S")
-
-		logy.Info("start service server", nil)
+		logy.Info("start service server")
 
 		app := api.GetHttpApplication()
 
 		address := fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))
-		logy.Info("server url:"+address, nil)
+		logy.Info("server url:" + address)
 		err := app.Run(address)
 		if err != nil {
 			return err

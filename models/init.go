@@ -3,7 +3,7 @@ package models
 import (
 	"encoding/json"
 
-	"go_service/library/logy"
+	logy "github.com/sirupsen/logrus"
 )
 
 type M map[string]interface{}

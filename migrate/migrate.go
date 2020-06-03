@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"go_service/library/logy"
+	logy "github.com/sirupsen/logrus"
 
 	"gopkg.in/gormigrate.v1"
 )
