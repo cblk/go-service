@@ -13,9 +13,6 @@ var RootCmd = &cobra.Command{
 	Short:   "app server",
 	Version: "1.0",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-
-		// Initialization
-
 		// Initialize config
 		err := config.InitConfig("")
 		if err != nil {

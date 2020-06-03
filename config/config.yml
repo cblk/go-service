@@ -1,7 +1,7 @@
 env: "dev"
 db:
   driver: "mysql"
-  connection: "root:267313@(127.0.0.1:3306)/signer?charset=utf8mb4&parseTime=True"
+  connection: "root:mypass@(192.168.1.100:30036)/turing"
 log:
   level: "debug"
 http:
