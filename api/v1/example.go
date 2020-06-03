@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	logy "github.com/sirupsen/logrus"
 	"go_service/api/v1/response"
 	"go_service/models"
 )
@@ -32,7 +33,8 @@ func Auth(ctx *gin.Context) {
 	login := &LoginForm{}
 
 	if err := ctx.ShouldBindJSON(login); err != nil {
-		response.Error(ctx, "validation_error", nil)
+		logy.Info("pass params error", err)
+		response.Error(ctx, "validation_error", err)
 		return
 	}
 
