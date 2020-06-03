@@ -9,7 +9,7 @@ import (
 
 type LoginForm struct {
 	Username string `form:"username" json:"username"`
-	Password string `form:"username" json:"password"`
+	Password string `form:"password" json:"password"`
 }
 
 type FormError struct {
