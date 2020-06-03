@@ -1,10 +1,9 @@
 package v1
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
+	"go_service/api/v1/response"
 
 	logy "github.com/sirupsen/logrus"
 	"go_service/config"
@@ -18,8 +17,7 @@ func PostTask(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindJSON(task); err != nil {
 		logy.Error("PostTask", err)
-		ctx.String(http.StatusBadRequest, "参数错误")
-		return
+		response.Error(ctx, "invalid_params")
 	}
 
 	t := models.NewTask()
@@ -31,15 +29,11 @@ func PostTask(ctx *gin.Context) {
 
 	if err := t.Save(config.GetDB()); err != nil {
 		logy.Error("PostTask", err)
-		ctx.String(http.StatusBadRequest, "任务数据保存失败")
-		return
+		response.Exception(ctx, "database_error")
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"code": 0,
-		"data": gin.H{
-			"task_id": t.TaskID,
-		},
+	response.Success(ctx, gin.H{
+		"task_id": t.TaskID,
 	})
 }
 
@@ -47,23 +41,17 @@ func GetTask(ctx *gin.Context) {
 	_id := ctx.Param("id")
 	if _id == "" {
 		logy.Error("GetTaskParam", errors.New("please input id"))
-		ctx.String(http.StatusBadRequest, "please input id")
-		return
+		response.Error(ctx, "invalid_params")
 	}
 
 	t := models.NewTask()
 	err := t.GetTaskStatus(config.GetDB(), _id)
 	if err != nil {
 		logy.Error("GetTaskStatus", err)
-		ctx.String(http.StatusBadRequest, "获取任务失败")
-		return
+		response.Error(ctx, "get_task_failed")
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"code":   0,
-		"status": t.Status,
-		"data": gin.H{
-			"url": t.Output,
-		},
+	response.Success(ctx, gin.H{
+		"url": t.Output,
 	})
 }
