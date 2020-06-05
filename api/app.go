@@ -32,5 +32,9 @@ func GetHttpApplication() *gin.Engine {
 
 	fizzEngine.GET("/openapi.yml", nil, fizzEngine.OpenAPI(infos, "yaml"))
 
+	if len(fizzEngine.Errors()) != 0 {
+		panic(fizzEngine.Errors())
+	}
+
 	return engine
 }

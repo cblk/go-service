@@ -23,9 +23,8 @@ type ValidationErrorResponse struct {
 	} `json:"data"`
 }
 
-func (r *Response) Success(ctx *gin.Context) {
+func (r *Response) Success() {
 	r.Message = "success"
-	ctx.JSON(http.StatusOK, r)
 }
 
 func (r *Response) Error(ctx *gin.Context, errorType string) {

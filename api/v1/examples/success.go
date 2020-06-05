@@ -11,9 +11,10 @@ type SuccessResponse struct {
 	Data models.Task `json:"data"`
 }
 
-func Success(ctx *gin.Context) {
+func Success(ctx *gin.Context) (*SuccessResponse, error) {
 	task := models.NewTask()
 	r := &SuccessResponse{}
 	r.Data = *task
-	r.Success(ctx)
+	r.Success()
+	return r, nil
 }
