@@ -6,26 +6,46 @@ import (
 )
 
 type Response struct {
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Message string `json:"message"`
 }
 
-func Success(ctx *gin.Context, data interface{}) {
-	response := &Response{}
-	response.Message = "success"
-	response.Data = data
-
-	ctx.JSON(http.StatusOK, response)
+type ErrorResponse struct {
+	Response
+	Data error `json:"data"`
 }
 
-func Error(ctx *gin.Context, message string, data interface{}) {
-	response := &Response{}
-	response.Message = message
-	response.Data = data
+type ValidationErrorResponse struct {
+	Response
 
-	ctx.JSON(http.StatusOK, response)
+	Data struct {
+		FieldName string `json:"field_name"`
+		Message   string `json:"message"`
+	} `json:"data"`
+}
+
+func (r *Response) Success(ctx *gin.Context) {
+	r.Message = "success"
+	ctx.JSON(http.StatusOK, r)
+}
+
+func (r *Response) Error(ctx *gin.Context, errorType string) {
+	r.Message = errorType
+	ctx.JSON(http.StatusOK, r)
+}
+
+func (r *Response) Exception(ctx *gin.Context) {
+	r.Message = "internal_server_error"
+	ctx.JSON(http.StatusInternalServerError, r)
+}
+
+func Error(ctx *gin.Context, errorType string, err error) {
+	errorResponse := &ErrorResponse{}
+	errorResponse.Data = err
+	errorResponse.Error(ctx, errorType)
 }
 
 func Exception(ctx *gin.Context, message string) {
-	ctx.JSON(http.StatusInternalServerError, message)
+	r := &Response{}
+	r.Message = message
+	r.Exception(ctx)
 }
