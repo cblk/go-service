@@ -43,5 +43,5 @@ func Auth(ctx *gin.Context) {
 
 	r := &AuthResponse{}
 	r.Data = *login
-	r.Success(ctx)
+	r.Success()
 }
