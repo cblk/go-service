@@ -15,6 +15,5 @@ func Success(ctx *gin.Context) (*SuccessResponse, error) {
 	task := models.NewTask()
 	r := &SuccessResponse{}
 	r.Data = *task
-	r.Success()
 	return r, nil
 }

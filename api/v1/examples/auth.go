@@ -2,46 +2,40 @@ package examples
 
 import (
 	"github.com/gin-gonic/gin"
-	logy "github.com/sirupsen/logrus"
 	"go_service/api/v1/response"
 )
 
 type AuthInput struct {
-	Username string `form:"username" json:"username"`
-	Password string `form:"password" json:"password"`
+
+	// rules is validated using gopkg.in/go-playground/validator.v9
+
+	Username string `form:"username" json:"username" rules:"required"`
+	Password string `form:"password" json:"password" rules:"required"`
 }
 
 type AuthResponse struct {
 	response.Response
-	Data AuthInput
+	Data AuthInput `json:"data"`
 }
 
-func Auth(ctx *gin.Context) {
-	login := &AuthInput{}
+func Auth(ctx *gin.Context, in *AuthInput) (*AuthResponse, error) {
 
-	if err := ctx.ShouldBind(login); err != nil {
-		logy.Info("pass params error", err)
-		response.Error(ctx, "validation_error", err)
-		return
+	validation := response.NewValidationErrorResponse()
+
+	if in.Username != "admin" {
+		validation.SetFieldName("username")
+		validation.SetMessage("user_not_exist")
+		return nil, validation
 	}
 
-	validation := &response.ValidationErrorResponse{}
-
-	if login.Username != "admin" {
-		validation.Data.FieldName = "username"
-		validation.Data.Message = "user_not_exist"
-		validation.Error(ctx, "validation_error")
-		return
-	}
-
-	if login.Password != "admin" {
-		validation.Data.FieldName = "password"
-		validation.Data.Message = "incorrect_password"
-		validation.Error(ctx, "validation_error")
-		return
+	if in.Password != "admin" {
+		validation.SetFieldName("password")
+		validation.SetMessage("incorrect_password")
+		return nil, validation
 	}
 
 	r := &AuthResponse{}
-	r.Data = *login
-	r.Success()
+	r.Data = *in
+
+	return r, nil
 }

@@ -1,50 +1,115 @@
 package response
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/loopfz/gadgeto/tonic"
+	logy "github.com/sirupsen/logrus"
+	"gopkg.in/go-playground/validator.v9"
+	"reflect"
 )
+
+type ResponseMessage interface {
+	SetMessage(message string)
+	GetMessage() string
+}
+
+type ErrorResponseMessage interface {
+	GetErrorType() string
+	SetErrorType(errType string)
+}
+
+type ExceptionResponseMessage interface {
+	GetException() string
+}
 
 type Response struct {
 	Message string `json:"message"`
 }
 
+func (r *Response) SetMessage(message string) {
+	r.Message = message
+}
+
+func (r *Response) GetMessage() string {
+	return r.Message
+}
+
 type ErrorResponse struct {
 	Response
-	Data error `json:"data"`
 }
 
-type ValidationErrorResponse struct {
+func (r *ErrorResponse) GetErrorType() string {
+	return r.GetMessage()
+}
+
+func (r *ErrorResponse) SetErrorType(errType string) {
+	r.SetMessage(errType)
+}
+
+func (r *ErrorResponse) Error() string {
+	return r.GetErrorType()
+}
+
+type ExceptionResponse struct {
 	Response
-
-	Data struct {
-		FieldName string `json:"field_name"`
-		Message   string `json:"message"`
-	} `json:"data"`
 }
 
-func (r *Response) Success() {
-	r.Message = "success"
+func (e *ExceptionResponse) Error() string {
+	return e.Message
 }
 
-func (r *Response) Error(ctx *gin.Context, errorType string) {
-	r.Message = errorType
-	ctx.JSON(http.StatusOK, r)
+func (e *ExceptionResponse) GetException() string {
+	return e.Message
 }
 
-func (r *Response) Exception(ctx *gin.Context) {
-	r.Message = "internal_server_error"
-	ctx.JSON(http.StatusInternalServerError, r)
+func NewExceptionResponse(err error) *ExceptionResponse {
+	r := &ExceptionResponse{}
+	r.SetMessage(err.Error())
+	return r
 }
 
-func Error(ctx *gin.Context, errorType string, err error) {
-	errorResponse := &ErrorResponse{}
-	errorResponse.Data = err
-	errorResponse.Error(ctx, errorType)
+func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
+
+	logy.Debug("error here")
+	logy.Debug(fmt.Println(reflect.TypeOf(err).String()))
+
+	if e, ok := err.(validator.ValidationErrors); ok {
+
+		logy.Debug("validation error")
+
+		// We return only the first error
+
+		for _, err := range e {
+
+			validationErrorResponse := NewValidationErrorResponse()
+			validationErrorResponse.SetFieldName(err.Field())
+			validationErrorResponse.SetMessage(err.Tag())
+
+			logy.Debug("error extracted")
+
+			return 400, validationErrorResponse
+		}
+	}
+
+	if err, ok := err.(ErrorResponseMessage); ok {
+		return 400, err
+	}
+
+	if err, ok := err.(ExceptionResponseMessage); ok {
+		return 500, err
+	}
+
+	return 500, NewExceptionResponse(err)
 }
 
-func Exception(ctx *gin.Context, message string) {
-	r := &Response{}
-	r.Message = message
-	r.Exception(ctx)
+func TonicRenderResponse(ctx *gin.Context, statusCode int, payload interface{}) {
+
+	if payload, ok := payload.(ResponseMessage); ok {
+		if payload.GetMessage() == "" {
+			payload.SetMessage("success")
+		}
+	}
+
+	tonic.DefaultRenderHook(ctx, statusCode, payload)
 }
