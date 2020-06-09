@@ -1,53 +1,34 @@
 package api
 
 import (
-	logy "github.com/sirupsen/logrus"
-	"go_service/api/v1"
-	"go_service/internal/catch"
-	"net/http"
-	"strconv"
-
-	"github.com/gin-gonic/gin"
+	"github.com/loopfz/gadgeto/tonic"
+	"github.com/wI2L/fizz"
+	"go_service/api/v1/examples"
+	"go_service/api/v1/response"
 )
 
-func InitRouterV1(r *gin.RouterGroup) {
+func InitRouterV1(r *fizz.Fizz) {
 
-	v1g := r.Group("v1")
+	v1g := r.Group("v1", "ApiV1", "API version 1")
 
-	v1g.GET("tests", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "ok")
-	})
+	examplesGroup := v1g.Group("examples", "ResponseExamples", "Example APIs for response format")
 
-	// 提交任务
-	v1g.POST("/tasks", v1.PostTask)
+	examplesGroup.GET("/success", []fizz.OperationOption{
+		fizz.Summary("Get a success response with an example model"),
+	}, tonic.Handler(examples.Success, 200))
 
-	// 得到任务
-	v1g.GET("/tasks/:id", v1.GetTask)
+	examplesGroup.GET("/error", []fizz.OperationOption{
+		fizz.Summary("Get an example error response with validation errors"),
+		fizz.Response("400", "validation errors", response.ValidationErrorResponse{}, nil),
+	}, tonic.Handler(examples.Error, 200))
 
-	// mock test
-	v1g.GET("mock", func(ctx *gin.Context) {
-		defer func() {
-			revertFunc := func(params ...interface{}) {
-				logy.Info("testTx")
-			}
+	examplesGroup.GET("/exception", []fizz.OperationOption{
+		fizz.Summary("Get an example exception response"),
+		fizz.Response("500", "exception", response.ExceptionResponse{}, nil),
+	}, tonic.Handler(examples.Exception, 200))
 
-			catch.Finally(recover(), revertFunc, "")
-			ctx.String(http.StatusInternalServerError, "panic tx")
-		}()
-
-		var i int
-		var j int
-		j = 10
-		w := j / i
-
-		logy.Info(strconv.Itoa(w))
-
-		ctx.String(http.StatusOK, "ok")
-	})
-
-	responseTestGroup := v1g.Group("response")
-	responseTestGroup.GET("/success", v1.Success)
-	responseTestGroup.GET("/error", v1.Error)
-	responseTestGroup.GET("/exception", v1.Exception)
-	responseTestGroup.POST("/auth", v1.Auth)
+	examplesGroup.POST("/auth", []fizz.OperationOption{
+		fizz.Summary("Authentication through password"),
+		fizz.Response("400", "exception", response.ValidationErrorResponse{}, nil),
+	}, tonic.Handler(examples.Auth, 200))
 }

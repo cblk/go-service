@@ -2,30 +2,104 @@ package response
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"github.com/loopfz/gadgeto/tonic"
+	"gopkg.in/go-playground/validator.v9"
 )
 
+type ResponseMessage interface {
+	SetMessage(message string)
+	GetMessage() string
+}
+
+type ErrorResponseMessage interface {
+	GetErrorType() string
+	SetErrorType(errType string)
+}
+
+type ExceptionResponseMessage interface {
+	GetException() string
+}
+
 type Response struct {
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Message string `json:"message"`
 }
 
-func Success(ctx *gin.Context, data interface{}) {
-	response := &Response{}
-	response.Message = "success"
-	response.Data = data
-
-	ctx.JSON(http.StatusOK, response)
+func (r *Response) SetMessage(message string) {
+	r.Message = message
 }
 
-func Error(ctx *gin.Context, message string, data interface{}) {
-	response := &Response{}
-	response.Message = message
-	response.Data = data
-
-	ctx.JSON(http.StatusOK, response)
+func (r *Response) GetMessage() string {
+	return r.Message
 }
 
-func Exception(ctx *gin.Context, message string) {
-	ctx.JSON(http.StatusInternalServerError, message)
+type ErrorResponse struct {
+	Response
+}
+
+func (r *ErrorResponse) GetErrorType() string {
+	return r.GetMessage()
+}
+
+func (r *ErrorResponse) SetErrorType(errType string) {
+	r.SetMessage(errType)
+}
+
+func (r *ErrorResponse) Error() string {
+	return r.GetErrorType()
+}
+
+type ExceptionResponse struct {
+	Response
+}
+
+func (e *ExceptionResponse) Error() string {
+	return e.Message
+}
+
+func (e *ExceptionResponse) GetException() string {
+	return e.Message
+}
+
+func NewExceptionResponse(err error) *ExceptionResponse {
+	r := &ExceptionResponse{}
+	r.SetMessage(err.Error())
+	return r
+}
+
+func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
+
+	if e, ok := err.(validator.ValidationErrors); ok {
+
+		// We return only the first error
+
+		for _, err := range e {
+
+			validationErrorResponse := NewValidationErrorResponse()
+			validationErrorResponse.SetFieldName(err.Field())
+			validationErrorResponse.SetMessage(err.Tag())
+
+			return 400, validationErrorResponse
+		}
+	}
+
+	if err, ok := err.(ErrorResponseMessage); ok {
+		return 400, err
+	}
+
+	if err, ok := err.(ExceptionResponseMessage); ok {
+		return 500, err
+	}
+
+	return 500, NewExceptionResponse(err)
+}
+
+func TonicRenderResponse(ctx *gin.Context, statusCode int, payload interface{}) {
+
+	if payload, ok := payload.(ResponseMessage); ok {
+		if payload.GetMessage() == "" {
+			payload.SetMessage("success")
+		}
+	}
+
+	tonic.DefaultRenderHook(ctx, statusCode, payload)
 }
