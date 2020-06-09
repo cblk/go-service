@@ -21,7 +21,7 @@ type ExceptionResponseMessage interface {
 }
 
 type Response struct {
-	Message string `json:"message"`
+	Message string `json:"message" description:"The response message. Will be 'success' or a detailed error type"`
 }
 
 func (r *Response) SetMessage(message string) {

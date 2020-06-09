@@ -5,6 +5,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
+	logy "github.com/sirupsen/logrus"
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
 	responseV1 "go_service/api/v1/response"
@@ -50,7 +51,12 @@ func GetHttpApplication() *gin.Engine {
 	fizzEngine.GET("/openapi.yml", nil, fizzEngine.OpenAPI(infos, "yaml"))
 
 	if len(fizzEngine.Errors()) != 0 {
-		panic(fizzEngine.Errors())
+
+		for err := range fizzEngine.Errors() {
+			logy.Error(err)
+		}
+
+		panic("fizz initialization error")
 	}
 
 	return engine

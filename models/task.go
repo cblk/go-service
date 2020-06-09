@@ -37,18 +37,18 @@ func NewTask() *Task {
 
 type Task struct {
 	ID         uint   `json:"id,omitempty" gorm:"primary_key"`
-	CreatedAt  uint   `json:"created_at,omitempty" db:"created_at" gorm:"index;not null"`                    // 每级任务生成时间
-	FinishedAt uint   `json:"finished_at,omitempty" db:"finished_at" gorm:"index;not null"`                  // 每级任务完成时间
-	Status     string `json:"status,omitempty" db:"status" gorm:"type:varchar(20);index;not null"`           // 任务状态
-	ErrType    uint   `json:"err_type,omitempty" db:"err_type" gorm:"index;not null"`                        // 任务错误类型(404，500等)
-	Type       string `json:"type,omitempty" db:"type:varchar(20);type;not null"`                            // 任务类型(article, image)
-	AppId      string `json:"app_id,omitempty" db:"app_id" gorm:"type:varchar(100);index;not null"`          // APPID
-	TaskID     string `json:"task_id,omitempty" db:"task_id" gorm:"type:varchar(100);unique_index;not null"` // 主任务 ID  (uuid.V4().hex())
-	Priority   uint8  `json:"priority,omitempty" db:"priority" gorm:"not null"`                              // 任务优先度 1-9
-	Input      string `json:"input,omitempty" db:"input" gorm:"type:text;not null"`                          // 任务参数
-	Output     string `json:"output,omitempty" db:"output" gorm:"type:text;not null"`                        // 任务参数
-	RetryNum   int    `json:"retry_num,omitempty" db:"retry_num" gorm:"not null"`                            // 任务重试次数
-	Version    string `json:"version,omitempty" db:"version" gorm:"type:varchar(20);not null"`               // 任务版本
+	CreatedAt  uint   `json:"created_at,omitempty" db:"created_at" gorm:"index;not null" description:"每级任务生成时间"`
+	FinishedAt uint   `json:"finished_at,omitempty" db:"finished_at" gorm:"index;not null" description:"每级任务完成时间"`
+	Status     string `json:"status,omitempty" db:"status" gorm:"type:varchar(20);index;not null" enum:"pending,success,error" description:"任务状态"`
+	ErrType    uint   `json:"err_type,omitempty" db:"err_type" gorm:"index;not null" enum:"404,500" description:"任务错误类型"`
+	Type       string `json:"type,omitempty" db:"type:varchar(20);type;not null" enum:"article,image" description:"任务类型"`
+	AppId      string `json:"app_id,omitempty" db:"app_id" gorm:"type:varchar(100);index;not null" description:"APP ID"`
+	TaskID     string `json:"task_id,omitempty" db:"task_id" gorm:"type:varchar(100);unique_index;not null" description:"主任务 ID  (uuid.V4().hex())"`
+	Priority   uint8  `json:"priority,omitempty" db:"priority" gorm:"not null" description:"任务优先度 1-9"`
+	Input      string `json:"input,omitempty" db:"input" gorm:"type:text;not null" description:"任务参数"`
+	Output     string `json:"output,omitempty" db:"output" gorm:"type:text;not null" description:"任务参数"`
+	RetryNum   int    `json:"retry_num,omitempty" db:"retry_num" gorm:"not null" description:"任务重试次数"`
+	Version    string `json:"version,omitempty" db:"version" gorm:"type:varchar(20);not null" description:"任务版本"`
 }
 
 func (t *Task) Save(db *gorm.DB) error {
