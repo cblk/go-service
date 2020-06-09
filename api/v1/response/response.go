@@ -1,12 +1,9 @@
 package response
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
-	logy "github.com/sirupsen/logrus"
 	"gopkg.in/go-playground/validator.v9"
-	"reflect"
 )
 
 type ResponseMessage interface {
@@ -71,12 +68,7 @@ func NewExceptionResponse(err error) *ExceptionResponse {
 
 func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
 
-	logy.Debug("error here")
-	logy.Debug(fmt.Println(reflect.TypeOf(err).String()))
-
 	if e, ok := err.(validator.ValidationErrors); ok {
-
-		logy.Debug("validation error")
 
 		// We return only the first error
 
@@ -85,8 +77,6 @@ func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
 			validationErrorResponse := NewValidationErrorResponse()
 			validationErrorResponse.SetFieldName(err.Field())
 			validationErrorResponse.SetMessage(err.Tag())
-
-			logy.Debug("error extracted")
 
 			return 400, validationErrorResponse
 		}
