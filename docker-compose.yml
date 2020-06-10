@@ -11,7 +11,7 @@ services:
             WORK: server
             ENV: config
         volumes:
-            - ./config/dev:/app/config
+            - ./config:/app/config
     migrate:
         image: registry.cn-shanghai.aliyuncs.com/ybase/go-service:dev
         container_name: migrate
@@ -19,6 +19,6 @@ services:
             WORK: migrate
             ENV: config
         volumes:
-            - ./config/dev:/app/config
+            - ./config:/app/config
 
         
