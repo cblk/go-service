@@ -15,19 +15,17 @@ var ServerCmd = &cobra.Command{
 	Aliases: []string{"s"},
 	Short:   "node server",
 	RunE: func(cmd *cobra.Command, args []string) error {
-
 		conf := config.GetConfig()
 		logy.Info("start service server")
 
 		app := api.GetHttpApplication()
-
 		address := fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))
-		logy.Info("server url:" + address)
-		err := app.Run(address)
-		if err != nil {
-			return err
-		}
 
-		return nil
+		logy.Info("server url:" + address)
+		return app.Run(address)
 	},
+}
+
+func init() {
+	RootCmd.AddCommand(ServerCmd)
 }

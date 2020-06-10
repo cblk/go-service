@@ -1,0 +1,24 @@
+version: '3'
+services:
+    api:
+        image: go-service:dev
+        container_name: api
+        depends_on:
+            - migrate
+        ports:
+            - 8080:8080
+        environment:
+            WORK: server
+            ENV: config
+        volumes:
+            - ./config:/app/config
+    migrate:
+        image: go-service:dev
+        container_name: migrate
+        environment:
+            WORK: migrate
+            ENV: config
+        volumes:
+            - ./config:/app/config
+
+        

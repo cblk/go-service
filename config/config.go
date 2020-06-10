@@ -34,6 +34,7 @@ func InitConfig(configPath string) error {
 	}
 
 	config = v
+	log.Printf("Config file path: %v\n", v.ConfigFileUsed())
 
 	return nil
 }

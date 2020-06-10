@@ -8,16 +8,32 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var configPath string
 var RootCmd = &cobra.Command{
 	Use:     "app",
 	Short:   "app server",
 	Version: "1.0",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		// Initialize config
-		err := config.InitConfig("")
-		if err != nil {
-			return err
-		}
+		// Initialize DB
+		return config.InitDB()
+	},
+}
+
+func Execute() {
+	if err := PrepareBaseCmd(RootCmd).Execute(); err != nil {
+		panic(err)
+	}
+}
+
+func init() {
+	cobra.OnInitialize(initConfig)
+	RootCmd.PersistentFlags().StringVar(&configPath, "conf", "", "configuration file path")
+}
+
+func initConfig() {
+	if err := config.InitConfig(configPath); err != nil {
+		panic(err)
+	} else {
 		cfg := config.GetConfig()
 		//设置输出样式，自带的只有两种样式logrus.JSONFormatter{}和logrus.TextFormatter{}
 		logrus.SetFormatter(&logrus.TextFormatter{})
@@ -26,14 +42,5 @@ var RootCmd = &cobra.Command{
 		//设置最低loglevel
 		level, _ := logrus.ParseLevel(cfg.GetString("log.level"))
 		logrus.SetLevel(level)
-
-		// Initialize DB
-		err = config.InitDB()
-		if err != nil {
-
-			return err
-		}
-
-		return nil
-	},
+	}
 }

@@ -1,16 +1,6 @@
 kind: pipeline
 name: default
 steps:
-- name: build
-  image: damianoneill/golang-alpine-builder
-  commands:
-  - export GOPROXY=https://goproxy.io
-  - export GO111MODULE=on
-  - go version
-  - go env
-  - echo "拉取依赖, ok"
-  - go build -ldflags "-w -s" -o main main.go
-  - echo "项目编译, ok"
 - name: publish
   image: plugins/docker
   restore: true
