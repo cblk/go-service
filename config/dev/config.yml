@@ -1,0 +1,11 @@
+env: "dev"
+db:
+  driver: "mysql"
+  connection: "root:mypass@(172.17.0.1:3306)/turing"
+log:
+  level: "debug"
+http:
+  host: "0.0.0.0"
+  port: "8080"
+gin:
+  mode: "debug"
