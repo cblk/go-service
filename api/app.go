@@ -3,6 +3,7 @@ package api
 import (
 	"errors"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
 	logy "github.com/sirupsen/logrus"
@@ -31,6 +32,9 @@ func GetHttpApplication() *gin.Engine {
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
 
+	// Serve static files under static folder
+	engine.Use(static.Serve("/static", static.LocalFile("./static", false)))
+
 	fizzEngine := fizz.NewFromEngine(engine)
 
 	// Initialize our own handlers
@@ -48,7 +52,7 @@ func GetHttpApplication() *gin.Engine {
 		Version:     "1.0.0",
 	}
 
-	fizzEngine.GET("/openapi.yml", nil, fizzEngine.OpenAPI(infos, "yaml"))
+	fizzEngine.GET("/openapi.json", nil, fizzEngine.OpenAPI(infos, "json"))
 
 	if len(fizzEngine.Errors()) != 0 {
 
