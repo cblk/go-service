@@ -9,5 +9,6 @@ RUN rm -rf /app
 WORKDIR /app
 COPY --from=builder /app/main /app/main
 COPY run.sh /app
+COPY static /app/static
 
 CMD ["sh", "./run.sh"]
