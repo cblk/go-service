@@ -4,9 +4,9 @@ type ValidationErrorResponse struct {
 	ErrorResponse
 
 	Data struct {
-		FieldName string `json:"field_name"`
-		Message   string `json:"message"`
-	} `json:"data"`
+		FieldName string `json:"field_name" description:"The name of the field that fails the validation"`
+		Message   string `json:"message" description:"The error type of the validation that fails"`
+	} `json:"data" description:"The validation error detail"`
 }
 
 func (ver *ValidationErrorResponse) SetFieldName(fieldName string) {

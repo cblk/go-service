@@ -9,8 +9,8 @@ type AuthInput struct {
 
 	// rules is validated using gopkg.in/go-playground/validator.v9
 
-	Username string `form:"username" json:"username" rules:"required"`
-	Password string `form:"password" json:"password" rules:"required"`
+	Username string `form:"username" json:"username" rules:"required" description:"The user's username"`
+	Password string `form:"password" json:"password" rules:"required" description:"The user's password"`
 }
 
 type AuthResponse struct {

@@ -8,7 +8,7 @@ import (
 
 type SuccessResponse struct {
 	response.Response
-	Data models.Task `json:"data"`
+	Data models.Task `json:"data" description:"The created task"`
 }
 
 func Success(ctx *gin.Context) (*SuccessResponse, error) {
