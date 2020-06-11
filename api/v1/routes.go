@@ -1,4 +1,4 @@
-package api
+package v1
 
 import (
 	"github.com/loopfz/gadgeto/tonic"
@@ -7,7 +7,7 @@ import (
 	"go_service/api/v1/response"
 )
 
-func InitRouterV1(r *fizz.Fizz) {
+func InitRoutes(r *fizz.Fizz) {
 
 	v1g := r.Group("v1", "ApiV1", "API version 1")
 

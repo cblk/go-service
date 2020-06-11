@@ -9,11 +9,13 @@ import (
 	logy "github.com/sirupsen/logrus"
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
+	"go_service/api/v1"
 	responseV1 "go_service/api/v1/response"
 	"go_service/config"
 	"gopkg.in/go-playground/validator.v9"
 	"os"
 	"reflect"
+	"regexp"
 	"strings"
 	"sync"
 )
@@ -31,6 +33,7 @@ func GetHttpApplication() *gin.Engine {
 	engine.Use(cors.Default())
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
+	engine.Use(APIVersion())
 
 	// Serve static files under static folder
 	engine.Use(static.Serve("/static", static.LocalFile("./static", false)))
@@ -43,7 +46,7 @@ func GetHttpApplication() *gin.Engine {
 	tonic.SetRenderHook(TonicRenderHook, "")
 
 	// v1 api
-	InitRouterV1(fizzEngine)
+	v1.InitRoutes(fizzEngine)
 
 	// Serve OpenAPI specifications
 	infos := &openapi.Info{
@@ -64,6 +67,22 @@ func GetHttpApplication() *gin.Engine {
 	}
 
 	return engine
+}
+
+func APIVersion() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		path := c.FullPath()
+
+		re := regexp.MustCompile(`^/v([0-9]+)/`)
+		matches := re.FindStringSubmatch(path)
+
+		if len(matches) > 1 {
+			c.Set("api_version", matches[1])
+		}
+
+		c.Next()
+	}
 }
 
 // Distribute binding & error handling & render handling to implementations in different API versions
@@ -109,9 +128,14 @@ func TonicResponseErrorHook(ctx *gin.Context, err error) (int, interface{}) {
 		return 9999, nil
 	}
 
-	// TODO: determine API version from context url
+	apiVersion := ctx.GetString("api_version")
 
-	return responseV1.TonicErrorResponse(ctx, err)
+	switch apiVersion {
+	case "1":
+		return responseV1.TonicErrorResponse(ctx, err)
+	default:
+		return tonic.DefaultErrorHook(ctx, err)
+	}
 }
 
 func TonicRenderHook(ctx *gin.Context, statusCode int, payload interface{}) {
@@ -121,7 +145,12 @@ func TonicRenderHook(ctx *gin.Context, statusCode int, payload interface{}) {
 		return
 	}
 
-	// TODO: determine API version from context url
+	apiVersion := ctx.GetString("api_version")
 
-	responseV1.TonicRenderResponse(ctx, statusCode, payload)
+	switch apiVersion {
+	case "1":
+		responseV1.TonicRenderResponse(ctx, statusCode, payload)
+	default:
+		tonic.DefaultRenderHook(ctx, statusCode, payload)
+	}
 }
