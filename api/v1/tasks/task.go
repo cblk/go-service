@@ -1,4 +1,4 @@
-package v1
+package tasks
 
 import (
 	"github.com/gin-gonic/gin"

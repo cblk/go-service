@@ -9,6 +9,7 @@ import (
 	logy "github.com/sirupsen/logrus"
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
+	"go_service/api/v1"
 	responseV1 "go_service/api/v1/response"
 	"go_service/config"
 	"gopkg.in/go-playground/validator.v9"
@@ -43,7 +44,7 @@ func GetHttpApplication() *gin.Engine {
 	tonic.SetRenderHook(TonicRenderHook, "")
 
 	// v1 api
-	InitRouterV1(fizzEngine)
+	v1.InitRoutes(fizzEngine)
 
 	// Serve OpenAPI specifications
 	infos := &openapi.Info{
