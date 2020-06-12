@@ -36,9 +36,13 @@ func GetHttpApplication() *gin.Engine {
 	engine.Use(APIVersion())
 
 	// Serve static files under static folder
+	// for OpenAPI documentations
 	engine.Use(static.Serve("/static", static.LocalFile("./static", false)))
 
 	fizzEngine := fizz.NewFromEngine(engine)
+
+	// Do not include package name in component names
+	fizzEngine.Generator().UseFullSchemaNames(false)
 
 	// Initialize our own handlers
 	tonic.SetBindHook(TonicBindHook)
@@ -56,6 +60,7 @@ func GetHttpApplication() *gin.Engine {
 	}
 
 	fizzEngine.GET("/openapi.json", nil, fizzEngine.OpenAPI(infos, "json"))
+	fizzEngine.GET("/openapi.yml", nil, fizzEngine.OpenAPI(infos, "yaml"))
 
 	if len(fizzEngine.Errors()) != 0 {
 

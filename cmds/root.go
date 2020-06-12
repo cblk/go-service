@@ -15,7 +15,8 @@ var RootCmd = &cobra.Command{
 	Version: "1.0",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		// Initialize DB
-		return config.InitDB()
+		return nil
+		//return config.InitDB()
 	},
 }
 

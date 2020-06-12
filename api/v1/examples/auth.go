@@ -3,6 +3,7 @@ package examples
 import (
 	"github.com/gin-gonic/gin"
 	"go_service/api/v1/response"
+	"go_service/models"
 )
 
 type AuthInput struct {
@@ -15,7 +16,7 @@ type AuthInput struct {
 
 type AuthResponse struct {
 	response.Response
-	Data AuthInput `json:"data"`
+	Data models.User `json:"data"`
 }
 
 func Auth(ctx *gin.Context, in *AuthInput) (*AuthResponse, error) {
@@ -35,7 +36,10 @@ func Auth(ctx *gin.Context, in *AuthInput) (*AuthResponse, error) {
 	}
 
 	r := &AuthResponse{}
-	r.Data = *in
+	r.Data = models.User{
+		Username: in.Username,
+		Password: in.Password,
+	}
 
 	return r, nil
 }
