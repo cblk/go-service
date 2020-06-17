@@ -22,7 +22,7 @@ func Finally(err interface{}, fc CatchFunc, params ...interface{}) {
 		go fc(params)
 	}
 
-	logy.Error("Finally", realErr)
+	logy.Errorf("Finally: %v", realErr)
 
 	return
 }
