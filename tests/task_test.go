@@ -6,21 +6,19 @@ import (
 	"testing"
 
 	"go_service/api"
-	"go_service/utils"
 )
 
 func TestIndex(t *testing.T) {
-	if err := utils.Try(func() {
-		router := api.GetHttpApplication()
-		w := httptest.NewRecorder()
-		req, err := http.NewRequest("GET", "/", nil)
-		utils.PanicErr(err)
+	router := api.GetHttpApplication()
+	w := httptest.NewRecorder()
+	req, err := http.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	router.ServeHTTP(w, req)
 
-		router.ServeHTTP(w, req)
-
-		utils.P(w.Body.String())
-		utils.PanicBool(w.Code != http.StatusOK, "test code")
-	}); err != nil {
-		t.Fatal(err.Error())
+	if w.Code != http.StatusOK {
+		t.Error("code err")
 	}
 }

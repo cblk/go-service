@@ -36,7 +36,6 @@ func InitMigration(dbi *gorm.DB) {
 
 	// Register the actual migrations functions below
 
-	// migrate.RegisterMigration(migrations.M20190428(dbi))
 	migrate.RegisterMigration(migrations.M2(dbi))
 
 	migrationInitialized = true
