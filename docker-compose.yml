@@ -2,7 +2,7 @@ version: '3'
 services:
     api:
         image: go-service:dev
-        container_name: api
+        container_name: go-service-api
         depends_on:
             - migrate
         ports:
@@ -14,7 +14,7 @@ services:
             - ./config:/app/config
     migrate:
         image: go-service:dev
-        container_name: migrate
+        container_name: go-service-migrate
         environment:
             WORK: migrate
             ENV: config

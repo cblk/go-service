@@ -12,7 +12,7 @@ func Migrate() error {
 	for _, migration := range migrations {
 		err := migration.Migrate()
 		if err != nil {
-			logy.Error("Migrate", err)
+			logy.Errorf("Migrate: %v", err)
 			return err
 		}
 	}
@@ -24,7 +24,7 @@ func Rollback() error {
 	lastMigration := migrations[len(migrations)-1]
 	err := lastMigration.RollbackLast()
 	if err != nil {
-		logy.Error("Migrate", err)
+		logy.Errorf("Migrate: %v", err)
 		return err
 	}
 

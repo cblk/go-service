@@ -3,7 +3,6 @@ package response
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
-	"gopkg.in/go-playground/validator.v9"
 )
 
 type ResponseMessage interface {
@@ -67,19 +66,18 @@ func NewExceptionResponse(err error) *ExceptionResponse {
 }
 
 func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
-
-	if e, ok := err.(validator.ValidationErrors); ok {
-
+	if e, ok := err.(tonic.BindError); ok {
+		validationErrorResponse := NewValidationErrorResponse()
+		validationErr := e.ValidationErrors()
 		// We return only the first error
-
-		for _, err := range e {
-
-			validationErrorResponse := NewValidationErrorResponse()
+		for _, err := range validationErr {
 			validationErrorResponse.SetFieldName(err.Field())
 			validationErrorResponse.SetMessage(err.Tag())
-
 			return 400, validationErrorResponse
 		}
+		validationErrorResponse.SetFieldName(e.GetField())
+		validationErrorResponse.SetMessage(e.GetMessage())
+		return 400, validationErrorResponse
 	}
 
 	if err, ok := err.(ErrorResponseMessage); ok {

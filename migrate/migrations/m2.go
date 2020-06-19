@@ -22,25 +22,7 @@ func M2(db *gorm.DB) *gormigrate.Gormigrate {
 		Version    string `json:"version,omit" db:"version" gorm:"type:varchar(20);not null"`               // 任务版本
 	}
 
-	type AppClient struct {
-		ID        uint   `gorm:"primary_key"`
-		CreatedAt uint   `json:"created_at,omit" db:"created_at" gorm:"index"` // 每级任务生成时间
-		UpdatedAt uint   `json:"updated_at,omit" db:"updated_at" gorm:"index"` // 每级任务完成时间
-		AppID     string `json:"app_id,omit" db:"app_id" gorm:"index"`         // 客户端ID
-		AppName   string `json:"app_name,omit" db:"app_name"`                  // 客户端名字
-		AppAuth   string `json:"app_auth,omit" db:"app_auth"`                  // 客户端授权
-	}
-
 	return gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
-		{
-			ID: "m2_app_client",
-			Migrate: func(tx *gorm.DB) error {
-				return tx.AutoMigrate(&AppClient{}).Error
-			},
-			Rollback: func(tx *gorm.DB) error {
-				return tx.DropTable("app_clients").Error
-			},
-		},
 		{
 			ID: "m2_task",
 			Migrate: func(tx *gorm.DB) error {
