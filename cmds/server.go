@@ -18,8 +18,8 @@ var ServerCmd = &cobra.Command{
 		conf := config.GetConfig()
 		logy.Info("start service server")
 
-		app := api.GetHttpApplication()
-		address := fmt.Sprintf("%s:%s", conf.GetString("http.host"), conf.GetString("http.port"))
+		app := api.GetHttpApplication(conf)
+		address := fmt.Sprintf("%s:%s", conf.Http.Host, conf.Http.Port)
 
 		logy.Info("server url:" + address)
 		return app.Run(address)

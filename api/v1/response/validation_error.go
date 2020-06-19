@@ -13,8 +13,16 @@ func (ver *ValidationErrorResponse) SetFieldName(fieldName string) {
 	ver.Data.FieldName = fieldName
 }
 
-func (ver *ValidationErrorResponse) SetMessage(message string) {
+func (ver *ValidationErrorResponse) SetFieldMessage(message string) {
 	ver.Data.Message = message
+}
+
+func (ver *ValidationErrorResponse) GetFieldName() string {
+	return ver.Data.FieldName
+}
+
+func (ver *ValidationErrorResponse) GetFieldMessage() string {
+	return ver.Data.Message
 }
 
 func NewValidationErrorResponse() *ValidationErrorResponse {

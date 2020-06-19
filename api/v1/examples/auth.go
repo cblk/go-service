@@ -25,13 +25,13 @@ func Auth(ctx *gin.Context, in *AuthInput) (*AuthResponse, error) {
 
 	if in.Username != "admin" {
 		validation.SetFieldName("username")
-		validation.SetMessage("user_not_exist")
+		validation.SetFieldMessage("user_not_exist")
 		return nil, validation
 	}
 
 	if in.Password != "admin" {
 		validation.SetFieldName("password")
-		validation.SetMessage("incorrect_password")
+		validation.SetFieldMessage("incorrect_password")
 		return nil, validation
 	}
 

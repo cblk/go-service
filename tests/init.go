@@ -1,33 +1,29 @@
 package tests
 
 import (
-	"encoding/json"
-	"log"
-
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"go_service/api"
+	"go_service/cmds"
 	"go_service/config"
 )
 
+var Application *gin.Engine = nil
+
 func init() {
-	log.Println("Initialize config")
+	// Initialize api application to serve API test calls
 
-	// Initialize config
-	err := config.InitConfig("../config")
-	if err != nil {
-		log.Println("init config error:",err.Error())
-		return
+	testAppConfig := &config.AppConfig{}
+
+	testAppConfig.Environment = config.EnvTest
+	testAppConfig.Db.Driver = ""
+	testAppConfig.Log.Level = logrus.DebugLevel.String()
+	testAppConfig.Http.Host = "127.0.0.1"
+	testAppConfig.Http.Port = "8080"
+
+	if err := cmds.InitAllFromAppConfig(testAppConfig); err != nil {
+		panic(err)
 	}
 
-	// Initialize DB
-	err = config.InitDB()
-	if err != nil {
-		log.Println("init DB error:",err.Error())
-		return
-	}
-}
-
-type M map[string]interface{}
-
-func (t M) String() string {
-	_dt, _ := json.Marshal(t)
-	return string(_dt)
+	Application = api.GetHttpApplication(testAppConfig)
 }

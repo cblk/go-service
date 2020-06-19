@@ -17,9 +17,9 @@ import (
 	"strings"
 )
 
-func GetHttpApplication() *gin.Engine {
-	cfg := config.GetConfig()
-	gin.SetMode(cfg.GetString("gin.mode"))
+func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
+
+	gin.SetMode(appConfig.Environment)
 
 	engine := gin.New()
 	engine.Use(cors.Default())
