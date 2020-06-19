@@ -9,8 +9,8 @@ type AuthInput struct {
 
 	// validate is validated using https://github.com/go-playground/validator
 
-	Username string `form:"username" json:"username" validate:"required" description:"The user's username"`
-	Password string `form:"password" json:"password" validate:"required" description:"The user's password"`
+	Username string `query:"username" json:"username" validate:"required" description:"The user's username"`
+	Password string `json:"password" validate:"required" description:"The user's password"`
 }
 
 type AuthResponse struct {

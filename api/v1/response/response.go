@@ -67,14 +67,17 @@ func NewExceptionResponse(err error) *ExceptionResponse {
 
 func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
 	if e, ok := err.(tonic.BindError); ok {
+		validationErrorResponse := NewValidationErrorResponse()
 		validationErr := e.ValidationErrors()
 		// We return only the first error
 		for _, err := range validationErr {
-			validationErrorResponse := NewValidationErrorResponse()
 			validationErrorResponse.SetFieldName(err.Field())
 			validationErrorResponse.SetMessage(err.Tag())
 			return 400, validationErrorResponse
 		}
+		validationErrorResponse.SetFieldName(e.GetField())
+		validationErrorResponse.SetMessage(e.GetMessage())
+		return 400, validationErrorResponse
 	}
 
 	if err, ok := err.(ErrorResponseMessage); ok {
