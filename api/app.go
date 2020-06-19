@@ -17,9 +17,9 @@ import (
 	"strings"
 )
 
-func GetHttpApplication() *gin.Engine {
-	cfg := config.GetConfig()
-	gin.SetMode(cfg.GetString("gin.mode"))
+func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
+
+	gin.SetMode(appConfig.Environment)
 
 	engine := gin.New()
 	engine.Use(cors.Default())
@@ -28,9 +28,13 @@ func GetHttpApplication() *gin.Engine {
 	engine.Use(APIVersion())
 
 	// Serve static files under static folder
+	// for OpenAPI documentations
 	engine.Use(static.Serve("/static", static.LocalFile("./static", false)))
 
 	fizzEngine := fizz.NewFromEngine(engine)
+
+	// Do not include package name in component names
+	fizzEngine.Generator().UseFullSchemaNames(false)
 
 	// Initialize our own handlers
 	tonic.SetErrorHook(TonicResponseErrorHook)
@@ -54,6 +58,7 @@ func GetHttpApplication() *gin.Engine {
 	}
 
 	fizzEngine.GET("/openapi.json", nil, fizzEngine.OpenAPI(infos, "json"))
+	fizzEngine.GET("/openapi.yml", nil, fizzEngine.OpenAPI(infos, "yaml"))
 
 	if len(fizzEngine.Errors()) != 0 {
 

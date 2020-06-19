@@ -1,19 +1,15 @@
 package config
 
 import (
-	"log"
-	"time"
-
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
+	logy "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
-var config *viper.Viper
-var db *gorm.DB
+var appConfig *AppConfig
 
-// Init is an exported method that takes the environment starts the viper
-// (external lib) and returns the configuration struct.
+// Init is an exported method that takes the config from the config file
+// and unmarshal it into AppConfig struct
 func InitConfig(configPath string) error {
 	v := viper.New()
 	v.SetConfigType("yml")
@@ -26,40 +22,23 @@ func InitConfig(configPath string) error {
 		v.AddConfigPath("config")
 	}
 
-	err := v.ReadInConfig()
-	if err != nil {
-		log.Println("InitConfig Failed:" + err.Error())
-		panic(err.Error())
+	if err := v.ReadInConfig(); err != nil {
+		logy.Error("Read config file failed:" + err.Error())
 		return err
 	}
 
-	config = v
-	log.Printf("Config file path: %v\n", v.ConfigFileUsed())
+	appConfig = &AppConfig{}
+
+	if err := v.Unmarshal(appConfig); err != nil {
+		logy.Error("Parse config file failed:" + err.Error())
+		return err
+	}
+
+	logy.Debug("Config file path: %v\n", v.ConfigFileUsed())
 
 	return nil
 }
 
-func GetConfig() *viper.Viper {
-	return config
-}
-
-func InitDB() error {
-	config := GetConfig()
-
-	var err error
-	db, err = gorm.Open(config.GetString("db.driver"), config.GetString("db.connection"))
-	if err != nil {
-		log.Println("InitDB Failed:" + err.Error())
-		return err
-	}
-
-	db.DB().SetMaxIdleConns(20)
-	db.DB().SetMaxOpenConns(50)
-	db.DB().SetConnMaxLifetime(5 * time.Second)
-
-	return nil
-}
-
-func GetDB() *gorm.DB {
-	return db
+func GetConfig() *AppConfig {
+	return appConfig
 }
