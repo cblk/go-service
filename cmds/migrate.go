@@ -36,7 +36,6 @@ func InitMigration(dbi *gorm.DB) {
 
 	// Register the actual migrations functions below
 
-	// migrate.RegisterMigration(migrations.M20190428(dbi))
 	migrate.RegisterMigration(migrations.M2(dbi))
 
 	migrationInitialized = true
@@ -79,28 +78,31 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 		case "migrate":
 			err := Migrate()
 			if err != nil {
-				logy.Error("Migrate failed, error:%v", err)
+				logy.Errorf("Migrate failed, error:%v", err)
 				return err
 			}
 
-			logy.Info("Migrate succeed!", nil)
+			logy.Info("Migrate succeed!")
 
 			return nil
 		case "rollback":
 			err := Rollback()
 			if err != nil {
-				logy.Error("Rollback failed, error:%v", err)
+				logy.Errorf("Rollback failed, error:%v", err)
 				return err
 			}
 
-			logy.Info("Rollback succeed!", nil)
+			logy.Info("Rollback succeed!")
 		default:
 			err := errors.New("error action")
-			logy.Error("error action", err)
-
+			logy.Errorf("error action:%v", err)
 			return err
 		}
 
 		return nil
 	},
 })
+
+func init() {
+	RootCmd.AddCommand(MigrateCmd)
+}
