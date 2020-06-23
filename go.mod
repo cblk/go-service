@@ -18,4 +18,4 @@ require (
 	gopkg.in/gormigrate.v1 v1.4.0
 )
 
-replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.2-0.20200619095438-95a45eaf844d
+replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.2-0.20200623025716-393d1a68186b

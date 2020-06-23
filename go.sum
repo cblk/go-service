@@ -272,8 +272,8 @@ github.com/ugorji/go/codec v1.1.7 h1:2SvQaVZ1ouYrrKKwoSk2pzd4A9evlKJb9oTL+OaLUSs
 github.com/ugorji/go/codec v1.1.7/go.mod h1:Ax+UKWsSmolVDwsd+7N3ZtXu+yMGCf907BLYF3GoBXY=
 github.com/wI2L/fizz v0.13.4 h1:4G48MVzMXSC4SmWagQlgSnUgDrZ5eLr43RutM2dnM8Q=
 github.com/wI2L/fizz v0.13.4/go.mod h1:R7UIV/FdYUnOZbfkTMwoV9zpnqzZSRl2CaxWUMpwDuo=
-github.com/we-miks/gadgeto v0.10.2-0.20200619095438-95a45eaf844d h1:Rt3yhXj/10Qx28JbdPDAbYXrse5wiHpLnWcaJkwPVAE=
-github.com/we-miks/gadgeto v0.10.2-0.20200619095438-95a45eaf844d/go.mod h1:Q2cJbODKiSZdz/ilNJlkuPCAOYappeTtv2Ki0LRZ7ZY=
+github.com/we-miks/gadgeto v0.10.2-0.20200623025716-393d1a68186b h1:jziSl6bSAntEvlycs5ouScDcf6/jG2EZ4Qw78T/EYEc=
+github.com/we-miks/gadgeto v0.10.2-0.20200623025716-393d1a68186b/go.mod h1:Q2cJbODKiSZdz/ilNJlkuPCAOYappeTtv2Ki0LRZ7ZY=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
 github.com/xordataexchange/crypt v0.0.3-0.20170626215501-b2862e3d0a77/go.mod h1:aYKd//L2LvnjZzWKhF00oedf4jCCReLcmhLdhm1A27Q=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
