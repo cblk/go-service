@@ -1,11 +1,12 @@
 package examples_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"github.com/magiconair/properties/assert"
 	"go_service/api/v1/examples"
-	"go_service/api/v1/response"
 	"go_service/tests"
+	"go_service/tests/api/v1"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -16,66 +17,22 @@ import (
 
 func TestAuthNoUsername(t *testing.T) {
 	r := callAuthAPI("", "password")
-	assert.Equal(t, r.Code, 400)
-
-	// Deserialize response message
-
-	validationResponse := &response.ValidationErrorResponse{}
-
-	err := json.Unmarshal(r.Body.Bytes(), validationResponse)
-	assert.Equal(t, err, nil)
-
-	assert.Equal(t, validationResponse.GetErrorType(), "validation_error")
-	assert.Equal(t, validationResponse.GetFieldName(), "username")
-	assert.Equal(t, validationResponse.GetFieldMessage(), "required")
+	v1.AssertValidationErrorResponse(t, r, "username", "required")
 }
 
 func TestAuthNoPassword(t *testing.T) {
 	r := callAuthAPI("admin", "")
-	assert.Equal(t, r.Code, 400)
-
-	// Deserialize response message
-
-	validationResponse := &response.ValidationErrorResponse{}
-
-	err := json.Unmarshal(r.Body.Bytes(), validationResponse)
-	assert.Equal(t, err, nil)
-
-	assert.Equal(t, validationResponse.GetErrorType(), "validation_error")
-	assert.Equal(t, validationResponse.GetFieldName(), "password")
-	assert.Equal(t, validationResponse.GetFieldMessage(), "required")
+	v1.AssertValidationErrorResponse(t, r, "password", "required")
 }
 
 func TestAuthWrongUsername(t *testing.T) {
 	r := callAuthAPI("admin123", "admin")
-	assert.Equal(t, r.Code, 400)
-
-	// Deserialize response message
-
-	validationResponse := &response.ValidationErrorResponse{}
-
-	err := json.Unmarshal(r.Body.Bytes(), validationResponse)
-	assert.Equal(t, err, nil)
-
-	assert.Equal(t, validationResponse.GetErrorType(), "validation_error")
-	assert.Equal(t, validationResponse.GetFieldName(), "username")
-	assert.Equal(t, validationResponse.GetFieldMessage(), "user_not_exist")
+	v1.AssertValidationErrorResponse(t, r, "username", "user_not_exist")
 }
 
 func TestAuthWrongPassword(t *testing.T) {
 	r := callAuthAPI("admin", "admin123")
-	assert.Equal(t, r.Code, 400)
-
-	// Deserialize response message
-
-	validationResponse := &response.ValidationErrorResponse{}
-
-	err := json.Unmarshal(r.Body.Bytes(), validationResponse)
-	assert.Equal(t, err, nil)
-
-	assert.Equal(t, validationResponse.GetErrorType(), "validation_error")
-	assert.Equal(t, validationResponse.GetFieldName(), "password")
-	assert.Equal(t, validationResponse.GetFieldMessage(), "incorrect_password")
+	v1.AssertValidationErrorResponse(t, r, "password", "incorrect_password")
 }
 
 func TestAuthSuccess(t *testing.T) {
@@ -92,6 +49,29 @@ func TestAuthSuccess(t *testing.T) {
 	assert.Equal(t, authResponse.GetMessage(), "success")
 	assert.Equal(t, authResponse.Data.Username, "admin")
 	assert.Equal(t, authResponse.Data.Password, "admin")
+}
+
+func TestJsonInput(t *testing.T) {
+	jsonStr := []byte(`{"username":"admin","password":"admin"}`)
+	req, err := http.NewRequest("POST", "/v1/examples/auth", bytes.NewBuffer(jsonStr))
+
+	assert.Equal(t, err, nil)
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Content-Length", strconv.Itoa(len(jsonStr)))
+
+	w := httptest.NewRecorder()
+	tests.Application.ServeHTTP(w, req)
+
+	authResponse := &examples.AuthResponse{}
+
+	err = json.Unmarshal(w.Body.Bytes(), authResponse)
+	assert.Equal(t, err, nil)
+
+	assert.Equal(t, authResponse.GetMessage(), "success")
+	assert.Equal(t, authResponse.Data.Username, "admin")
+	assert.Equal(t, authResponse.Data.Password, "admin")
+
 }
 
 func callAuthAPI(username, password string) *httptest.ResponseRecorder {
