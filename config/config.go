@@ -34,8 +34,6 @@ func InitConfig(configPath string) error {
 		return err
 	}
 
-	logy.Debug("Config file path: %v\n", v.ConfigFileUsed())
-
 	return nil
 }
 

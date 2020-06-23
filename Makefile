@@ -8,7 +8,9 @@ b:
 s:
 	go run main.go server
 test:
-	go test -v tests/*
+	go test -v ./... 2>&1 | go-junit-report > report.xml
+coverage:
+	gocov test ./... | gocov-xml > coverage.xml
 docker:
 	docker build -t go-service:dev .
 up:

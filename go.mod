@@ -3,12 +3,15 @@ module go_service
 go 1.14
 
 require (
+	github.com/AlekSi/gocov-xml v0.0.0-20190121064608-3a14fb1c4737 // indirect
+	github.com/axw/gocov v1.0.0 // indirect
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/google/uuid v1.1.1
 	github.com/jinzhu/gorm v1.9.4
+	github.com/jstemmer/go-junit-report v0.9.1 // indirect
 	github.com/loopfz/gadgeto v0.9.0
 	github.com/magiconair/properties v1.8.0
 	github.com/sirupsen/logrus v1.2.0
