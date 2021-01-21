@@ -8,13 +8,13 @@ import (
 
 var db *gorm.DB
 
-func InitDB(appConfig *AppConfig) error {
+func InitDB(appConfig *AppConfig) (err error) {
 
 	if appConfig.Environment == EnvTest && appConfig.Db.Driver == "" {
 		return nil
 	}
 
-	db, err := gorm.Open(appConfig.Db.Driver, appConfig.Db.ConnectionString)
+	db, err = gorm.Open(appConfig.Db.Driver, appConfig.Db.ConnectionString)
 	if err != nil {
 		logy.Error("InitDB Failed:" + err.Error())
 		return err
