@@ -13,13 +13,13 @@ func (t Task) String() string {
 	return string(_dt)
 }
 
-type TaskSatus struct {
+type TaskStatus struct {
 	ErrType string `json:"err_type" binding:"required"` // 错误类型
 	Url     string `json:"url" binding:"required"`      // Url
 	Status  string `json:"status" binding:"required"`   // 状态
 }
 
-func (t TaskSatus) String() string {
+func (t TaskStatus) String() string {
 	_dt, _ := json.Marshal(t)
 	return string(_dt)
 }

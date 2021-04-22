@@ -5,7 +5,7 @@ import (
 	"github.com/loopfz/gadgeto/tonic"
 )
 
-type ResponseMessage interface {
+type Message interface {
 	SetMessage(message string)
 	GetMessage() string
 }
@@ -93,7 +93,7 @@ func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
 
 func TonicRenderResponse(ctx *gin.Context, statusCode int, payload interface{}) {
 
-	if payload, ok := payload.(ResponseMessage); ok {
+	if payload, ok := payload.(Message); ok {
 		if payload.GetMessage() == "" {
 			payload.SetMessage("success")
 		}

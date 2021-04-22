@@ -1,9 +1,10 @@
 package config
 
 import (
+	"time"
+
 	"github.com/jinzhu/gorm"
 	logy "github.com/sirupsen/logrus"
-	"time"
 )
 
 var db *gorm.DB

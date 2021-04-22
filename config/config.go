@@ -8,7 +8,7 @@ import (
 
 var appConfig *AppConfig
 
-// Init is an exported method that takes the config from the config file
+// InitConfig Init is an exported method that takes the config from the config file
 // and unmarshal it into AppConfig struct
 func InitConfig(configPath string) error {
 	v := viper.New()

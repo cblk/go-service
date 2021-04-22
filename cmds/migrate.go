@@ -3,10 +3,11 @@ package cmds
 import (
 	"errors"
 
-	logy "github.com/sirupsen/logrus"
 	"go_service/config"
 	"go_service/migrate"
 	"go_service/migrate/migrations"
+
+	logy "github.com/sirupsen/logrus"
 
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/cobra"

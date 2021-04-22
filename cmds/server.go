@@ -3,9 +3,10 @@ package cmds
 import (
 	"fmt"
 
-	logy "github.com/sirupsen/logrus"
 	"go_service/api"
 	"go_service/config"
+
+	logy "github.com/sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 )

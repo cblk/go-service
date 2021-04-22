@@ -1,10 +1,11 @@
 package v1
 
 import (
-	"github.com/loopfz/gadgeto/tonic"
-	"github.com/wI2L/fizz"
 	"go_service/api/v1/examples"
 	"go_service/api/v1/response"
+
+	"github.com/loopfz/gadgeto/tonic"
+	"github.com/wI2L/fizz"
 )
 
 func InitRoutes(r *fizz.Fizz) {

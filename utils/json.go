@@ -26,7 +26,7 @@ func StructToString(obj interface{}) (string, error) {
 		return "", err
 	}
 
-	return string(eValue), nil
+	return eValue, nil
 }
 
 func JsonMarshal(value map[string]interface{}) (string, error) {

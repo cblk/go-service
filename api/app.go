@@ -1,6 +1,15 @@
 package api
 
 import (
+	"os"
+	"reflect"
+	"regexp"
+	"strings"
+
+	"go_service/api/v1"
+	responseV1 "go_service/api/v1/response"
+	"go_service/config"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -8,13 +17,6 @@ import (
 	logy "github.com/sirupsen/logrus"
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
-	"go_service/api/v1"
-	responseV1 "go_service/api/v1/response"
-	"go_service/config"
-	"os"
-	"reflect"
-	"regexp"
-	"strings"
 )
 
 func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
@@ -25,7 +27,7 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	engine.Use(cors.Default())
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
-	engine.Use(APIVersion())
+	engine.Use(Version())
 
 	// Serve static files under static folder
 	// for OpenAPI documentations
@@ -72,7 +74,7 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	return engine
 }
 
-func APIVersion() gin.HandlerFunc {
+func Version() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		path := c.FullPath()
@@ -88,7 +90,7 @@ func APIVersion() gin.HandlerFunc {
 	}
 }
 
-// Distribute binding & error handling & render handling to implementations in different API versions
+// TonicResponseErrorHook Distribute binding & error handling & render handling to implementations in different API versions
 func TonicResponseErrorHook(ctx *gin.Context, err error) (int, interface{}) {
 	apiVersion := ctx.GetString("api_version")
 	switch apiVersion {

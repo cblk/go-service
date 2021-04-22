@@ -1,8 +1,9 @@
 package examples
 
 import (
-	"github.com/gin-gonic/gin"
 	"go_service/api/v1/response"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Error(ctx *gin.Context) error {

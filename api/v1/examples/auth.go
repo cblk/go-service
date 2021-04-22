@@ -1,9 +1,10 @@
 package examples
 
 import (
-	"github.com/gin-gonic/gin"
 	"go_service/api/v1/response"
 	"go_service/models"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AuthInput struct {

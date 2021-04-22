@@ -1,10 +1,12 @@
 package cmds
 
 import (
+	"os"
+
+	"go_service/config"
+
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"go_service/config"
-	"os"
 )
 
 var configPath string

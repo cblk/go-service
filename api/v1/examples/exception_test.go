@@ -1,11 +1,12 @@
 package examples_test
 
 import (
-	"go_service/tests"
-	v1 "go_service/tests/api/v1"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"go_service/tests"
+	v1 "go_service/tests/api/v1"
 )
 
 func TestExceptionResponse(t *testing.T) {

@@ -13,7 +13,7 @@ func M2(db *gorm.DB) *gormigrate.Gormigrate {
 		Status     string `json:"status,omit" db:"status" gorm:"type:varchar(20);index;not null"`           // 任务状态
 		ErrType    uint   `json:"err_type,omit" db:"err_type" gorm:"index;not null"`                        // 任务错误类型(404，500等)
 		Type       string `json:"type,omit" db:"type:varchar(20);type;not null"`                            // 任务类型(article, image)
-		AppId      string `json:"app_id,omit" db:"app_id" gorm:"type:varchar(100);index;not null"`          // APPID
+		AppId      string `json:"app_id,omit" db:"app_id" gorm:"type:varchar(100);index;not null"`          // AppID
 		TaskID     string `json:"task_id,omit" db:"task_id" gorm:"type:varchar(100);unique_index;not null"` // 主任务 ID  (uuid.V4().hex())
 		Priority   uint8  `json:"priority,omit" db:"priority" gorm:"not null"`                              // 任务优先度 1-9
 		Input      string `json:"input,omit" db:"input" gorm:"type:text;not null"`                          // 任务参数

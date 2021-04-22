@@ -2,10 +2,12 @@ package v1
 
 import (
 	"encoding/json"
-	"github.com/magiconair/properties/assert"
-	"go_service/api/v1/response"
 	"net/http/httptest"
 	"testing"
+
+	"go_service/api/v1/response"
+
+	"github.com/magiconair/properties/assert"
 )
 
 func AssertValidationErrorResponse(t *testing.T, r *httptest.ResponseRecorder, fieldName, fieldMessage string) {

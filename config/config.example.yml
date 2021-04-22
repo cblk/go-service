@@ -1,9 +1,9 @@
 environment: "debug"
 db:
-  driver: "mysql"
-  connection: "root:mypass@(192.168.1.100:30036)/turing"
+    driver: "mysql"
+    connection: "root:mypass@(host.docker.internal:3306)/go_service"
 log:
-  level: "debug"
+    level: "debug"
 http:
-  host: "0.0.0.0"
-  port: "8080"
+    host: "0.0.0.0"
+    port: "8080"

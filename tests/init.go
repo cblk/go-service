@@ -1,11 +1,12 @@
 package tests
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"go_service/api"
 	"go_service/cmds"
 	"go_service/config"
+
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 var Application *gin.Engine = nil

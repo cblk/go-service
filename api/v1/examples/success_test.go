@@ -2,12 +2,14 @@ package examples_test
 
 import (
 	"encoding/json"
-	"github.com/magiconair/properties/assert"
-	"go_service/api/v1/examples"
-	"go_service/tests"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"go_service/api/v1/examples"
+	"go_service/tests"
+
+	"github.com/magiconair/properties/assert"
 )
 
 func TestSuccessResponse(t *testing.T) {

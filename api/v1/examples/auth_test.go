@@ -3,16 +3,18 @@ package examples_test
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/magiconair/properties/assert"
-	"go_service/api/v1/examples"
-	"go_service/tests"
-	"go_service/tests/api/v1"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strconv"
 	"strings"
 	"testing"
+
+	"go_service/api/v1/examples"
+	"go_service/tests"
+	"go_service/tests/api/v1"
+
+	"github.com/magiconair/properties/assert"
 )
 
 func TestAuthNoUsername(t *testing.T) {

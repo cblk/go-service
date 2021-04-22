@@ -2,8 +2,10 @@ package examples
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
+
 	"go_service/api/v1/response"
+
+	"github.com/gin-gonic/gin"
 )
 
 func Exception(ctx *gin.Context) error {
