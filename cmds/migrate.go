@@ -9,8 +9,8 @@ import (
 
 	logy "github.com/sirupsen/logrus"
 
-	"github.com/jinzhu/gorm"
 	"github.com/spf13/cobra"
+	"gorm.io/gorm"
 )
 
 var migrationInitialized bool

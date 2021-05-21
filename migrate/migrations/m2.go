@@ -1,8 +1,8 @@
 package migrations
 
 import (
-	"github.com/jinzhu/gorm"
-	"gopkg.in/gormigrate.v1"
+	"github.com/go-gormigrate/gormigrate/v2"
+	"gorm.io/gorm"
 )
 
 func M2(db *gorm.DB) *gormigrate.Gormigrate {
@@ -26,10 +26,10 @@ func M2(db *gorm.DB) *gormigrate.Gormigrate {
 		{
 			ID: "m2_task",
 			Migrate: func(tx *gorm.DB) error {
-				return tx.AutoMigrate(&Task{}).Error
+				return tx.AutoMigrate(&Task{})
 			},
 			Rollback: func(tx *gorm.DB) error {
-				return tx.DropTable("tasks").Error
+				return tx.Migrator().DropTable("tasks")
 			},
 		},
 	})

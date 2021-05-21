@@ -3,7 +3,7 @@ package migrate
 import (
 	logy "github.com/sirupsen/logrus"
 
-	"gopkg.in/gormigrate.v1"
+	"github.com/go-gormigrate/gormigrate/v2"
 )
 
 var migrations []*gormigrate.Gormigrate

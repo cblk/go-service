@@ -8,7 +8,7 @@ import (
 	logy "github.com/sirupsen/logrus"
 
 	"github.com/google/uuid"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 func NewTask() *Task {
