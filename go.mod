@@ -19,4 +19,4 @@ require (
 	gorm.io/gorm v1.21.10
 )
 
-replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.2-0.20200623025716-393d1a68186b
+replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.2-0.20200628075840-6f87a797e771
