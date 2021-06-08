@@ -1,36 +1,25 @@
 package migrate
 
 import (
-	logy "github.com/sirupsen/logrus"
+	"go_service/migrate/migrations"
+
+	"gorm.io/gorm"
 
 	"github.com/go-gormigrate/gormigrate/v2"
 )
 
-var migrations []*gormigrate.Gormigrate
+var migrationList []*gormigrate.Migration
 
-func Migrate() error {
-	for _, migration := range migrations {
-		err := migration.Migrate()
-		if err != nil {
-			logy.Errorf("Migrate: %v", err)
-			return err
-		}
-	}
-
-	return nil
+func Migrate(dbi *gorm.DB) error {
+	m := gormigrate.New(dbi, gormigrate.DefaultOptions, migrationList)
+	return m.Migrate()
 }
 
-func Rollback() error {
-	lastMigration := migrations[len(migrations)-1]
-	err := lastMigration.RollbackLast()
-	if err != nil {
-		logy.Errorf("Migrate: %v", err)
-		return err
-	}
-
-	return nil
+func Rollback(dbi *gorm.DB) error {
+	m := gormigrate.New(dbi, gormigrate.DefaultOptions, migrationList)
+	return m.RollbackLast()
 }
 
-func RegisterMigration(migration *gormigrate.Gormigrate) {
-	migrations = append(migrations, migration)
+func RegisterMigrations() {
+	migrationList = append(migrationList, migrations.M1)
 }

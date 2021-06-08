@@ -5,7 +5,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func M2(db *gorm.DB) *gormigrate.Gormigrate {
+var M1 *gormigrate.Migration
+
+func init() {
 	type Task struct {
 		ID         uint   `json:"id,omit" gorm:"primary_key"`
 		CreatedAt  uint   `json:"created_at,omit" db:"created_at" gorm:"index;not null"`                    // 每级任务生成时间
@@ -21,16 +23,13 @@ func M2(db *gorm.DB) *gormigrate.Gormigrate {
 		RetryNum   int    `json:"retry_num,omit" db:"retry_num" gorm:"not null"`                            // 任务重试次数
 		Version    string `json:"version,omit" db:"version" gorm:"type:varchar(20);not null"`               // 任务版本
 	}
-
-	return gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
-		{
-			ID: "m2_task",
-			Migrate: func(tx *gorm.DB) error {
-				return tx.AutoMigrate(&Task{})
-			},
-			Rollback: func(tx *gorm.DB) error {
-				return tx.Migrator().DropTable("tasks")
-			},
+	M1 = &gormigrate.Migration{
+		ID: "m1",
+		Migrate: func(tx *gorm.DB) error {
+			return tx.AutoMigrate(&Task{})
 		},
-	})
+		Rollback: func(tx *gorm.DB) error {
+			return tx.Migrator().DropTable("tasks")
+		},
+	}
 }

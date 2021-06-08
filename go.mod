@@ -9,14 +9,12 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/google/uuid v1.1.1
-	github.com/jinzhu/gorm v1.9.4 // indirect
 	github.com/loopfz/gadgeto v0.9.0
 	github.com/magiconair/properties v1.8.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.6
 	github.com/spf13/viper v1.4.0
 	github.com/wI2L/fizz v0.13.4
-	gopkg.in/gormigrate.v1 v1.4.0
 	gorm.io/driver/mysql v1.0.1
 	gorm.io/gorm v1.21.10
 )

@@ -1,7 +1,7 @@
 package config
 
 const (
-	EnvProduction = "production"
+	EnvProduction = "release"
 	EnvDebug      = "debug"
 	EnvTest       = "test"
 )

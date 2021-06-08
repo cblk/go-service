@@ -5,7 +5,6 @@ import (
 
 	"go_service/config"
 	"go_service/migrate"
-	"go_service/migrate/migrations"
 
 	logy "github.com/sirupsen/logrus"
 
@@ -28,36 +27,35 @@ func InitMigration(dbi *gorm.DB) {
 	// which cannot be indexed in MySQL before 5.7
 	// so we build the migration table using VARCHAR(150)
 	// here before the table initialization inside gorm-migrate
-
 	type Migration struct {
 		Id string `gorm:"type:varchar(150);primary_key"`
 	}
 
-	dbi.AutoMigrate(&Migration{})
+	if err := dbi.AutoMigrate(&Migration{}); err != nil {
+		panic(err)
+	}
 
 	// Register the actual migrations functions below
-
-	migrate.RegisterMigration(migrations.M2(dbi))
-
+	migrate.RegisterMigrations()
 	migrationInitialized = true
 }
 
-func Migrate() error {
+func Migrate(dbi *gorm.DB) error {
 
 	if !migrationInitialized {
 		return errors.New("migration not initialized")
 	}
 
-	return migrate.Migrate()
+	return migrate.Migrate(dbi)
 }
 
-func Rollback() error {
+func Rollback(dbi *gorm.DB) error {
 
 	if !migrationInitialized {
 		return errors.New("migration not initialized")
 	}
 
-	return migrate.Rollback()
+	return migrate.Rollback(dbi)
 }
 
 var _action = "migrate"
@@ -74,10 +72,9 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		logy.Info("migrate begin")
 		InitMigration(config.GetDB())
-
 		switch _action {
 		case "migrate":
-			err := Migrate()
+			err := Migrate(config.GetDB())
 			if err != nil {
 				logy.Errorf("Migrate failed, error:%v", err)
 				return err
@@ -87,7 +84,7 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 
 			return nil
 		case "rollback":
-			err := Rollback()
+			err := Rollback(config.GetDB())
 			if err != nil {
 				logy.Errorf("Rollback failed, error:%v", err)
 				return err
