@@ -21,7 +21,7 @@ import (
 
 func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 
-	gin.SetMode(appConfig.Environment)
+	gin.SetMode(appConfig.Log.GinMode)
 
 	engine := gin.New()
 	engine.Use(cors.Default())
