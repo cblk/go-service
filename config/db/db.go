@@ -1,10 +1,12 @@
-package config
+package db
 
 import (
 	"database/sql"
 	"log"
 	"os"
 	"time"
+
+	"go_service/config"
 
 	logy "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
@@ -14,9 +16,9 @@ import (
 
 var db *gorm.DB
 
-func InitDB(appConfig *AppConfig) (err error) {
+func InitDB(appConfig *config.AppConfig) (err error) {
 
-	if appConfig.Environment == EnvTest && appConfig.Db.Driver == "" {
+	if appConfig.Environment == config.EnvTest && appConfig.Db.Driver == "" {
 		return nil
 	}
 

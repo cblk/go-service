@@ -23,4 +23,6 @@ type AppConfig struct {
 		Host string `mapstructure:"host"`
 		Port string `mapstructure:"port"`
 	} `mapstructure:"http"`
+
+	AllowOrigins []string `mapstructure:"allow_origins"`
 }

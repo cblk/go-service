@@ -7,10 +7,10 @@ import (
 	"strings"
 
 	"go_service/api/v1"
+	"go_service/api/v1/middleware"
 	responseV1 "go_service/api/v1/response"
 	"go_service/config"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
@@ -24,7 +24,8 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	gin.SetMode(appConfig.Log.GinMode)
 
 	engine := gin.New()
-	engine.Use(cors.Default())
+	engine.Use(middleware.SetResponseHeader())
+	engine.Use(middleware.Cors())
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
 	engine.Use(Version())
