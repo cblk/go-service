@@ -1,3 +1,4 @@
+project_name=go_service
 # 配置文件目录的绝对路径
 config = ~/GolandProjects/go_service_work/config
 
@@ -12,7 +13,7 @@ test:
 coverage:
 	gocov test ./... | gocov-xml > coverage.xml
 docker:
-	docker build -t go-service:dev .
+	docker build -t $(project_name):dev .
 up:
 	docker-compose up -d
 restart:
@@ -20,4 +21,4 @@ restart:
 down:
 	docker-compose down
 server:
-	docker run -d --rm --name go-service-api -p 8080:8080 -v $(config):/app/config -e WORK=server -e ENV=config go-service:dev
+	docker run -d --rm --name $(project_name)-api -p 8080:8080 -v $(config):/app/config -e WORK=server -e ENV=config $(project_name):dev

@@ -49,7 +49,7 @@ steps:
         settings:
             mode: upgrade
             chart: ./
-            release: {REPLACE}
+            release: { REPLACE }
             kube_api_server: https://192.168.1.136:6443
             kube_token:
                 from_secret: token_release1
@@ -109,7 +109,7 @@ steps:
             branch: staging
             remote_name: deploy
             commit: true
-            commit_message: drone deploy i{REPLACE}=${DRONE_TAG:latest}
+            commit_message: drone deploy {REPLACE}=${DRONE_TAG:latest}
             author_name: drone
             author_email: drone@yuanben.org
             ssh_key:

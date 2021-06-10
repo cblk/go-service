@@ -15,7 +15,7 @@ type AppConfig struct {
 	} `mapstructure:"db"`
 
 	Log struct {
-		Level string `mapstructure:"level"`
+		Level   string `mapstructure:"level"`
 		GinMode string `mapstructure:"ginMode"`
 	} `mapstructure:"log"`
 
