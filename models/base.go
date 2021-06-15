@@ -51,8 +51,8 @@ func (b *Base) Count(value interface{}, query interface{}, args ...interface{}) 
 	return count
 }
 
-func Page(in PageInput, dest, query interface{}, args ...interface{}) error {
-	tx := db.GetDB().Offset(in.PageID * in.PageSize).Limit(in.PageSize)
+func Page(tx *gorm.DB, in PageInput, dest, query interface{}, args ...interface{}) error {
+	tx = tx.Offset(in.PageID * in.PageSize).Limit(in.PageSize)
 	if query != nil {
 		tx = tx.Where(query, args...)
 	}

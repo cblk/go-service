@@ -17,8 +17,8 @@ var ServerCmd = &cobra.Command{
 	Aliases: []string{"s"},
 	Short:   "node server",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		InitServerFromAppConfig()
 		conf := config.GetConfig()
-
 		logy.Info("start service server")
 		app := api.GetHttpApplication(conf)
 		address := fmt.Sprintf("%s:%s", conf.Http.Host, conf.Http.Port)
@@ -38,6 +38,5 @@ func InitServerFromAppConfig() {
 }
 
 func init() {
-	cobra.OnInitialize(InitServerFromAppConfig)
 	RootCmd.AddCommand(ServerCmd)
 }
