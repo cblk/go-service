@@ -3,6 +3,8 @@ module go_service
 go 1.14
 
 require (
+	github.com/aliyun/aliyun-oss-go-sdk v2.1.8+incompatible
+	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0

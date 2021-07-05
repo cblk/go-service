@@ -10,3 +10,13 @@ http:
     port: "8080"
 allow_origins:
     - https://go.service
+oss:
+    endpoint: "oss-cn-shanghai.aliyuncs.com"
+    access_key_id: "xxxxxxxxxxxxxxxxxxxxx"
+    access_key_secret: "xxxxxxxxxxxxxxxxxxxxx"
+    bucket: proof-staging
+    path_prefix: "files/"
+    callback_url: "https://ip.yuanben.site"
+file:
+    storage_type: 1
+    storage_url: "https://file.hndip.cn"

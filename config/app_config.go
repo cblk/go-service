@@ -25,4 +25,19 @@ type AppConfig struct {
 	} `mapstructure:"http"`
 
 	AllowOrigins []string `mapstructure:"allow_origins"`
+
+	File struct {
+		StorageType int    `mapstructure:"storage_type"`
+		StorageUrl  string `mapstructure:"storage_url"`
+	} `mapstructure:"file"`
+
+	Oss struct {
+		Endpoint              string `mapstructure:"endpoint"`
+		AccessKeyID           string `mapstructure:"access_key_id"`
+		AccessKeySecret       string `mapstructure:"access_key_secret"`
+		Bucket                string `mapstructure:"bucket"`
+		PathPrefix            string `mapstructure:"path_prefix"`
+		CallBackUrl           string `mapstructure:"callback_url"`
+		UploadFileCallbackUrl string `mapstructure:"upload_file_callback_url"`
+	} `mapstructure:"oss"`
 }
