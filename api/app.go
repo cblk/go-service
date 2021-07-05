@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	middleware2 "go_service/api/middleware"
+	"go_service/api/middleware"
 	"go_service/api/response"
 	"go_service/api/v1"
 	"go_service/config"
@@ -24,8 +24,8 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	gin.SetMode(appConfig.Log.GinMode)
 
 	engine := gin.New()
-	engine.Use(middleware2.SetResponseHeader())
-	engine.Use(middleware2.Cors())
+	engine.Use(middleware.SetResponseHeader())
+	engine.Use(middleware.Cors())
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
 	engine.Use(Version())
