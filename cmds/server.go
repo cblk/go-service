@@ -5,12 +5,12 @@ import (
 
 	"go_service/api"
 	"go_service/config"
-	"go_service/config/db"
-	"go_service/config/origin"
+	"go_service/internal/service/db"
+	"go_service/internal/service/origin"
 	"go_service/internal/service/session"
 	"go_service/internal/service/storage/oss"
 
-	logy "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 )
@@ -22,10 +22,10 @@ var ServerCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		InitServerFromAppConfig()
 		conf := config.GetConfig()
-		logy.Info("start service server")
+		logrus.Info("start service server")
 		app := api.GetHttpApplication(conf)
 		address := fmt.Sprintf("%s:%s", conf.Http.Host, conf.Http.Port)
-		logy.Info("server url:" + address)
+		logrus.Info("server url:" + address)
 
 		return app.Run(address)
 	},

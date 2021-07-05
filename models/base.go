@@ -1,7 +1,7 @@
 package models
 
 import (
-	"go_service/config/db"
+	"go_service/internal/service/db"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"

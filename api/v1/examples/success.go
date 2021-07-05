@@ -1,13 +1,13 @@
 package examples
 
 import (
-	"go_service/api/v1/response"
+	response2 "go_service/api/response"
 
 	"github.com/gin-gonic/gin"
 )
 
 type SuccessResponse struct {
-	response.Response
+	response2.Response
 }
 
 func Success(ctx *gin.Context) (*SuccessResponse, error) {

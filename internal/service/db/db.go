@@ -8,7 +8,7 @@ import (
 
 	"go_service/config"
 
-	logy "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -24,7 +24,7 @@ func InitDB(appConfig *config.AppConfig) (err error) {
 
 	sqlDB, err := sql.Open(appConfig.Db.Driver, appConfig.Db.ConnectionString)
 	if err != nil {
-		logy.Error("InitDB sql.Open error:" + err.Error())
+		logrus.Error("InitDB sql.Open error:" + err.Error())
 		return err
 	}
 	sqlDB.SetMaxIdleConns(20)
@@ -44,7 +44,7 @@ func InitDB(appConfig *config.AppConfig) (err error) {
 	db, err = gorm.Open(mysql.New(mysql.Config{Conn: sqlDB}),
 		&gorm.Config{Logger: newLogger})
 	if err != nil {
-		logy.Error("InitDB Failed:" + err.Error())
+		logrus.Error("InitDB Failed:" + err.Error())
 		return err
 	}
 

@@ -3,10 +3,10 @@ package cmds
 import (
 	"errors"
 
-	"go_service/config/db"
+	"go_service/internal/service/db"
 	"go_service/migrate"
 
-	logy "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
@@ -70,30 +70,30 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	Aliases: []string{"m"},
 	Short:   "migrate",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		logy.Info("migrate begin")
+		logrus.Info("migrate begin")
 		InitMigration(db.GetDB())
 		switch _action {
 		case "migrate":
 			err := Migrate(db.GetDB())
 			if err != nil {
-				logy.Errorf("Migrate failed, error:%v", err)
+				logrus.Errorf("Migrate failed, error:%v", err)
 				return err
 			}
 
-			logy.Info("Migrate succeed!")
+			logrus.Info("Migrate succeed!")
 
 			return nil
 		case "rollback":
 			err := Rollback(db.GetDB())
 			if err != nil {
-				logy.Errorf("Rollback failed, error:%v", err)
+				logrus.Errorf("Rollback failed, error:%v", err)
 				return err
 			}
 
-			logy.Info("Rollback succeed!")
+			logrus.Info("Rollback succeed!")
 		default:
 			err := errors.New("error action")
-			logy.Errorf("error action:%v", err)
+			logrus.Errorf("error action:%v", err)
 			return err
 		}
 

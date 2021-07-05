@@ -2,7 +2,7 @@ package config
 
 import (
 	_ "github.com/go-sql-driver/mysql"
-	logy "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
@@ -23,14 +23,14 @@ func InitConfig(configPath string) error {
 	}
 
 	if err := v.ReadInConfig(); err != nil {
-		logy.Error("Read config file failed:" + err.Error())
+		logrus.Error("Read config file failed:" + err.Error())
 		return err
 	}
 
 	appConfig = &AppConfig{}
 
 	if err := v.Unmarshal(appConfig); err != nil {
-		logy.Error("Parse config file failed:" + err.Error())
+		logrus.Error("Parse config file failed:" + err.Error())
 		return err
 	}
 

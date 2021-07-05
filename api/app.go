@@ -6,15 +6,15 @@ import (
 	"regexp"
 	"strings"
 
+	middleware2 "go_service/api/middleware"
+	"go_service/api/response"
 	"go_service/api/v1"
-	"go_service/api/v1/middleware"
-	responseV1 "go_service/api/v1/response"
 	"go_service/config"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/loopfz/gadgeto/tonic"
-	logy "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/wI2L/fizz"
 	"github.com/wI2L/fizz/openapi"
 )
@@ -24,8 +24,8 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	gin.SetMode(appConfig.Log.GinMode)
 
 	engine := gin.New()
-	engine.Use(middleware.SetResponseHeader())
-	engine.Use(middleware.Cors())
+	engine.Use(middleware2.SetResponseHeader())
+	engine.Use(middleware2.Cors())
 	engine.Use(gin.LoggerWithWriter(os.Stdout))
 	engine.Use(gin.RecoveryWithWriter(os.Stdout))
 	engine.Use(Version())
@@ -66,7 +66,7 @@ func GetHttpApplication(appConfig *config.AppConfig) *gin.Engine {
 	if len(fizzEngine.Errors()) != 0 {
 
 		for err := range fizzEngine.Errors() {
-			logy.Error(err)
+			logrus.Error(err)
 		}
 
 		panic("fizz initialization error")
@@ -96,7 +96,7 @@ func TonicResponseErrorHook(ctx *gin.Context, err error) (int, interface{}) {
 	apiVersion := ctx.GetString("api_version")
 	switch apiVersion {
 	case "1":
-		return responseV1.TonicErrorResponse(ctx, err)
+		return response.TonicErrorResponse(ctx, err)
 	default:
 		return tonic.DefaultErrorHook(ctx, err)
 	}
@@ -106,7 +106,7 @@ func TonicRenderHook(ctx *gin.Context, statusCode int, payload interface{}) {
 	apiVersion := ctx.GetString("api_version")
 	switch apiVersion {
 	case "1":
-		responseV1.TonicRenderResponse(ctx, statusCode, payload)
+		response.TonicRenderResponse(ctx, statusCode, payload)
 	default:
 		tonic.DefaultRenderHook(ctx, statusCode, payload)
 	}

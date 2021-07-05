@@ -72,22 +72,19 @@ func TonicErrorResponse(ctx *gin.Context, err error) (int, interface{}) {
 		// We return only the first error
 		for _, err := range validationErr {
 			validationErrorResponse.SetFieldName(err.Field())
-			validationErrorResponse.SetFieldMessage(err.Tag())
+			validationErrorResponse.SetMessage(err.Tag())
 			return 400, validationErrorResponse
 		}
 		validationErrorResponse.SetFieldName(e.GetField())
-		validationErrorResponse.SetFieldMessage(e.GetMessage())
+		validationErrorResponse.SetMessage(e.GetMessage())
 		return 400, validationErrorResponse
 	}
-
 	if err, ok := err.(ErrorResponseMessage); ok {
 		return 400, err
 	}
-
 	if err, ok := err.(ExceptionResponseMessage); ok {
 		return 500, err
 	}
-
 	return 500, NewExceptionResponse(err)
 }
 

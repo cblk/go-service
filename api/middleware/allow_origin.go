@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"go_service/config"
-	"go_service/config/origin"
+	"go_service/internal/service/origin"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +17,7 @@ func SetResponseHeader() gin.HandlerFunc {
 			cg.Header("Access-Control-Allow-Origin", reqOrigin)
 		}
 
-		if reqOrigin != "" && config.GetConfig().Environment != config.EnvProduction {
+		if reqOrigin != "" && config.GetConfig().Environment != config.EnvRelease {
 			cg.Header("Access-Control-Allow-Origin", reqOrigin)
 		}
 
@@ -33,8 +33,7 @@ func Cors() gin.HandlerFunc {
 		method := c.Request.Method //请求方法
 		//放行所有OPTIONS方法
 		if method == "OPTIONS" {
-			c.JSON(http.StatusNoContent, "Options Request!")
-			c.Abort()
+			c.AbortWithStatusJSON(http.StatusNoContent, gin.H{"message": "Options Request!"})
 		} else {
 			c.Next() //  处理请求
 		}

@@ -22,7 +22,7 @@ import (
 	"time"
 
 	"go_service/config"
-	"go_service/config/db"
+	"go_service/internal/service/db"
 
 	"github.com/gorilla/sessions"
 	"github.com/quasoft/memstore"

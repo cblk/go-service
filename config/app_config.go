@@ -1,9 +1,9 @@
 package config
 
 const (
-	EnvProduction = "release"
-	EnvDebug      = "debug"
-	EnvTest       = "test"
+	EnvRelease = "release"
+	EnvDebug   = "debug"
+	EnvTest    = "test"
 )
 
 type AppConfig struct {
