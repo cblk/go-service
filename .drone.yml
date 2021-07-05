@@ -96,7 +96,7 @@ steps:
         settings:
             mode: upgrade
             chart: ./
-            release: apps
+            release: {REPLACE}
             kube_api_server: https://192.168.1.115:6443
             kube_token:
                 from_secret: token_beta
