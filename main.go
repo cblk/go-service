@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go_service/cmds"
+	"go-service/cmds"
 )
 
 func main() {

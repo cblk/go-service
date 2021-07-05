@@ -1,10 +1,10 @@
 package storage
 
 import (
-	"go_service/config"
-	"go_service/internal/service/storage/local"
-	"go_service/internal/service/storage/oss"
-	"go_service/internal/service/storage/request"
+	"go-service/config"
+	"go-service/internal/service/storage/local"
+	"go-service/internal/service/storage/oss"
+	"go-service/internal/service/storage/request"
 )
 
 const (

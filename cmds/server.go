@@ -3,12 +3,12 @@ package cmds
 import (
 	"fmt"
 
-	"go_service/api"
-	"go_service/config"
-	"go_service/internal/service/db"
-	"go_service/internal/service/origin"
-	"go_service/internal/service/session"
-	"go_service/internal/service/storage/oss"
+	"go-service/api"
+	"go-service/config"
+	"go-service/internal/service/db"
+	"go-service/internal/service/origin"
+	"go-service/internal/service/session"
+	"go-service/internal/service/storage/oss"
 
 	"github.com/sirupsen/logrus"
 

@@ -1,4 +1,4 @@
-project_name=go_service
+project_name=go-service
 # 配置文件目录的绝对路径
 config = ~/GolandProjects/go_service_work/config
 

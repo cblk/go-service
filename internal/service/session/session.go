@@ -21,8 +21,8 @@ import (
 	"net/http"
 	"time"
 
-	"go_service/config"
-	"go_service/internal/service/db"
+	"go-service/config"
+	"go-service/internal/service/db"
 
 	"github.com/gorilla/sessions"
 	"github.com/quasoft/memstore"

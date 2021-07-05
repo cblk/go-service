@@ -1,7 +1,7 @@
 package migrations
 
 import (
-	"go_service/models"
+	"go-service/models"
 
 	"github.com/go-gormigrate/gormigrate/v2"
 	"gorm.io/gorm"

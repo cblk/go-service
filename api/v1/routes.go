@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"go_service/api/v1/examples"
+	"go-service/api/v1/examples"
 
 	"github.com/loopfz/gadgeto/tonic"
 	"github.com/wI2L/fizz"

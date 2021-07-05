@@ -1,7 +1,7 @@
 package oss
 
 import (
-	"go_service/config"
+	"go-service/config"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

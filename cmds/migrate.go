@@ -3,8 +3,8 @@ package cmds
 import (
 	"errors"
 
-	"go_service/internal/service/db"
-	"go_service/migrate"
+	"go-service/internal/service/db"
+	"go-service/migrate"
 
 	"github.com/sirupsen/logrus"
 

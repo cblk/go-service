@@ -3,8 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	"go_service/config"
-	"go_service/internal/service/origin"
+	"go-service/config"
+	"go-service/internal/service/origin"
 
 	"github.com/gin-gonic/gin"
 )

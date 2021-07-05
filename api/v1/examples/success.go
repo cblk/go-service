@@ -1,7 +1,7 @@
 package examples
 
 import (
-	"go_service/api/response"
+	"go-service/api/response"
 
 	"github.com/gin-gonic/gin"
 )

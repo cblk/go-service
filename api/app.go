@@ -6,10 +6,10 @@ import (
 	"regexp"
 	"strings"
 
-	"go_service/api/middleware"
-	"go_service/api/response"
-	"go_service/api/v1"
-	"go_service/config"
+	"go-service/api/middleware"
+	"go-service/api/response"
+	"go-service/api/v1"
+	"go-service/config"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"

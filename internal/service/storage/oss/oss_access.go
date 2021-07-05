@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"time"
 
-	"go_service/config"
+	"go-service/config"
 )
 
 var expireTime int64 = 30

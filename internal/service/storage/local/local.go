@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"go_service/internal/service/storage/request"
+	"go-service/internal/service/storage/request"
 )
 
 type StorageLocal struct {

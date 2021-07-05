@@ -1,6 +1,6 @@
 package origin
 
-import "go_service/config"
+import "go-service/config"
 
 var AllowOrigin map[string]bool
 

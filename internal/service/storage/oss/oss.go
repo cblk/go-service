@@ -9,8 +9,8 @@ import (
 	"net/url"
 	"strings"
 
-	"go_service/config"
-	"go_service/internal/service/storage/request"
+	"go-service/config"
+	"go-service/internal/service/storage/request"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

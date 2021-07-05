@@ -1,7 +1,7 @@
 package migrate
 
 import (
-	"go_service/migrate/migrations"
+	"go-service/migrate/migrations"
 
 	"gorm.io/gorm"
 
