@@ -5,7 +5,10 @@ import (
 
 	"go_service/api"
 	"go_service/config"
+	"go_service/config/db"
 	"go_service/config/origin"
+	"go_service/internal/service/session"
+	"go_service/internal/service/storage/oss"
 
 	logy "github.com/sirupsen/logrus"
 
@@ -31,8 +34,20 @@ var ServerCmd = &cobra.Command{
 func InitServerFromAppConfig() {
 	appConfig := config.GetConfig()
 
+	// Initialize database
+	if err := db.InitDB(appConfig); err != nil {
+		panic(err)
+	}
+	// Initialize session store
+	if err := session.InitSessionStore(appConfig); err != nil {
+		panic(err)
+	}
 	// Initialize cors allow origin
 	if err := origin.InitOrigin(appConfig); err != nil {
+		panic(err)
+	}
+	// Initialize oss
+	if err := oss.InitOss(appConfig); err != nil {
 		panic(err)
 	}
 }

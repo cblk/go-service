@@ -20,3 +20,9 @@ oss:
 file:
     storage_type: 1
     storage_url: "https://file.hndip.cn"
+session:
+    driver: "memory"
+    secret_key: "secret_key"
+    connection: ""
+    login_max_age_seconds: 36000
+    vault_max_age_seconds: 3600

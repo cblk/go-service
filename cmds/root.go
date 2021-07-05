@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"go_service/config"
-	"go_service/config/db"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -48,11 +47,6 @@ func InitAllFromAppConfig(appConfig *config.AppConfig) error {
 
 	// Initialize log format
 	if err := initLogFormat(appConfig); err != nil {
-		return err
-	}
-
-	// Initialize database
-	if err := db.InitDB(appConfig); err != nil {
 		return err
 	}
 

@@ -40,4 +40,12 @@ type AppConfig struct {
 		CallBackUrl           string `mapstructure:"callback_url"`
 		UploadFileCallbackUrl string `mapstructure:"upload_file_callback_url"`
 	} `mapstructure:"oss"`
+
+	Session struct {
+		Driver             string `mapstructure:"driver"`
+		Connection         string `mapstructure:"connection"`
+		SecretKey          string `mapstructure:"secret_key"`
+		LoginMaxAgeSeconds int    `mapstructure:"login_max_age_seconds"`
+		VaultMaxAgeSeconds int    `mapstructure:"vault_max_age_seconds"`
+	} `mapstructure:"session"`
 }

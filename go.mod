@@ -1,6 +1,6 @@
 module go_service
 
-go 1.14
+go 1.16
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.8+incompatible
@@ -10,12 +10,15 @@ require (
 	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/google/uuid v1.1.1
+	github.com/gorilla/sessions v1.2.1
 	github.com/loopfz/gadgeto v0.9.0
+	github.com/quasoft/memstore v0.0.0-20191010062613-2bce066d2b0b
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/cobra v0.0.6
 	github.com/spf13/viper v1.4.0
 	github.com/wI2L/fizz v0.13.4
-	gorm.io/driver/mysql v1.0.1
+	github.com/wader/gormstore/v2 v2.0.0
+	gorm.io/driver/mysql v1.0.4
 	gorm.io/gorm v1.21.10
 )
 
