@@ -1,8 +1,6 @@
 package models
 
 import (
-	"go-service/internal/service/db"
-
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -29,13 +27,12 @@ func (b *UUIDBase) BeforeCreate(tx *gorm.DB) (err error) {
 	return
 }
 
-func Count(value interface{}, query interface{}, args ...interface{}) int64 {
+func Count(tx *gorm.DB, query interface{}, args ...interface{}) int64 {
 	var count int64
-	tx := db.GetDB()
 	if query != nil {
-		tx.Model(value).Where(query, args...).Count(&count)
+		tx.Where(query, args...).Count(&count)
 	} else {
-		tx.Model(value).Count(&count)
+		tx.Count(&count)
 	}
 	return count
 }
