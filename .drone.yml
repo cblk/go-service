@@ -41,6 +41,7 @@ steps:
     -   name: tag
         image: python
         commands:
+            - pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
             - pip install -r requirements.txt
             - python revision.py {REPLACE}=${DRONE_TAG:latest}
     
@@ -88,6 +89,7 @@ steps:
     -   name: tag
         image: python
         commands:
+            - pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
             - pip install -r requirements.txt
             - python revision.py {REPLACE}=${DRONE_TAG:latest}
     
