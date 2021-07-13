@@ -3,6 +3,7 @@ package cmds
 import (
 	"errors"
 
+	"go-service/config"
 	"go-service/internal/service/db"
 	"go-service/migrate"
 
@@ -71,6 +72,10 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	Short:   "migrate",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		logrus.Info("migrate begin")
+		// Initialize database
+		if err := db.InitDB(config.GetConfig()); err != nil {
+			return err
+		}
 		InitMigration(db.GetDB())
 		switch _action {
 		case "migrate":
