@@ -69,6 +69,9 @@ func getPolicyToken(callbackUrl string) (*OssBodyParams, error) {
 	configStruct.Conditions = append(configStruct.Conditions, condition)
 
 	result, err := json.Marshal(configStruct)
+	if err != nil {
+		return nil, err
+	}
 	deByte := base64.StdEncoding.EncodeToString(result)
 	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(accessKeySecret))
 	_, err = io.WriteString(h, deByte)
@@ -154,7 +157,7 @@ func GetMD5FromNewAuthString(r *http.Request, strCallbackBody string) ([]byte, e
 
 	// Generate MD5 from the New Auth String
 	md5Ctx := md5.New()
-	md5Ctx.Write([]byte(strAuth))
+	_, _ = md5Ctx.Write([]byte(strAuth))
 	byteMD5 = md5Ctx.Sum(nil)
 
 	return byteMD5, nil
@@ -178,14 +181,7 @@ func VerifySignature(bytePublicKey []byte, byteMd5 []byte, authorization []byte)
 	pub := pubInterface.(*rsa.PublicKey)
 
 	errorVerifyPKCS1v15 := rsa.VerifyPKCS1v15(pub, crypto.MD5, byteMd5, authorization)
-	if errorVerifyPKCS1v15 != nil {
-		//printByteArray(byteMd5, "AuthMd5(fromNewAuthString)")
-		//printByteArray(bytePublicKey, "PublicKeyBase64")
-		//printByteArray(authorization, "AuthorizationFromRequest")
-		return false
-	}
-
-	return true
+	return errorVerifyPKCS1v15 == nil
 }
 
 type EscapeError string
@@ -215,7 +211,6 @@ const (
 // unescapePath : unescapes a string; the mode specifies, which section of the URL string is being unescaped.
 func unescapePath(s string, mode encoding) (string, error) {
 	// Count %, check that they're well-formed.
-	mode = encodePathSegment
 	n := 0
 	hasPlus := false
 	for i := 0; i < len(s); {
