@@ -13,7 +13,7 @@ type Base struct {
 
 type UUIDBase struct {
 	Base
-	UUID string `json:"uuid" gorm:"type:varchar(36);unique;not null" description:"业务id"`
+	UUID string `json:"uuid" gorm:"type:varchar(36);unique;not null" description:"uuid"`
 }
 
 type PageInput struct {

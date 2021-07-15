@@ -36,7 +36,7 @@ steps:
     -   name: clone
         image: alpine/git
         commands:
-            - git clone --depth=1 https://git.dev.yuanben.org/scm/helm/{REPLACE}.git .
+            - git clone --depth=1 https://git.dev.yuanben.org/scm/helm/{ HLEM_REPO_NAME }.git .
     
     -   name: tag
         image: python
@@ -50,7 +50,7 @@ steps:
         settings:
             mode: upgrade
             chart: ./
-            release: { REPLACE }
+            release: { HELM_RELEASE_NAME }
             kube_api_server: https://192.168.1.136:6443
             kube_token:
                 from_secret: token_release1
@@ -59,7 +59,7 @@ steps:
     -   name: push commit
         image: appleboy/drone-git-push
         settings:
-            remote: ssh://git@git.dev.yuanben.org:7999/helm/{REPLACE}.git
+            remote: ssh://git@git.dev.yuanben.org:7999/helm/{ HLEM_REPO_NAME }.git
             remote_name: deploy
             commit: true
             commit_message: drone deploy {REPLACE}=${DRONE_TAG:latest}
@@ -84,7 +84,7 @@ steps:
     -   name: clone
         image: alpine/git
         commands:
-            - git clone -b staging --depth=1 https://git.dev.yuanben.org/scm/helm/{REPLACE}.git .
+            - git clone -b staging --depth=1 https://git.dev.yuanben.org/scm/helm/{ HLEM_REPO_NAME }.git .
     
     -   name: tag
         image: python
@@ -98,7 +98,7 @@ steps:
         settings:
             mode: upgrade
             chart: ./
-            release: { REPLACE }
+            release: { HELM_RELEASE_NAME }
             kube_api_server: https://192.168.1.115:6443
             kube_token:
                 from_secret: token_beta
@@ -107,7 +107,7 @@ steps:
     -   name: push commit
         image: appleboy/drone-git-push
         settings:
-            remote: ssh://git@git.dev.yuanben.org:7999/helm/{REPLACE}.git
+            remote: ssh://git@git.dev.yuanben.org:7999/helm/{ HLEM_REPO_NAME }.git
             branch: staging
             remote_name: deploy
             commit: true

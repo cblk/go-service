@@ -16,11 +16,9 @@ import (
 var migrationInitialized bool
 
 func InitMigration(dbi *gorm.DB) {
-
 	if migrationInitialized {
 		return
 	}
-
 	// Set default database charset to utf8mb4
 	dbi = dbi.Set("gorm:table_options", "CHARSET=utf8mb4")
 
@@ -42,20 +40,16 @@ func InitMigration(dbi *gorm.DB) {
 }
 
 func Migrate(dbi *gorm.DB) error {
-
 	if !migrationInitialized {
 		return errors.New("migration not initialized")
 	}
-
 	return migrate.Migrate(dbi)
 }
 
 func Rollback(dbi *gorm.DB) error {
-
 	if !migrationInitialized {
 		return errors.New("migration not initialized")
 	}
-
 	return migrate.Rollback(dbi)
 }
 
@@ -70,39 +64,33 @@ var MigrateCmd = initMigrateCmd(&cobra.Command{
 	Use:     "migrate",
 	Aliases: []string{"m"},
 	Short:   "migrate",
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		logrus.Info("migrate begin")
 		// Initialize database
-		if err := db.InitDB(config.GetConfig()); err != nil {
-			return err
+		if err = db.InitDB(config.GetConfig()); err != nil {
+			return
 		}
 		InitMigration(db.GetDB())
 		switch _action {
 		case "migrate":
-			err := Migrate(db.GetDB())
-			if err != nil {
+			if err = Migrate(db.GetDB()); err != nil {
 				logrus.Errorf("Migrate failed, error:%v", err)
-				return err
+				return
 			}
-
 			logrus.Info("Migrate succeed!")
-
-			return nil
+			return
 		case "rollback":
-			err := Rollback(db.GetDB())
-			if err != nil {
+			if err = Rollback(db.GetDB()); err != nil {
 				logrus.Errorf("Rollback failed, error:%v", err)
-				return err
+				return
 			}
-
 			logrus.Info("Rollback succeed!")
 		default:
-			err := errors.New("error action")
+			err = errors.New("error action")
 			logrus.Errorf("error action:%v", err)
-			return err
+			return
 		}
-
-		return nil
+		return
 	},
 })
 
