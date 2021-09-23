@@ -1,2 +1,2 @@
 #!/bin/sh
-./main $WORK --conf $ENV
+exec ./main $WORK --conf $ENV
