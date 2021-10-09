@@ -17,9 +17,9 @@ type UUIDBase struct {
 }
 
 type PageInput struct {
-	PageID   int `query:"page_id" description:"查询起始页id" default:"0"`
-	PageSize int `query:"page_size" description:"单页查询数量,默认十条" default:"10"`
-	Order    string
+	PageID   int    `query:"page_id" description:"查询起始页id" default:"0"`
+	PageSize int    `query:"page_size" description:"单页查询数量,默认十条" default:"10"`
+	Order    string `query:"order" description:"排序字段"`
 }
 
 func (b *UUIDBase) BeforeCreate(tx *gorm.DB) (err error) {
@@ -37,7 +37,8 @@ func Count(tx *gorm.DB, query interface{}, args ...interface{}) int64 {
 	return count
 }
 
-func Page(tx *gorm.DB, in PageInput, dest, query interface{}, args ...interface{}) error {
+func (in PageInput) Page(tx *gorm.DB, dest, query interface{}, args ...interface{}) (int64, error) {
+	count := Count(tx, query, args...)
 	tx = tx.Offset(in.PageID * in.PageSize).Limit(in.PageSize)
 	if query != nil {
 		tx = tx.Where(query, args...)
@@ -45,5 +46,5 @@ func Page(tx *gorm.DB, in PageInput, dest, query interface{}, args ...interface{
 	if in.Order != "" {
 		tx = tx.Order(in.Order)
 	}
-	return tx.Find(dest).Error
+	return count, tx.Find(dest).Error
 }
