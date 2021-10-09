@@ -28,33 +28,17 @@ func init() {
 }
 
 func initAllFromConfigFile() {
-
 	// Initialize config from config file
-
 	if err := config.InitConfig(configPath); err != nil {
 		panic(err)
 	}
-
 	appConfig := config.GetConfig()
-
-	if err := InitAllFromAppConfig(appConfig); err != nil {
-		logrus.Error(err)
+	if err := initLogFormat(appConfig); err != nil {
 		panic(err)
 	}
 }
 
-func InitAllFromAppConfig(appConfig *config.AppConfig) error {
-
-	// Initialize log format
-	if err := initLogFormat(appConfig); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func initLogFormat(appConfig *config.AppConfig) error {
-
 	//设置输出样式，自带的只有两种样式logrus.JSONFormatter{}和logrus.TextFormatter{}
 	logrus.SetFormatter(&logrus.TextFormatter{})
 	//设置output,默认为stderr,可以为任何io.Writer，比如文件*os.File
