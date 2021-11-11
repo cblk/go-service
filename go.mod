@@ -57,4 +57,4 @@ require (
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
 
-replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.2-0.20200628075840-6f87a797e771
+replace github.com/loopfz/gadgeto v0.9.0 => github.com/we-miks/gadgeto v0.10.3
