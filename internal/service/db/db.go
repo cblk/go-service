@@ -22,7 +22,7 @@ func InitDB(appConfig *config.AppConfig) (err error) {
 		return nil
 	}
 
-	sqlDB, err := sql.Open(appConfig.Db.Driver, appConfig.Db.ConnectionString)
+	sqlDB, err := sql.Open(appConfig.Db.Driver, appConfig.Db.Connection)
 	if err != nil {
 		logrus.Error("InitDB sql.Open error:" + err.Error())
 		return err
