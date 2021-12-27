@@ -7,7 +7,7 @@ services:
         depends_on:
             - migrate
         ports:
-            - 8080:8080
+            - "8080:8080"
         environment:
             WORK: server
             ENV: config
