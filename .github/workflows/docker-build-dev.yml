@@ -4,7 +4,7 @@ on:
     branches:
       - main
     tags-ignore:
-      - *
+      - v*
     paths-ignore:
       - '.github/**'
 
