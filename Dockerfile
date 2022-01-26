@@ -1,4 +1,4 @@
-FROM cblk/golang-cgo:1.17-alpine3.14 AS builder
+FROM ghcr.io/cblk/golang-cgo:1.17-alpine3.14 AS builder
 WORKDIR /app
 COPY . .
 RUN GIT_SHA=$(git rev-parse --short HEAD) && \
