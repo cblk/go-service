@@ -14,7 +14,6 @@ import (
 	"go-service/internal/service/db"
 	"go-service/internal/service/origin"
 	"go-service/internal/service/session"
-	"go-service/internal/service/storage/oss"
 
 	"github.com/sirupsen/logrus"
 
@@ -50,10 +49,6 @@ func InitServerFromAppConfig() {
 	}
 	// Initialize cors allow origin
 	if err := origin.InitOrigin(appConfig); err != nil {
-		panic(err)
-	}
-	// Initialize oss
-	if err := oss.InitOss(appConfig); err != nil {
 		panic(err)
 	}
 }

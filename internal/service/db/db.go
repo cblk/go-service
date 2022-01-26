@@ -18,7 +18,7 @@ var db *gorm.DB
 
 func InitDB(appConfig *config.AppConfig) (err error) {
 
-	if appConfig.Environment == config.EnvTest && appConfig.Db.Driver == "" {
+	if appConfig.Db.Driver == "" {
 		return nil
 	}
 

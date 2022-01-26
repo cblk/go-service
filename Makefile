@@ -1,6 +1,6 @@
 project_name=go-service
 # 配置文件目录的绝对路径
-config = ~/GolandProjects/go_service_work/config
+config = ~/GolandProjects/go-service/config
 
 r:
 	go run main.go
