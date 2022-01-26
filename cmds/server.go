@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"go-service/api"
-	"go-service/config"
-	"go-service/internal/service/db"
-	"go-service/internal/service/origin"
-	"go-service/internal/service/session"
+	"github.com/cblk/go-service/api"
+	"github.com/cblk/go-service/config"
+	"github.com/cblk/go-service/internal/service/db"
+	"github.com/cblk/go-service/internal/service/origin"
+	"github.com/cblk/go-service/internal/service/session"
 
 	"github.com/sirupsen/logrus"
 

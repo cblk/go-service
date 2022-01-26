@@ -3,8 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	"go-service/config"
-	"go-service/internal/service/origin"
+	"github.com/cblk/go-service/config"
+	"github.com/cblk/go-service/internal/service/origin"
 
 	"github.com/gin-gonic/gin"
 )

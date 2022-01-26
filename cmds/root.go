@@ -3,7 +3,7 @@ package cmds
 import (
 	"os"
 
-	"go-service/config"
+	"github.com/cblk/go-service/config"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

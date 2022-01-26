@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"go-service/cmds"
+	"github.com/cblk/go-service/cmds"
 )
 
 var (

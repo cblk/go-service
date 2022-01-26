@@ -1,4 +1,4 @@
-module go-service
+module github.com/cblk/go-service
 
 go 1.17
 

@@ -3,9 +3,9 @@ package cmds
 import (
 	"errors"
 
-	"go-service/config"
-	"go-service/internal/service/db"
-	"go-service/migrate"
+	"github.com/cblk/go-service/config"
+	"github.com/cblk/go-service/internal/service/db"
+	"github.com/cblk/go-service/migrate"
 
 	"github.com/sirupsen/logrus"
 

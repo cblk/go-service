@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"go-service/config"
+	"github.com/cblk/go-service/config"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
