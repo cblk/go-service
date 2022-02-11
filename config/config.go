@@ -1,11 +1,12 @@
 package config
 
 import (
-	"encoding/json"
+	"io/ioutil"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"gopkg.in/yaml.v3"
 )
 
 var (
@@ -45,17 +46,10 @@ func GetConfig() *AppConfig {
 }
 
 func WriteConfig() (err error) {
-	b, err := json.Marshal(GetConfig())
+	configBytes, err := yaml.Marshal(appConfig)
 	if err != nil {
 		return
 	}
-	var m map[string]interface{}
-	if err = json.Unmarshal(b, &m); err != nil {
-		return
-	}
-	if err = viper.MergeConfigMap(m); err != nil {
-		return
-	}
-	err = viper.WriteConfig()
+	err = ioutil.WriteFile(viper.ConfigFileUsed(), configBytes, 0644)
 	return
 }
